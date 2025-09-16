@@ -1,5 +1,5 @@
-package team.zhkv;
+package team.zhkv.actions;
 
-public class Init {
-
+public abstract class Init implements Action {
+    public void execute();
 }

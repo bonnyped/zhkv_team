@@ -1,5 +1,5 @@
 package team.zhkv.actions;
 
-public class Turn {
-
+public abstract class Turn implements Action {
+    public void execute();
 }
