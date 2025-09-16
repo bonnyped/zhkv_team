@@ -9,11 +9,21 @@ import team.zhkv.utils.PropertiesStorage;
 
 public class GameMap {
     private PropertiesStorage storage;
+
     private Map<Location, Entity> entities;
     private TreeSet<Location> creatures;
+
     private MapRenderer renderer;
 
     public Map<Location, Entity> getEntities() {
         return entities;
+    }
+
+    public PropertiesStorage getStorage() {
+        return storage;
+    }
+
+    public TreeSet<Location> getCreatures() {
+        return creatures;
     }
 }
