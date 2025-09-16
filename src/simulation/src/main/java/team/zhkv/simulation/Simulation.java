@@ -1,11 +1,30 @@
 package team.zhkv.simulation;
 
-/**
- * Hello world!
- *
- */
+import team.zhkv.Init;
+import team.zhkv.actions.Action;
+import team.zhkv.actions.Turn;
+import team.zhkv.render.GameMap;
+
 public class Simulation {
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+    private GameMap gm = new GameMap();
+    private int stepsCount;
+    private Action[] initActions = {}; // пока так
+    private Action[] turnActions = {};
+
+    private void nextTurn() {
+        if (gm.getEntities() == null) {
+            initActions[0].execute();
+        }
     }
+
+    public void startSimulation() {
+        while (true) {
+            nextTurn();
+        }
+    }
+
+    public void pauseSimulation() {
+
+    }
+
 }
