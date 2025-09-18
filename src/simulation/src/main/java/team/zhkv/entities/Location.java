@@ -11,9 +11,20 @@ public class Location {
     public Location() {
     }
 
+    public Location(Location other) {
+        dx = other.dx;
+        dy = other.dy;
+    }
+
     public Location(int dx, int dy) {
         this.dx = dx;
         this.dy = dy;
+    }
+
+    private Location setLocation(Location other) {
+        this.dx += other.dx;
+        this.dy += other.dy;
+        return this;
     }
 
     public Location getFreeRandomLocation(Location fieldSize,
@@ -24,6 +35,13 @@ public class Location {
             dy = random.nextInt(fieldSize.dy);
         }
         return this;
+    }
+
+    public boolean isInBounds(Location fieldSize) {
+        return dx >= 0
+                && dx < fieldSize.dx
+                && dy >= 0
+                && dy < fieldSize.dy;
     }
 
     @Override
@@ -57,4 +75,9 @@ public class Location {
         this.dy = dy;
         return this;
     }
+
+    public Location getNeighbor(Location other) {
+        return new Location(this).setLocation(other);
+    }
+
 }

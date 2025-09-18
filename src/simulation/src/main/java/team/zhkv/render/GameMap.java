@@ -6,7 +6,6 @@ import java.util.Map;
 
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Location;
-import team.zhkv.utils.PropertiesStorage;
 
 public class GameMap {
     private Map<Location, Entity> locations;
@@ -20,6 +19,10 @@ public class GameMap {
         this.locations = locations;
         this.creatures = (HashSet<Location>) creatures;
         renderer = new MapRenderer(fieldSize);
+    }
+
+    public void render() {
+        renderer.render(locations);
     }
 
     public Set<Location> getCreatures() {
