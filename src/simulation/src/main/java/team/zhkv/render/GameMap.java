@@ -1,6 +1,7 @@
 package team.zhkv.render;
 
-import java.util.TreeSet;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Map;
 
 import team.zhkv.entities.Entity;
@@ -8,31 +9,28 @@ import team.zhkv.entities.Location;
 import team.zhkv.utils.PropertiesStorage;
 
 public class GameMap {
-    private PropertiesStorage storage = new PropertiesStorage();
+    private Map<Location, Entity> locations;
 
-    private Map<Location, Entity> entities;
-
-    private TreeSet<Location> creatures;
+    private HashSet<Location> creatures;
 
     private MapRenderer renderer;
 
-    public Map<Location, Entity> getEntities() {
-        return entities;
+    public GameMap(Map<Location, Entity> locations,
+            Set<Location> creatures, Location fieldSize) {
+        this.locations = locations;
+        this.creatures = (HashSet<Location>) creatures;
+        renderer = new MapRenderer(fieldSize);
     }
 
-    public PropertiesStorage getStorage() {
-        return storage;
-    }
-
-    public TreeSet<Location> getCreatures() {
+    public Set<Location> getCreatures() {
         return creatures;
     }
 
-    public void setEntities(Map<Location, Entity> entities) {
-        this.entities = entities;
+    public MapRenderer getRenderer() {
+        return renderer;
     }
 
-    public void setCreatures(TreeSet<Location> creatures) {
-        this.creatures = creatures;
+    public Map<Location, Entity> getLocations() {
+        return locations;
     }
 }

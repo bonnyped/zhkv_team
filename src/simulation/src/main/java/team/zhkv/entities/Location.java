@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
-import team.zhkv.utils.PropertiesStorage;
-
 public class Location {
     private int dx;
     private int dy;
@@ -18,15 +16,12 @@ public class Location {
         this.dy = dy;
     }
 
-    public Location getFreeRandomLocation(PropertiesStorage ps,
+    public Location getFreeRandomLocation(Location fieldSize,
             Map<Location, Entity> locations) {
-        int sizex = ps.getSizex();
-        int sizey = ps.getSizey();
-
         Random random = new Random(31);
         while (locations.containsKey(this)) {
-            dx = random.nextInt(sizex);
-            dy = random.nextInt(sizey);
+            dx = random.nextInt(fieldSize.dx);
+            dy = random.nextInt(fieldSize.dy);
         }
         return this;
     }
@@ -47,5 +42,19 @@ public class Location {
     @Override
     public int hashCode() {
         return Objects.hash(dx, dy);
+    }
+
+    public int getDx() {
+        return dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
+    public Location setLocation(int dx, int dy) {
+        this.dx = dx;
+        this.dy = dy;
+        return this;
     }
 }
