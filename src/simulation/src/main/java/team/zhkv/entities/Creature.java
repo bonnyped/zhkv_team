@@ -1,5 +1,5 @@
 package team.zhkv.entities;
 
-public class Creature {
+public abstract class Creature extends Entity {
 
 }

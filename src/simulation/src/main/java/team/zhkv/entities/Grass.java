@@ -1,5 +1,7 @@
 package team.zhkv.entities;
 
-public class Grass {
-
+public class Grass extends Entity {
+    public Grass(int quantity) {
+        setFieldQuantity(quantity / 5);
+    }
 }

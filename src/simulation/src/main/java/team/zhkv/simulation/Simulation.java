@@ -1,28 +1,22 @@
 package team.zhkv.simulation;
 
-import team.zhkv.Init;
 import team.zhkv.actions.Action;
 import team.zhkv.actions.InitAllEntities;
 import team.zhkv.actions.Turn;
 import team.zhkv.render.GameMap;
+import team.zhkv.render.MapRenderer;
 
 public class Simulation {
     private GameMap gm = new GameMap();
+    private MapRenderer renderer = new MapRenderer(gm.getEntities());
     private int stepsCount;
-    private Action initActions = new InitAllEntities(gm.getEntities(),
-            gm.getStorage(),
-            gm.getCreatures());
+    private Action initAll = new InitAllEntities();
     private Action[] turnActions = {};
 
-    private Action[] gettIniActions() {
-        return {,
-                                };
-    }
-
     private void nextTurn() {
-        if (gm.getEntities() == null) {
-            initActions[0].execute();
-        }
+        initAll.init(gm.getStorage());
+        gm.setEntities(initAll.getLocations());
+        renderer.render();
     }
 
     public void startSimulation() {

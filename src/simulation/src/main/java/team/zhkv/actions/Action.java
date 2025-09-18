@@ -1,5 +1,5 @@
 package team.zhkv.actions;
 
-public interface Action {
-    execute();
+public interface Action<T> {
+    void init(T object);
 }
