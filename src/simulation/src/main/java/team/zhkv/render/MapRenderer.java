@@ -19,15 +19,15 @@ public class MapRenderer {
 
     private void renderEntitiy(Entity entity) {
         if (entity.getClass() == Predator.class) {
-            System.out.printf("%s", "🐱 ");
+            System.out.printf("%s", "🐺 ");
         } else if (entity.getClass() == Herbivore.class) {
             System.out.printf("%s", "🐰 ");
         } else if (entity.getClass() == Grass.class) {
-            System.out.printf("%s", "🌱 ");
+            System.out.printf("%s", "🥕 ");
         } else if (entity.getClass() == Rock.class) {
-            System.out.printf("%s", "🏔  ");
+            System.out.printf("%s", "🪨  ");
         } else if (entity.getClass() == Tree.class) {
-            System.out.printf("%s", "🌴 ");
+            System.out.printf("%s", "🌲 ");
         }
     }
 
