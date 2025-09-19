@@ -25,6 +25,10 @@ public class GameMap {
         renderer.render(locations);
     }
 
+    public Entity removeByLocation(Location location) {
+        return locations.remove(location);
+    }
+
     public Set<Location> getCreatures() {
         return creatures;
     }
@@ -38,7 +42,7 @@ public class GameMap {
     }
 
     public void setCreatures(Set<Location> creatures) {
-        if (creatures.getClass() == HashSet.class) {
+        if (creatures != null && creatures.getClass() == HashSet.class) {
             creatures.clear();
             this.creatures = (HashSet<Location>) creatures;
         }
