@@ -36,4 +36,11 @@ public class GameMap {
     public Map<Location, Entity> getLocations() {
         return locations;
     }
+
+    public void setCreatures(Set<Location> creatures) {
+        if (creatures.getClass() == HashSet.class) {
+            creatures.clear();
+            this.creatures = (HashSet<Location>) creatures;
+        }
+    }
 }
