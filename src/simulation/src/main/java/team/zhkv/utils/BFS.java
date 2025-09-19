@@ -30,24 +30,24 @@ public class BFS {
             neighbors.add(creature.getNeighbor(direction.getDelta()));
         }
 
-        removeInvalidLocations(neighbors, fieldSize, creaturesGoal);
+        removeInvalidLocations(neighbors, fieldSize);
         checked.addAll(neighbors);
 
         return neighbors;
     }
 
-    private void checkNeighborAsGoal(Entity neighbor, Entity creaturesGoal) {
+    private void checkNeighborAsGoal(Entity neighbor) {
 
     }
 
     private void removeInvalidLocations(ArrayList<Location> neighbors,
-            Location fieldSize, Entity creaturesGoal) {
+            Location fieldSize) {
         for (int i = 0; i < neighbors.size(); i++) {
             Location neighbor = neighbors.get(i);
             if (!neighbor.isInBounds(fieldSize)) {
                 neighbors.remove(i);
             } else if (locations.containsKey(neighbor)) {
-                checkNeighborAsGoal(locations.get(neighbor), creaturesGoal);
+                checkNeighborAsGoal(locations.get(neighbor));
             }
         }
     }
