@@ -1,12 +1,10 @@
 package team.zhkv.simulation;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import team.zhkv.actions.Init;
 import team.zhkv.actions.InitAllEntities;
-import team.zhkv.entities.Creature;
 import team.zhkv.entities.Location;
 import team.zhkv.render.GameMap;
 import team.zhkv.utils.BFS;
@@ -29,10 +27,13 @@ public class Simulation {
         ArrayList<Location> creatures = new ArrayList<>(gameMap.getCreatures());
         HashSet<Location> newCreaturesLocations = new HashSet<>();
         for (int i = 0; i < creatures.size(); i++) {
-            Location step = bfs.buildPath(
+            Location step = bfs.findNewLocation(
                     creatures.get(i), storage.getFieldSize());
+            gameMap.getLocations()
+                    .put(step, gameMap.removeByLocation(creatures.get(i)));
             newCreaturesLocations.add(step);
         }
+
         gameMap.setCreatures(newCreaturesLocations);
     }
 
