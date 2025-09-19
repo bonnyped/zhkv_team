@@ -21,13 +21,12 @@ public class InitAllEntities extends Init {
             Entity[] entities = ps.getAllEntities();
             for (int i = 0; i < entities.length; i++) {
                 for (int j = 0; j < entities[i].getFieldQuantity(); j++) {
-                    entities[i].setLocation(
-                            new Location()
-                                    .getFreeRandomLocation(ps.getFieldSize(),
-                                            locations));
-                    locations.put(entities[i].getLocation(), entities[i]);
-                    if (entities[i].getClass() == Creature.class) {
-                        creatures.add(entities[i].getLocation());
+                    Location randomUniqueLocation = new Location()
+                            .getFreeRandomLocation(ps.getFieldSize(),
+                                    locations);
+                    locations.put(randomUniqueLocation, entities[i]);
+                    if (entities[i] instanceof Creature) {
+                        creatures.add(randomUniqueLocation);
                     }
                 }
             }
