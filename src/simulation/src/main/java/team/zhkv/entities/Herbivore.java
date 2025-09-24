@@ -1,7 +1,9 @@
 package team.zhkv.entities;
 
-public class Herbivore extends Creature {
+public class Herbivore extends Creature implements Eatable {
     public Herbivore(int quantity) {
-        setFieldQuantity(quantity / 5);
+        this.food = Grass.class;
+        setEntitiesQuantityOnMap(quantity / 5);
     }
+
 }

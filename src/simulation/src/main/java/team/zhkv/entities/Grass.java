@@ -1,7 +1,7 @@
 package team.zhkv.entities;
 
-public class Grass extends Entity {
+public class Grass extends Entity implements Eatable {
     public Grass(int quantity) {
-        setFieldQuantity(quantity / 5);
+        setEntitiesQuantityOnMap(quantity / 5);
     }
 }
