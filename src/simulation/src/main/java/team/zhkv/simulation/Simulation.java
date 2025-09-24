@@ -1,16 +1,21 @@
 package team.zhkv.simulation;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import team.zhkv.actions.Action;
 import team.zhkv.actions.Init;
 import team.zhkv.actions.InitAllEntities;
+import team.zhkv.actions.InitGrass;
+import team.zhkv.actions.InitHerbivores;
 import team.zhkv.entities.Creature;
 import team.zhkv.render.GameMap;
 import team.zhkv.render.Location;
 
 public class Simulation {
-    // private List<Action> actions = List.of(new InitAllEntities());
+    private List<Action> initActions = List.of(new InitAllEntities(), new InitGrass(), new InitHerbivores());
+    private List<Action> turnActions = List.of();
     private GameMap gameMap = new GameMap();
     private int stepsCount = 0;
 

@@ -1,14 +1,14 @@
 package team.zhkv.entities;
 
 public abstract class Entity {
-    int entitiesQuantityOnMap;
+    int quantity;
 
-    public int getEntitiesQuantityOnMap() {
-        return entitiesQuantityOnMap;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setEntitiesQuantityOnMap(int quantity) {
-        this.entitiesQuantityOnMap = quantity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
 }

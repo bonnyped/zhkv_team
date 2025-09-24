@@ -24,8 +24,8 @@ public class BFS {
     }
 
     private boolean isNeighborInField(Location neighbor) {
-        return neighbor.getDx() < App.FIELD_SIZE.getDx()
-                && neighbor.getDy() < App.FIELD_SIZE.getDx()
+        return neighbor.getDx() < App.FIELD_SIZE_MIN.getDx()
+                && neighbor.getDy() < App.FIELD_SIZE_MIN.getDx()
                 && neighbor.getDx() >= 0
                 && neighbor.getDy() >= 0;
     }

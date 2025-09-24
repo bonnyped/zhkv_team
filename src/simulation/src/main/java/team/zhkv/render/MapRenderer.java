@@ -27,8 +27,8 @@ public class MapRenderer {
 
     public void render(Map<Location, Entity> entities) {
         Location currentLocation = new Location();
-        for (int i = 0; i < App.FIELD_SIZE.getDx(); i++) {
-            for (int j = 0; j < App.FIELD_SIZE.getDy(); j++) {
+        for (int i = 0; i < App.FIELD_SIZE_MIN.getDx(); i++) {
+            for (int j = 0; j < App.FIELD_SIZE_MIN.getDy(); j++) {
                 currentLocation.setLocation(j, i);
                 if (!entities.containsKey(currentLocation)) {
                     System.out.printf("%s", "⬛️ ");

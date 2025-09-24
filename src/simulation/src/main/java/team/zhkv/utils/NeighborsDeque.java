@@ -13,7 +13,7 @@ public class NeighborsDeque extends ArrayDeque<Neighbor> {
             nextSearchStep = firstNeighbor;
             NeighborFabric fabric = new NeighborFabric(firstNeighbor, nextSearchStep);
             this.add(fabric.getNeighbor());
-        }e
+        }
 
         return true;
     }

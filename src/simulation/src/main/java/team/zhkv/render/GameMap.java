@@ -16,6 +16,10 @@ public class GameMap {
 
     private MapRenderer renderer = new MapRenderer();
 
+    private int grassCount = storage.getMinGrassQuantity();
+
+    private int herbivoresCount = storage.getMinHerbivorePopulation();
+
     public void render() {
         renderer.render(locations);
     }
@@ -45,4 +49,21 @@ public class GameMap {
     public Entity[] getAllEntities() {
         return storage.getAllEntities();
     }
+
+    public void incrementHerbivoreCount() {
+        ++herbivoresCount;
+    }
+
+    public int differenceHerbivoreCountAndMin() {
+        return storage.getMinHerbivorePopulation() - herbivoresCount;
+    }
+
+    public void incrementGrassCount() {
+        ++grassCount;
+    }
+
+    public int differenceGrassCountAndMin() {
+        return storage.getMinGrassQuantity() - grassCount;
+    }
+
 }
