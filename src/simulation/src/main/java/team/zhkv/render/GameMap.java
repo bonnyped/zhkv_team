@@ -5,28 +5,19 @@ import java.util.HashSet;
 import java.util.Map;
 
 import team.zhkv.entities.Entity;
-import team.zhkv.entities.Location;
+import team.zhkv.utils.PropertiesStorage;
 
 public class GameMap {
+    private PropertiesStorage storage = new PropertiesStorage();
+
     private Map<Location, Entity> locations;
 
-    private HashSet<Location> creatures;
+    private Set<Location> creatures;
 
-    private MapRenderer renderer;
-
-    public GameMap(Map<Location, Entity> locations,
-            Set<Location> creatures, Location fieldSize) {
-        this.locations = locations;
-        this.creatures = (HashSet<Location>) creatures;
-        renderer = new MapRenderer(fieldSize);
-    }
+    private MapRenderer renderer = new MapRenderer();
 
     public void render() {
         renderer.render(locations);
-    }
-
-    public Entity removeByLocation(Location location) {
-        return locations.remove(location);
     }
 
     public Set<Location> getCreatures() {
@@ -37,14 +28,21 @@ public class GameMap {
         return renderer;
     }
 
+    public void setLocations(Map<Location, Entity> locations) {
+        this.locations = locations;
+    }
+
     public Map<Location, Entity> getLocations() {
         return locations;
     }
 
     public void setCreatures(Set<Location> creatures) {
         if (creatures != null && creatures.getClass() == HashSet.class) {
-            creatures.clear();
-            this.creatures = (HashSet<Location>) creatures;
+            this.creatures = creatures;
         }
+    }
+
+    public Entity[] getAllEntities() {
+        return storage.getAllEntities();
     }
 }
