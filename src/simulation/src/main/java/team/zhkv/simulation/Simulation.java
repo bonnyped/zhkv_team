@@ -1,47 +1,46 @@
 package team.zhkv.simulation;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import team.zhkv.actions.Init;
 import team.zhkv.actions.InitAllEntities;
-import team.zhkv.entities.Location;
+import team.zhkv.entities.Creature;
 import team.zhkv.render.GameMap;
-import team.zhkv.utils.BFS;
-import team.zhkv.utils.PropertiesStorage;
+import team.zhkv.render.Location;
 
 public class Simulation {
-    private PropertiesStorage storage = new PropertiesStorage();
-    private GameMap gameMap;
+    // private List<Action> actions = List.of(new InitAllEntities());
+    private GameMap gameMap = new GameMap();
     private int stepsCount = 0;
 
     public Simulation() {
         Init initAll = new InitAllEntities();
-        initAll.init(storage);
-        gameMap = new GameMap(storage.getLocations(), storage.getCreatures(),
-                storage.getFieldSize());
+        initAll.init(gameMap);
     }
 
     private void nextTurn() {
-        BFS bfs = new BFS(gameMap.getLocations());
-        ArrayList<Location> creatures = new ArrayList<>(gameMap.getCreatures());
-        HashSet<Location> newCreaturesLocations = new HashSet<>();
-        for (int i = 0; i < creatures.size(); i++) {
-            Location step = bfs.findNewLocation(
-                    creatures.get(i), storage.getFieldSize());
-            gameMap.getLocations()
-                    .put(step, gameMap.removeByLocation(creatures.get(i)));
-            newCreaturesLocations.add(step);
+        Set<Location> newCreaturesLocations = new HashSet<>();
+
+        for (Location creature : gameMap.getCreatures()) {
+            Creature extarctedCreature = (Creature) gameMap
+                    .getLocations()
+                    .get(creature);
+            extarctedCreature.makeMove(gameMap.getLocations(),
+                    creature, newCreaturesLocations);
         }
 
         gameMap.setCreatures(newCreaturesLocations);
     }
 
     public void startSimulation() {
-        while (stepsCount == 0) {
+        // Scanner scan = new Scanner(System.in);
+        // int next = scan.nextInt();
+        while (stepsCount != 21) {
             gameMap.render();
             ++stepsCount;
             nextTurn();
+            // next = scan.nextInt();
         }
     }
 
