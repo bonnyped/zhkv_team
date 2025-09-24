@@ -2,24 +2,26 @@ package team.zhkv.utils;
 
 import java.util.ArrayDeque;
 import java.util.List;
-
-import team.zhkv.entities.Location;
+import team.zhkv.render.Location;
 
 public class NeighborsDeque extends ArrayDeque<Neighbor> {
-    public boolean addNearestNeighbors(List<Location> locations) {
+    public boolean addFirstNeighbors(List<Location> locations) {
+        Location firstNeighbor = null;
+        Location nextSearchStep = null;
         for (int i = 0; i < locations.size(); i++) {
-            NeighborFabric fabric = new NeighborFabric(locations.get(i));
-            this.add(fabric.getNeighbor(locations.get(i)));
-        }
+            firstNeighbor = locations.get(i);
+            nextSearchStep = firstNeighbor;
+            NeighborFabric fabric = new NeighborFabric(firstNeighbor, nextSearchStep);
+            this.add(fabric.getNeighbor());
+        }e
 
         return true;
     }
 
     public boolean addAllNeighbors(Location startLocation, List<Location> locations) {
-        NeighborFabric fabric = new NeighborFabric(startLocation);
-
         for (int i = 0; i < locations.size(); i++) {
-            this.add(fabric.getNeighbor(locations.get(i)));
+            NeighborFabric fabric = new NeighborFabric(startLocation, locations.get(i));
+            this.add(fabric.getNeighbor());
         }
 
         return true;

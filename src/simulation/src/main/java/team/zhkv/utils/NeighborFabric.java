@@ -1,16 +1,15 @@
 package team.zhkv.utils;
 
-import team.zhkv.entities.Location;
+import team.zhkv.render.Location;
 
 public class NeighborFabric {
     private Neighbor neighbor;
 
-    public NeighborFabric(Location first) {
-        neighbor = new Neighbor(first);
+    public NeighborFabric(Location first, Location second) {
+        neighbor = new Neighbor(first, second);
     }
 
-    public Neighbor getNeighbor(Location second) {
-        neighbor.setCellToSearch(second);
+    public Neighbor getNeighbor() {
         return neighbor;
     }
 }

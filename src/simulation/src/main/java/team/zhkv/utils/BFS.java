@@ -2,17 +2,17 @@ package team.zhkv.utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
+import team.zhkv.App;
 import team.zhkv.entities.Creature;
+import team.zhkv.entities.Eatable;
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Grass;
 import team.zhkv.entities.Herbivore;
-import team.zhkv.entities.Location;
 import team.zhkv.entities.Predator;
 import team.zhkv.render.Direction;
+import team.zhkv.render.Location;
 
 public class BFS {
     private Map<Location, Entity> locations;
@@ -23,92 +23,71 @@ public class BFS {
         this.locations = locations;
     }
 
-    private void removeInvalidLocations(Queue<Location> neighbors,
-            Location fieldSize) {
-        for (int i = 0; i < neighbors.size(); i++) {
-            Location neighbor = neighbors.peek(i);
-            if (!neighbor.isInBounds(fieldSize) || checked.contains(neighbor)) {
-                neighbors.remove(i);
-            }
-        }
+    private boolean isNeighborInField(Location neighbor) {
+        return neighbor.getDx() < App.FIELD_SIZE.getDx()
+                && neighbor.getDy() < App.FIELD_SIZE.getDx()
+                && neighbor.getDx() >= 0
+                && neighbor.getDy() >= 0;
     }
 
-    private Location goalCellOrChecked(Class<? extends Entity> creatureClass,
-            ArrayList<Location> neighbors) {
-        Entity neighbor = null;
+    private boolean isEatable(Location neighbor) {
+        return locations.get(neighbor) instanceof Eatable;
+    }
 
-        for (int i = 0; i < neighbors.size(); i++) {
-            neighbor = locations.get(neighbors.get(i));
+    private boolean isEmptyCell(Location neighbor) {
+        return locations.get(neighbor) == null;
+    }
+
+    private ArrayList<Location> getNeigborLocations(Location startCell) {
+        ArrayList<Location> correctNearestLocations = new ArrayList<>();
+        Location neighbor = null;
+        checked.add(startCell);
+
+        for (var direction : Direction.values()) {
+            neighbor = startCell.getNeighbor(direction.getDelta());
+            if (isNeighborInField(neighbor)) {
+                if (!checked.contains(neighbor)
+                        && (isEatable(neighbor) || isEmptyCell(neighbor))) {
+                    correctNearestLocations.add(neighbor);
+                }
+                checked.add(neighbor);
+            }
+        }
+
+        return correctNearestLocations;
+    }
+
+    private boolean isFoodFound(Entity food,
+            Class<? extends Entity> creature) {
+        return food instanceof Grass && creature == Herbivore.class
+                || food instanceof Herbivore && creature == Predator.class;
+    }
+
+    private Location findPathOrExpandNeighbors(Creature creature, Neighbor neighbor) {
+        Location path = neighbor.getPathLocation();
+        Location cellToSearch = neighbor.getCellToSearch();
+        Entity cellClass = locations.get(cellToSearch);
+
+        if (cellClass instanceof Eatable
+                && isFoodFound(cellClass, creature.getClass())) {
+            return path;
+        } else {
+            forCheck.addAllNeighbors(path, getNeigborLocations(cellToSearch));
         }
 
         return null;
     }
 
-    private Queue<Location> getNeigborLocations(Location startCell, Location fieldSize) {
-        Queue<Location> neighbors = new LinkedList<>();
-        checked.add(startCell);
+    public Location generateCreaturesStep(Location creature) {
+        Creature extractedCreature = (Creature) locations.get(creature);
+        Location nextStep = null;
 
-        for (var direction : Direction.values()) {
-            // тут надо сразу проверять сгенерированного соседа
-            neighbors.add(startCell.getNeighbor(direction.getDelta()));
+        forCheck.addFirstNeighbors(getNeigborLocations(creature));
+
+        while (!forCheck.isEmpty() && nextStep == null) {
+            nextStep = findPathOrExpandNeighbors(extractedCreature, forCheck.poll());
         }
 
-        removeInvalidLocations(neighbors, fieldSize);
-        checked.addAll(neighbors);
-
-        return neighbors;
+        return nextStep;
     }
-
-    private boolean isFoodFound(Class<? extends Entity> food,
-            Class<? extends Entity> creature) {
-        return food == Grass.class && creature == Herbivore.class
-                || food == Herbivore.class && creature == Predator.class;
-    }
-
-    private ArrayList<Location> removeNotEmptyLocations(ArrayList<Location> neighbors) {
-
-    }
-
-    private Location findPathOrExpandNeighbors(
-            Class<? extends Entity> cretureClass,
-            Neighbor next, Location fieldSize) {
-        Location goal = null;
-        Queue<Location> neighbors = getNeigborLocations(
-                next.getCellToSearch(), fieldSize);
-        ArrayList<Location> entitiesNeighbors = removeNotEmptyLocations(neighbors);
-        goal = goalCellOrChecked(cretureClass, neighbors);
-
-        forCheck.addAllNeighbors(next.getNearestLocation(), neighbors);
-
-        return goal;
-    }
-
-    private Location checkNeighbors(Location oldLocation, Location fieldSize) {
-        Location newLocation = null;
-        Entity creatureToMove = locations.get(oldLocation);
-
-        while (!forCheck.isEmpty()) {
-            Neighbor next = forCheck.pollFirst();
-            Entity nextCell = locations.get(
-                    next.getCellToSearch());
-            if (isFoodFound(nextCell.getClass(),
-                    creatureToMove.getClass())) {
-                newLocation = next.getNearestLocation();
-                forCheck.clear();
-            } else {
-                newLocation = findPathOrExpandNeighbors(
-                        creatureToMove.getClass(), next, fieldSize);
-            }
-        }
-
-        return newLocation;
-    }
-
-    public Location findNewLocation(Location oldLocation, Location fieldSize) {
-        forCheck.addNearestNeighbors(getNeigborLocations(
-                oldLocation, fieldSize));
-
-        return checkNeighbors(oldLocation, fieldSize);
-    }
-
 }
