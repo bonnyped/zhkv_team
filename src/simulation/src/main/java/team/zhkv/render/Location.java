@@ -1,8 +1,10 @@
-package team.zhkv.entities;
+package team.zhkv.render;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+
+import team.zhkv.entities.Entity;
 
 public class Location {
     private int dx;
