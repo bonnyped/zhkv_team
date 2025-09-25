@@ -10,12 +10,6 @@ import team.zhkv.App;
 
 public class PropertiesStorage {
     private int maxEntitiesCount = App.FIELD_SIZE_MIN.getDx() * App.FIELD_SIZE_MIN.getDy() / 2;
-    private int minHerbivorePopulation = maxEntitiesCount / 5;
-    private int minGrassQuantity = minHerbivorePopulation;
-
-    public int getMinHerbivorePopulation() {
-        return minHerbivorePopulation;
-    }
 
     private Entity[] allEntities = { new Tree(maxEntitiesCount / 8),
             new Rock(maxEntitiesCount / 8),
@@ -26,9 +20,4 @@ public class PropertiesStorage {
     public Entity[] getAllEntities() {
         return allEntities;
     }
-
-    public int getMinGrassQuantity() {
-        return minGrassQuantity;
-    }
-
 }
