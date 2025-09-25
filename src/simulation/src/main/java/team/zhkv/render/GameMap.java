@@ -1,18 +1,22 @@
 package team.zhkv.render;
 
 import java.util.Set;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import team.zhkv.entities.Eatable;
 import team.zhkv.entities.Entity;
+import team.zhkv.entities.Grass;
+import team.zhkv.entities.Herbivore;
 import team.zhkv.utils.PropertiesStorage;
 
 public class GameMap {
     private PropertiesStorage storage = new PropertiesStorage();
 
-    private Map<Location, Entity> locations;
+    private Map<Location, Entity> locations = new HashMap<>();
 
-    private Set<Location> creatures;
+    private Set<Location> creatures = new HashSet<>();
 
     private MapRenderer renderer = new MapRenderer();
 
@@ -64,6 +68,14 @@ public class GameMap {
 
     public int differenceGrassCountAndMin() {
         return storage.getMinGrassQuantity() - grassCount;
+    }
+
+    public void decrementEatable(Location isEatable) {
+        if (locations.get(isEatable) instanceof Grass) {
+            --grassCount;
+        } else if (locations.get(isEatable) instanceof Herbivore) {
+            --herbivoresCount;
+        }
     }
 
 }

@@ -7,7 +7,9 @@ import team.zhkv.render.GameMap;
 import team.zhkv.render.Location;
 
 public abstract class Init implements Action {
-    public abstract void init(GameMap gm);
+    GameMap gm;
+
+    public abstract void init();
 
     public void createIntities(GameMap gm, Entity entity) {
         Location randomUniqueLocation = new Location()
