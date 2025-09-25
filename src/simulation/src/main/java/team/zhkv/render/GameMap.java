@@ -5,24 +5,28 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import team.zhkv.entities.Eatable;
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Grass;
 import team.zhkv.entities.Herbivore;
-import team.zhkv.utils.PropertiesStorage;
 
 public class GameMap {
-    private PropertiesStorage storage = new PropertiesStorage();
+    private EntitiesStorage entities = new EntitiesStorage(new PropertiesStorage().getAllEntities());
+
+    public EntitiesStorage getEntities() {
+        return entities;
+    }
 
     private Map<Location, Entity> locations = new HashMap<>();
 
     private Set<Location> creatures = new HashSet<>();
 
+    private Set<Location> forRemove = new HashSet<>();
+
+    private Set<Location> forInitGrass = new HashSet<>();
+
+    private Set<Location> forInitHerbivore = new HashSet<>();
+
     private MapRenderer renderer = new MapRenderer();
-
-    private int grassCount = storage.getMinGrassQuantity();
-
-    private int herbivoresCount = storage.getMinHerbivorePopulation();
 
     public void render() {
         renderer.render(locations);
@@ -77,5 +81,4 @@ public class GameMap {
             --herbivoresCount;
         }
     }
-
 }
