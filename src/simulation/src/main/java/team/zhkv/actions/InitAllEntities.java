@@ -1,25 +1,16 @@
 package team.zhkv.actions;
 
-import team.zhkv.entities.Entity;
-import team.zhkv.render.GameMap;
+import team.zhkv.render.EntitiesStorage;
 
 public class InitAllEntities extends Init {
-    private boolean isInited;
+    private EntitiesStorage es;
 
-    public InitAllEntities(GameMap gm) {
-        super.gm = gm;
+    public InitAllEntities(EntitiesStorage es) {
+        this.es = es;
     }
 
     @Override
     public void init() {
-        if (!isInited) {
-            Entity[] entities = gm.getAllEntities();
-            for (int i = 0; i < entities.length; i++) {
-                for (int j = 0; j < entities[i].getQuantity(); j++) {
-                    createIntities(gm, entities[i]);
-                }
-            }
-            isInited = true;
-        }
+        es.setAll();
     }
 }

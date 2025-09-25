@@ -1,5 +1,8 @@
 package team.zhkv.actions;
 
-public class TurnRemove {
+public class TurnRemove extends Turn {
+    @Override
+    public void turn() {
 
+    }
 }
