@@ -1,10 +1,6 @@
 package team.zhkv.render;
 
-import java.util.Map;
 import java.util.Objects;
-import java.util.Random;
-
-import team.zhkv.entities.Entity;
 
 public class Location {
     private int dx;
@@ -26,16 +22,6 @@ public class Location {
     private Location setLocation(Location other) {
         this.dx += other.dx;
         this.dy += other.dy;
-        return this;
-    }
-
-    public Location getFreeRandomLocation(Location fieldSize,
-            Map<Location, Entity> locations) {
-        Random random = new Random(31);
-        while (locations.containsKey(this)) {
-            dx = random.nextInt(fieldSize.dx);
-            dy = random.nextInt(fieldSize.dy);
-        }
         return this;
     }
 
