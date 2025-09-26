@@ -10,10 +10,10 @@ import team.zhkv.entities.Grass;
 import team.zhkv.entities.Herbivore;
 
 public class GameMap {
-    private EntitiesStorage entities = new EntitiesStorage(new PropertiesStorage().getAllEntities());
+    private EntitiesStorage es = new EntitiesStorage();
 
-    public EntitiesStorage getEntities() {
-        return entities;
+    public EntitiesStorage getEntitiesStorage() {
+        return es;
     }
 
     private Map<Location, Entity> locations = new HashMap<>();
