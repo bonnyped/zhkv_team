@@ -1,10 +1,23 @@
 package team.zhkv.actions;
 
-import team.zhkv.render.EntitiesStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import team.zhkv.render.GameMap;
 
 public class InitAllEntities extends Init {
+    private final Logger logger = LoggerFactory.getLogger(InitAllEntities.class);
+
     @Override
-    public void action(EntitiesStorage es) {
-        es.setAll();
+    public void action(Object obj) {
+        if (obj.getClass() == GameMap.class) {
+            GameMap gm = (GameMap) obj;
+            gm.setAll();
+        } else {
+            logger.error("""
+                    Непарвильный тип класса подается в качестве аргумениты в
+                    класс InitAllEntities.
+                    """);
+        }
     }
 }
