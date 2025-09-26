@@ -1,15 +1,10 @@
 package team.zhkv.actions;
 
-import team.zhkv.render.GameMap;
+import team.zhkv.render.EntitiesStorage;
 
 public class TurnRenderer extends Turn {
-    public TurnRenderer(GameMap gm) {
-        super.gm = gm;
-    }
-
     @Override
-    public void turn() {
-        gm.render();
+    public void action(EntitiesStorage es) {
     }
 
 }
