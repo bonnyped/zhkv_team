@@ -26,23 +26,19 @@ public class EntitiesStorage {
             Herbivore.class,
             Predator.class);
 
-    private LocationFabric locationFabric = new LocationFabric();
+    private LocationFabric locationFabric = new LocationFabric(maps);
 
     private EntityFabric entityFabric = new EntityFabric();
 
-    private void bindSetsWithMaps(Map<Location, Entity> map,
-            Class<? extends Entity> clazz) {
-        if (clazz == Grass.class) {
-            locationFabric.setGrass(map.keySet());
-        } else if (clazz == Herbivore.class) {
-            locationFabric.setHerbivores(map.keySet());
-        } else if (clazz == Predator.class) {
-            locationFabric.setPredators(map.keySet());
-        } else if (clazz == Tree.class) {
-            locationFabric.setTrees(map.keySet());
-        } else if (clazz == Rock.class) {
-            locationFabric.setRokcs(map.keySet());
+    private Map<Location, Entity> objectsToChange = new HashMap<>();
+
+    private int determClassMapIndex(Class<? extends Entity> clazz) {
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i) == clazz) {
+                return i;
+            }
         }
+        return -1;
     }
 
     public void setAll() {
@@ -52,8 +48,30 @@ public class EntitiesStorage {
                 map.put(locationFabric.buildLocation(),
                         entityFabric.buildEntity(entities.get(i)));
             }
-            bindSetsWithMaps(map, entities.get(i));
+            locationFabric.bindSetsWithMaps(map, entities.get(i));
             maps.add(map);
         }
+    }
+
+    public Location getNewLocation() {
+        return locationFabric.buildLocation();
+    }
+
+    public int differenceEntityCountMinFact(Class<? extends Entity> clazz) {
+        if (clazz == Tree.class) {
+            return entitiesCount - locationFabric.getGrass().size();
+        } else if (clazz == Herbivore.class) {
+            return entitiesCount - locationFabric.getHerbivores().size();
+        } else {
+            return 0;
+        }
+    }
+
+    public Map<Location, Entity> getObjectsToChange() {
+        return objectsToChange;
+    }
+
+    public List<Map<Location, Entity>> getMaps() {
+        return maps;
     }
 }
