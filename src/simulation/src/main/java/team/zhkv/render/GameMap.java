@@ -1,84 +1,95 @@
 package team.zhkv.render;
 
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import team.zhkv.App;
+import team.zhkv.entities.Creature;
 import team.zhkv.entities.Entity;
+import team.zhkv.entities.EntityFabric;
 import team.zhkv.entities.Grass;
 import team.zhkv.entities.Herbivore;
+import team.zhkv.entities.Predator;
+import team.zhkv.entities.Rock;
+import team.zhkv.entities.Tree;
 
 public class GameMap {
-    private EntitiesStorage es = new EntitiesStorage();
+    private final int entitiesCount = App.FIELD_SIZE_MIN.getDy()
+            * App.FIELD_SIZE_MIN.getDy() / 2 / 10;
 
-    public EntitiesStorage getEntitiesStorage() {
-        return es;
+    private List<Map<Location, Entity>> maps = new ArrayList<>();
+
+    private LocationFabric locationFabric = new LocationFabric(maps);
+
+    private EntityFabric entityFabric = new EntityFabric();
+
+    private Map<Location, Entity> objectsToChange = new HashMap<>();
+
+    private List<Class<? extends Entity>> entities = List.of(Tree.class,
+            Rock.class,
+            Grass.class,
+            Herbivore.class,
+            Predator.class);
+
+    private int determIndexByCLass(Class<? extends Entity> clazz) {
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i) == clazz) {
+                return i;
+            }
+        }
+        return -1;
     }
 
-    private Map<Location, Entity> locations = new HashMap<>();
-
-    private Set<Location> creatures = new HashSet<>();
-
-    private Set<Location> forRemove = new HashSet<>();
-
-    private Set<Location> forInitGrass = new HashSet<>();
-
-    private Set<Location> forInitHerbivore = new HashSet<>();
-
-    private MapRenderer renderer = new MapRenderer();
-
-    public void render() {
-        renderer.render(locations);
+    public void setAll() {
+        for (int i = 0; i < entities.size(); i++) {
+            Map<Location, Entity> map = new HashMap<>();
+            for (int j = 0; j < entitiesCount; j++) {
+                map.put(locationFabric.buildLocation(),
+                        entityFabric.buildEntity(entities.get(i)));
+            }
+            maps.add(map);
+        }
     }
 
-    public Set<Location> getCreatures() {
+    public Map<Location, Entity> getMapByEntity(Class<? extends Entity> clazz) {
+        return maps.get(determIndexByCLass(clazz));
+    }
+
+    public Location getNewLocation() {
+        return locationFabric.buildLocation();
+    }
+
+    public int differenceEntityCountMinFact(Class<? extends Entity> clazz) {
+        if (clazz == Tree.class) {
+            return entitiesCount - getMapByEntity(clazz).size();
+        } else if (clazz == Herbivore.class) {
+            return entitiesCount - getMapByEntity(clazz).size();
+        } else {
+            return 0;
+        }
+    }
+
+    public Map<Location, Entity> getObjectsToChange() {
+        return objectsToChange;
+    }
+
+    public Map<Location, Entity> getWholeMapEntities() {
+        return maps.stream()
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors
+                        .toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public List<Map<Location, Entity>> getCreaturesMaps() {
+        List<Map<Location, Entity>> creatures = new ArrayList<>();
+        for (int i = 0; i < entities.size(); i++) {
+            if (Creature.class.isAssignableFrom(entities.get(i))) {
+                creatures.add(maps.get(i));
+            }
+        }
         return creatures;
-    }
-
-    public MapRenderer getRenderer() {
-        return renderer;
-    }
-
-    public void setLocations(Map<Location, Entity> locations) {
-        this.locations = locations;
-    }
-
-    public Map<Location, Entity> getLocations() {
-        return locations;
-    }
-
-    public void setCreatures(Set<Location> creatures) {
-        if (creatures != null && creatures.getClass() == HashSet.class) {
-            this.creatures = creatures;
-        }
-    }
-
-    public Entity[] getAllEntities() {
-        return storage.getAllEntities();
-    }
-
-    public void incrementHerbivoreCount() {
-        ++herbivoresCount;
-    }
-
-    public int differenceHerbivoreCountAndMin() {
-        return storage.getMinHerbivorePopulation() - herbivoresCount;
-    }
-
-    public void incrementGrassCount() {
-        ++grassCount;
-    }
-
-    public int differenceGrassCountAndMin() {
-        return storage.getMinGrassQuantity() - grassCount;
-    }
-
-    public void decrementEatable(Location isEatable) {
-        if (locations.get(isEatable) instanceof Grass) {
-            --grassCount;
-        } else if (locations.get(isEatable) instanceof Herbivore) {
-            --herbivoresCount;
-        }
     }
 }

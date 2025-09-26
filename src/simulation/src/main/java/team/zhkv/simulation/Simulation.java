@@ -9,8 +9,9 @@ import team.zhkv.actions.InitGrass;
 import team.zhkv.actions.InitHerbivores;
 import team.zhkv.actions.Turn;
 import team.zhkv.actions.TurnMove;
-import team.zhkv.actions.TurnRenderer;
+import team.zhkv.actions.TurnRender;
 import team.zhkv.render.GameMap;
+import team.zhkv.render.MapRenderer;
 
 public class Simulation {
     private GameMap gameMap = new GameMap();
@@ -19,18 +20,26 @@ public class Simulation {
             new InitGrass(),
             new InitHerbivores());
     private List<Action> turnActions = List.of(
-            new TurnRenderer(),
+            new TurnRender(),
             new TurnMove(),
-            new TurnRenderer());
+            new TurnRender());
     private int stepsCount = 0;
+
+    private MapRenderer renderer = new MapRenderer(gameMap);
 
     private void nextTurn() {
         initActions.stream()
                 .map(Init.class::cast)
-                .forEach(init -> init.action(gameMap.getEntitiesStorage()));
+                .forEach(init -> init.action(gameMap));
         turnActions.stream()
                 .map(Turn.class::cast)
-                .forEach(turn -> turn.action(gameMap.getEntitiesStorage()));
+                .forEach(turn -> {
+                    if (turn.getClass() == TurnRender.class) {
+                        turn.action(renderer);
+                    } else {
+                        turn.action(gameMap);
+                    }
+                });
     }
 
     public void startSimulation() {
