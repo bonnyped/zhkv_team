@@ -20,10 +20,6 @@ public class EntitiesStorage {
 
     private List<Map<Location, Entity>> maps = new ArrayList<>();
 
-    private Map<Location, Entity> grass;
-    private Map<Location, Entity> herbivores;
-    private Map<Location, Entity> predators;
-
     private List<Class<? extends Entity>> entities = List.of(Tree.class,
             Rock.class,
             Grass.class,
@@ -34,14 +30,18 @@ public class EntitiesStorage {
 
     private EntityFabric entityFabric = new EntityFabric();
 
-    private void defineChangebleEntities(Map<Location, Entity> map,
+    private void bindSetsWithMaps(Map<Location, Entity> map,
             Class<? extends Entity> clazz) {
         if (clazz == Grass.class) {
-            grass = map;
+            locationFabric.setGrass(map.keySet());
         } else if (clazz == Herbivore.class) {
-            herbivores = map;
+            locationFabric.setHerbivores(map.keySet());
         } else if (clazz == Predator.class) {
-            predators = map;
+            locationFabric.setPredators(map.keySet());
+        } else if (clazz == Tree.class) {
+            locationFabric.setTrees(map.keySet());
+        } else if (clazz == Rock.class) {
+            locationFabric.setRokcs(map.keySet());
         }
     }
 
@@ -52,29 +52,8 @@ public class EntitiesStorage {
                 map.put(locationFabric.buildLocation(),
                         entityFabric.buildEntity(entities.get(i)));
             }
-            defineChangebleEntities(map, entities.get(i));
+            bindSetsWithMaps(map, entities.get(i));
             maps.add(map);
         }
     }
-
-    public Map<Location, Entity> getPredators() {
-        return predators;
-    }
-
-    public void setPredators(Map<Location, Entity> predators) {
-        this.predators = predators;
-    }
-
-    public Map<Location, Entity> getHerbivores() {
-        return herbivores;
-    }
-
-    public void setHerbivores(Map<Location, Entity> herbivores) {
-        this.herbivores = herbivores;
-    }
-
-    public Map<Location, Entity> getGrass() {
-        return grass;
-    }
-
 }
