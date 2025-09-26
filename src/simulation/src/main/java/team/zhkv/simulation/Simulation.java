@@ -14,16 +14,23 @@ import team.zhkv.render.GameMap;
 
 public class Simulation {
     private GameMap gameMap = new GameMap();
-    private List<Action> initActions = List.of(new InitAllEntities(gameMap),
-            new InitGrass(gameMap),
-            new InitHerbivores(gameMap));
-    private List<Action> turnActions = List.of(new TurnRenderer(gameMap),
-            new TurnMove(gameMap), new TurnRenderer(gameMap));
+    private List<Action> initActions = List.of(
+            new InitAllEntities(),
+            new InitGrass(),
+            new InitHerbivores());
+    private List<Action> turnActions = List.of(
+            new TurnRenderer(),
+            new TurnMove(),
+            new TurnRenderer());
     private int stepsCount = 0;
 
     private void nextTurn() {
-        initActions.stream().map(Init.class::cast).forEach(Init::init);
-        turnActions.stream().map(Turn.class::cast).forEach(Turn::turn);
+        initActions.stream()
+                .map(Init.class::cast)
+                .forEach(init -> init.action(gameMap.getEntitiesStorage()));
+        turnActions.stream()
+                .map(Turn.class::cast)
+                .forEach(turn -> turn.action(gameMap.getEntitiesStorage()));
     }
 
     public void startSimulation() {
