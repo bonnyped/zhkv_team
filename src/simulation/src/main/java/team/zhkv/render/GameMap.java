@@ -26,7 +26,7 @@ public class GameMap {
 
     private EntityFabric entityFabric = new EntityFabric();
 
-    private Map<Location, Entity> objectsToChange = new HashMap<>();
+    private MapChanger storageToChange = new MapChanger();
 
     private List<Class<? extends Entity>> entities = List.of(Tree.class,
             Rock.class,
@@ -44,13 +44,15 @@ public class GameMap {
     }
 
     public void setAll() {
-        for (int i = 0; i < entities.size(); i++) {
-            Map<Location, Entity> map = new HashMap<>();
-            for (int j = 0; j < entitiesCount; j++) {
-                map.put(locationFabric.buildLocation(),
-                        entityFabric.buildEntity(entities.get(i)));
+        if (maps.isEmpty()) {
+            for (int i = 0; i < entities.size(); i++) {
+                Map<Location, Entity> map = new HashMap<>();
+                for (int j = 0; j < entitiesCount; j++) {
+                    map.put(locationFabric.buildLocation(),
+                            entityFabric.buildEntity(entities.get(i)));
+                }
+                maps.add(map);
             }
-            maps.add(map);
         }
     }
 
@@ -72,10 +74,6 @@ public class GameMap {
         }
     }
 
-    public Map<Location, Entity> getObjectsToChange() {
-        return objectsToChange;
-    }
-
     public Map<Location, Entity> getWholeMapEntities() {
         return maps.stream()
                 .flatMap(map -> map.entrySet().stream())
@@ -91,5 +89,23 @@ public class GameMap {
             }
         }
         return creatures;
+    }
+
+    public Map<Location, Entity> getNextStepGrass() {
+        return storageToChange.grass;
+    }
+
+    public Map<Location, Entity> getEntitiesToRemove() {
+        return storageToChange.entitiesToRemove;
+    }
+
+    public Map<Location, Entity> getSpecificCreatureStorage(Creature creature) {
+        if (creature.getClass() == Herbivore.class) {
+            return storageToChange.herbivores;
+        } else if (creature.getClass() == Predator.class) {
+            return storageToChange.predators;
+        } else {
+            return null;
+        }
     }
 }
