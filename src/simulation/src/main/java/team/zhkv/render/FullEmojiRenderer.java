@@ -10,13 +10,7 @@ import team.zhkv.entities.Rock;
 import team.zhkv.entities.Tree;
 import team.zhkv.entities.Grass;
 
-public class MapRenderer {
-    GameMap gm;
-
-    public MapRenderer(GameMap gm) {
-        this.gm = gm;
-    }
-
+public class FullEmojiRenderer implements Renderable {
     private void renderEntitiy(Entity entity) {
         if (entity.getClass() == Predator.class) {
             System.out.printf("%s", "🐺 ");
@@ -31,17 +25,25 @@ public class MapRenderer {
         }
     }
 
-    public void render() {
-        Map<Location, Entity> entities = gm.getWholeMapEntities();
+    private void renderCell(Location currentLocation, GameMap gm) {
+        Map<Location, Entity> locations = gm.getWholeMapEntities();
+        ChangeStorage cs = gm.getChangeStorage();
+        if (!locations.containsKey(currentLocation)) {
+            System.out.printf("%s", "⬛️ ");
+        } else if () {
+
+        }else {
+            renderEntitiy(locations.get(currentLocation));
+        }
+    }
+
+    @Override
+    public void render(GameMap gm) {
         Location currentLocation = new Location();
         for (int i = 0; i < App.FIELD_SIZE_MIN.getDx(); i++) {
             for (int j = 0; j < App.FIELD_SIZE_MIN.getDy(); j++) {
                 currentLocation.setLocation(j, i);
-                if (!entities.containsKey(currentLocation)) {
-                    System.out.printf("%s", "⬛️ ");
-                } else {
-                    renderEntitiy(entities.get(currentLocation));
-                }
+                renderCell(currentLocation, gm);
             }
             System.out.println();
         }

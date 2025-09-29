@@ -26,7 +26,7 @@ public class GameMap {
 
     private EntityFabric entityFabric = new EntityFabric();
 
-    private MapChanger storageToChange = new MapChanger();
+    private ChangeStorage cs = new ChangeStorage();
 
     private List<Class<? extends Entity>> entities = List.of(Tree.class,
             Rock.class,
@@ -91,21 +91,7 @@ public class GameMap {
         return creatures;
     }
 
-    public Map<Location, Entity> getNextStepGrass() {
-        return storageToChange.grass;
-    }
-
-    public Map<Location, Entity> getEntitiesToRemove() {
-        return storageToChange.entitiesToRemove;
-    }
-
-    public Map<Location, Entity> getSpecificCreatureStorage(Creature creature) {
-        if (creature.getClass() == Herbivore.class) {
-            return storageToChange.herbivores;
-        } else if (creature.getClass() == Predator.class) {
-            return storageToChange.predators;
-        } else {
-            return null;
-        }
+    public ChangeStorage getChangeStorage() {
+        return cs;
     }
 }

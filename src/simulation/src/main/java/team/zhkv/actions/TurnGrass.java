@@ -11,8 +11,8 @@ import team.zhkv.entities.Grass;
 import team.zhkv.render.GameMap;
 import team.zhkv.render.Location;
 
-public class InitGrass extends Init {
-    private final Logger logger = LoggerFactory.getLogger(InitGrass.class);
+public class TurnGrass extends Init {
+    private final Logger logger = LoggerFactory.getLogger(TurnGrass.class);
 
     @Override
     public void action(Object obj) {
@@ -27,7 +27,7 @@ public class InitGrass extends Init {
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумента в
-                    класс InitGrass.
+                    класс TurnGrass.
                     """);
         }
     }

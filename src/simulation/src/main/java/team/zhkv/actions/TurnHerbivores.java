@@ -11,8 +11,8 @@ import team.zhkv.entities.Herbivore;
 import team.zhkv.render.GameMap;
 import team.zhkv.render.Location;
 
-public class InitHerbivores extends Init {
-    private final Logger logger = LoggerFactory.getLogger(InitHerbivores.class);
+public class TurnHerbivores extends Init {
+    private final Logger logger = LoggerFactory.getLogger(TurnHerbivores.class);
 
     @Override
     public void action(Object obj) {
@@ -27,7 +27,7 @@ public class InitHerbivores extends Init {
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумениты в
-                    класс InitHerbivores.
+                    класс TurnHerbivores.
                     """);
         }
     }
