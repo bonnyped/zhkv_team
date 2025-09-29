@@ -23,7 +23,7 @@ public class InitHerbivores extends Init {
                     Herbivore.class); i++) {
                 tmp.put(gm.getNewLocation(), new Herbivore());
             }
-            gm.getObjectsToChange().putAll(tmp);
+            gm.getNextStepGrass().putAll(tmp);
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумениты в

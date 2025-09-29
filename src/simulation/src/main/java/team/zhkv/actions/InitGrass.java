@@ -23,10 +23,10 @@ public class InitGrass extends Init {
                     Grass.class); i++) {
                 tmp.put(gm.getNewLocation(), new Grass());
             }
-            gm.getObjectsToChange().putAll(tmp);
+            gm.getNextStepGrass().putAll(tmp);
         } else {
             logger.error("""
-                    Непарвильный тип класса подается в качестве аргумениты в
+                    Непарвильный тип класса подается в качестве аргумента в
                     класс InitGrass.
                     """);
         }

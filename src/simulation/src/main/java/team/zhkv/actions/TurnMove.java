@@ -2,6 +2,9 @@ package team.zhkv.actions;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +24,12 @@ public class TurnMove extends Turn {
             GameMap gm = (GameMap) obj;
             List<Map<Location, Entity>> creaturesMaps = gm.getCreaturesMaps();
             for (int i = 0; i < creaturesMaps.size(); ++i) {
-                Map<Location, Entity> oldLocations = creaturesMaps.get(i);
-
-                for (var entry : oldLocations.entrySet()) {
+                for (var entry : creaturesMaps.get(i).entrySet()) {
                     Creature creature = (Creature) entry.getValue();
-                    creaturesMaps.get(i).clear();
-                    creaturesMaps.get(i).putAll(creature.makeMove(
-                            gm.getWholeMapEntities(), entry.getKey()));
+                    creature.makeMove(gm.getWholeMapEntities(),
+                            entry.getKey(), gm.getEntitiesToRemove(),
+                            gm.getSpecificCreatureStorage(creature));
                 }
-
             }
         } else {
             logger.error("""
