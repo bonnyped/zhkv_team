@@ -12,10 +12,40 @@ import team.zhkv.utils.NeighborsDeque;
 
 public class StepFabric {
     private Map<Location, Entity> oldLocations;
-    private Map<Location, Entity> newLocations;
-    private Location current;
+    private Map<Location, Entity> entitiesToRemove;
+    private Map<Location, Entity> newCreaturesLocations;
+    private Creature extractedCreature;
+    private Location extractedCreatureLocation;
     private NeighborsDeque forCheck = new NeighborsDeque();
     private HashSet<Location> checked = new HashSet<>();
+
+    public void getNextStep() {
+        Location nextStep;
+        while (!forCheck.isEmpty()) {
+            nextStep = findPathOrExpandNeighbors(extractedCreature,
+                    forCheck.poll());
+            if (nextStep != null) {
+                newCreaturesLocations.put(nextStep, extractedCreature);
+                entitiesToRemove.put(extractedCreatureLocation,
+                        extractedCreature);
+            }
+        }
+    }
+
+    public StepFabric build(Map<Location, Entity> oldLocations,
+            Location current, Map<Location, Entity> entitiesToRemove,
+            Map<Location, Entity> newCreaturesLocations) {
+        forCheck.clear();
+        checked.clear();
+        this.oldLocations = oldLocations;
+        this.entitiesToRemove = entitiesToRemove;
+        this.newCreaturesLocations = newCreaturesLocations;
+        forCheck.addFirstNeighbors(getNeigborLocations(current));
+        extractedCreature = (Creature) oldLocations.get(current);
+        extractedCreatureLocation = current;
+
+        return this;
+    }
 
     private boolean isNeighborInField(Location neighbor) {
         return neighbor.getDx() < App.FIELD_SIZE_MIN.getDx()
@@ -29,8 +59,7 @@ public class StepFabric {
     }
 
     private boolean isEmptyCell(Location neighbor) {
-        return oldLocations.get(neighbor) == null
-                && newLocations.get(neighbor) == null;
+        return oldLocations.get(neighbor) == null;
     }
 
     private ArrayList<Location> getNeigborLocations(Location startCell) {
@@ -70,28 +99,7 @@ public class StepFabric {
             forCheck.addAllNeighbors(path, getNeigborLocations(cellToSearch));
         }
 
-        return current;
-    }
-
-    public Location gethNextStep() {
-        Creature extractedCreature = (Creature) oldLocations.get(current);
-
-        forCheck.addFirstNeighbors(getNeigborLocations(current));
-
-        while (!forCheck.isEmpty()) {
-            current = findPathOrExpandNeighbors(extractedCreature, forCheck.poll());
-        }
-        return current;
-    }
-
-    public StepFabric build(Map<Location, Entity> oldLocations,
-            Map<Location, Entity> newLocations, Location current) {
-        forCheck.clear();
-        checked.clear();
-        this.oldLocations = oldLocations;
-        this.newLocations = newLocations;
-        this.current = current;
-        return this;
+        return null;
     }
 
 }
