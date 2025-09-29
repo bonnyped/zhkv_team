@@ -22,6 +22,10 @@ public class Simulation {
     private List<Action> turnActions = List.of(
             new TurnRender(),
             new TurnMove()
+    // здесь нужно дёргать рендерер и печатать поле
+    // вместе с цветом атаки и направлением движения
+    // затем нужно будет дернуть удаление старых локаций
+    // и внесение новых локаций в общий список
     // new TurnRender()
     );
     private int stepsCount = 0;
