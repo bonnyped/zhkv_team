@@ -21,8 +21,9 @@ public class Simulation {
             new InitHerbivores());
     private List<Action> turnActions = List.of(
             new TurnRender(),
-            new TurnMove(),
-            new TurnRender());
+            new TurnMove()
+    // new TurnRender()
+    );
     private int stepsCount = 0;
 
     private MapRenderer renderer = new MapRenderer(gameMap);
