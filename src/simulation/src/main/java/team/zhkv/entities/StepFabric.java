@@ -3,17 +3,21 @@ package team.zhkv.entities;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import team.zhkv.App;
-import team.zhkv.render.Direction;
-import team.zhkv.render.Location;
+import team.zhkv.move.Direction;
+import team.zhkv.move.Location;
+import team.zhkv.render.ChangeStorage;
 import team.zhkv.utils.Neighbor;
 import team.zhkv.utils.NeighborsDeque;
 
 public class StepFabric {
-    private Map<Location, Entity> oldLocations;
-    private Map<Location, Entity> entitiesToRemove;
-    private Map<Location, Entity> newCreaturesLocations;
+    private Map<Location, Entity> locations;
+    private Map<Location, Location> toMove;
+    private Set<Location> toRemove;
+    private Map<Location, Location> toDamage;
+    private Map<Location, Location> toEat;
     private Creature extractedCreature;
     private Location extractedCreatureLocation;
     private NeighborsDeque forCheck = new NeighborsDeque();
@@ -25,26 +29,54 @@ public class StepFabric {
             nextStep = findPathOrExpandNeighbors(extractedCreature,
                     forCheck.poll());
             if (nextStep != null) {
-                newCreaturesLocations.put(nextStep, extractedCreature);
-                entitiesToRemove.put(extractedCreatureLocation,
-                        extractedCreature);
+                addEatActions(extractedCreatureLocation, nextStep);
+                addDamageActions(extractedCreatureLocation, nextStep);
+                addMoveActions(extractedCreatureLocation, nextStep);
             }
         }
     }
 
-    public StepFabric build(Map<Location, Entity> oldLocations,
-            Location current, Map<Location, Entity> entitiesToRemove,
-            Map<Location, Entity> newCreaturesLocations) {
+    public StepFabric build(Map<Location, Entity> locations,
+            Location current, ChangeStorage cs) {
         forCheck.clear();
         checked.clear();
-        this.oldLocations = oldLocations;
-        this.entitiesToRemove = entitiesToRemove;
-        this.newCreaturesLocations = newCreaturesLocations;
-        forCheck.addFirstNeighbors(getNeigborLocations(current));
-        extractedCreature = (Creature) oldLocations.get(current);
+        this.locations = locations;
+        extractedCreature = (Creature) locations.get(current);
         extractedCreatureLocation = current;
+        this.toMove = cs.getToMove();
+        this.toRemove = cs.getToRemove();
+        this.toDamage = cs.getToDamage();
+        this.toEat = cs.getToEat();
+        forCheck.addFirstNeighbors(getNeigborLocations(current));
 
         return this;
+    }
+
+    private void addEatActions(Location prev, Location next) {
+        Entity activeEntity = locations.get(prev);
+        Entity passiveEntityCell = locations.get(next);
+
+        if (activeEntity instanceof Eater
+                && passiveEntityCell instanceof Eatable) {
+            toEat.put(prev, next);
+            if (activeEntity.getClass() == Herbivore.class
+                    && passiveEntityCell.getClass() == Grass.class) {
+                toRemove.add(next);
+            }
+        }
+    }
+
+    private void addDamageActions(Location prev, Location next) {
+        if (locations.get(prev) instanceof Damager
+                && locations.get(next) instanceof Damageble) {
+            toDamage.put(prev, next);
+        }
+    }
+
+    private void addMoveActions(Location prev, Location next) {
+        if (locations.get(next) == null) {
+            toMove.put(prev, next);
+        }
     }
 
     private boolean isNeighborInField(Location neighbor) {
@@ -55,11 +87,11 @@ public class StepFabric {
     }
 
     private boolean isEatable(Location neighbor) {
-        return oldLocations.get(neighbor) instanceof Eatable;
+        return locations.get(neighbor) instanceof Eatable;
     }
 
     private boolean isEmptyCell(Location neighbor) {
-        return oldLocations.get(neighbor) == null;
+        return locations.get(neighbor) == null;
     }
 
     private ArrayList<Location> getNeigborLocations(Location startCell) {
@@ -87,10 +119,11 @@ public class StepFabric {
                 || food instanceof Herbivore && creature == Predator.class;
     }
 
-    private Location findPathOrExpandNeighbors(Creature creature, Neighbor neighbor) {
+    private Location findPathOrExpandNeighbors(Creature creature,
+            Neighbor neighbor) {
         Location path = neighbor.getPathLocation();
         Location cellToSearch = neighbor.getCellToSearch();
-        Entity cellClass = oldLocations.get(cellToSearch);
+        Entity cellClass = locations.get(cellToSearch);
 
         if (cellClass instanceof Eatable
                 && isFoodFound(cellClass, creature.getClass())) {
