@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.diogonunes.jcdp.color.api.Ansi.BColor;
+
 import team.zhkv.App;
 import team.zhkv.entities.Creature;
 import team.zhkv.entities.Entity;
@@ -15,6 +17,8 @@ import team.zhkv.entities.Herbivore;
 import team.zhkv.entities.Predator;
 import team.zhkv.entities.Rock;
 import team.zhkv.entities.Tree;
+import team.zhkv.move.Location;
+import team.zhkv.move.LocationFabric;
 
 public class GameMap {
     private final int entitiesCount = App.FIELD_SIZE_MIN.getDy()
@@ -93,5 +97,9 @@ public class GameMap {
 
     public ChangeStorage getChangeStorage() {
         return cs;
+    }
+
+    public void applyChanges() {
+
     }
 }

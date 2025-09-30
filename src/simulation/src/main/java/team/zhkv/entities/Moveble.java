@@ -2,10 +2,10 @@ package team.zhkv.entities;
 
 import java.util.Map;
 
-import team.zhkv.render.Location;
+import team.zhkv.move.Location;
+import team.zhkv.render.ChangeStorage;
 
 public interface Moveble {
     void makeMove(Map<Location, Entity> oldCreaturesLocations,
-            Location oldLocation, Map<Location, Entity> entitiesToRemove,
-            Map<Location, Entity> newCreaturesLocations);
+            Location oldLocation, ChangeStorage cs);
 }

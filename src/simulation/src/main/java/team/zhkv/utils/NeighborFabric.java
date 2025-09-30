@@ -1,6 +1,6 @@
 package team.zhkv.utils;
 
-import team.zhkv.render.Location;
+import team.zhkv.move.Location;
 
 public class NeighborFabric {
     private Neighbor neighbor;

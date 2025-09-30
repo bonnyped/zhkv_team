@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Herbivore;
+import team.zhkv.move.Location;
 import team.zhkv.render.GameMap;
-import team.zhkv.render.Location;
 
-public class TurnHerbivores extends Init {
+public class TurnHerbivores extends Turn {
     private final Logger logger = LoggerFactory.getLogger(TurnHerbivores.class);
 
     @Override
@@ -23,7 +23,7 @@ public class TurnHerbivores extends Init {
                     Herbivore.class); i++) {
                 tmp.put(gm.getNewLocation(), new Herbivore());
             }
-            gm.getNextStepGrass().putAll(tmp);
+            gm.getChangeStorage().getToCreate().putAll(tmp);
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумениты в

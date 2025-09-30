@@ -2,7 +2,8 @@ package team.zhkv.utils;
 
 import java.util.ArrayDeque;
 import java.util.List;
-import team.zhkv.render.Location;
+
+import team.zhkv.move.Location;
 
 public class NeighborsDeque extends ArrayDeque<Neighbor> {
     public boolean addFirstNeighbors(List<Location> locations) {

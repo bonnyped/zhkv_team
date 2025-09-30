@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import team.zhkv.entities.Creature;
 import team.zhkv.entities.Entity;
+import team.zhkv.move.Location;
 import team.zhkv.render.GameMap;
-import team.zhkv.render.Location;
 
 public class TurnMove extends Turn {
     private final Logger logger = LoggerFactory.getLogger(
@@ -23,9 +23,8 @@ public class TurnMove extends Turn {
             for (int i = 0; i < creaturesMaps.size(); ++i) {
                 for (var entry : creaturesMaps.get(i).entrySet()) {
                     Creature creature = (Creature) entry.getValue();
-                    creature.makeMove(gm.getWholeMapEntities(),
-                            entry.getKey(), gm.getEntitiesToRemove(),
-                            gm.getSpecificCreatureStorage(creature));
+                    creature.makeMove(gm.getWholeMapEntities(), entry.getKey(),
+                            gm.getChangeStorage());
                 }
             }
         } else {

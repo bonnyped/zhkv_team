@@ -1,6 +1,6 @@
 package team.zhkv;
 
-import team.zhkv.render.Location;
+import team.zhkv.move.Location;
 import team.zhkv.simulation.Simulation;
 
 public class App {
