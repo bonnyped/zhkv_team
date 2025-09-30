@@ -38,6 +38,12 @@
         <version>1.5.18</version>
         <scope>compile</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.diogonunes/JCDP -->
+    <dependency>
+        <groupId>com.diogonunes</groupId>
+        <artifactId>JCDP</artifactId>
+        <version>4.0.2</version>
+    </dependency>
   </dependencies>
 
   <build>
