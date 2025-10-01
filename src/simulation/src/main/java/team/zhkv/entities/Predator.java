@@ -4,8 +4,8 @@ public class Predator extends Creature implements Damager, Eater {
     private int damage = 50;
 
     @Override
-    public void damage(Herbivore victim) {
-        victim.hp -= damage;
+    public void damage(Damageble victim) {
+        victim.takeDamage(damage);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class Predator extends Creature implements Damager, Eater {
         if (hp < 50) {
             hp += hp;
         } else if (hp < 100) {
-            hp = 100;
+            hp += damage;
         }
     }
 }

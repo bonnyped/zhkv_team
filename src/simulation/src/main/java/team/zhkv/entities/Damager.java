@@ -1,7 +1,7 @@
 package team.zhkv.entities;
 
 public interface Damager {
-    void damage(Herbivore victim);
+    void damage(Damageble victim);
 
     int getDamagePower();
 }

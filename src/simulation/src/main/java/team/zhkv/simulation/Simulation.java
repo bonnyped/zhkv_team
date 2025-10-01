@@ -11,7 +11,6 @@ import team.zhkv.actions.Turn;
 import team.zhkv.actions.TurnMove;
 import team.zhkv.render.FinalRenderer;
 import team.zhkv.render.GameMap;
-import team.zhkv.render.IntermediateRenderer;
 import team.zhkv.render.Renderable;
 
 public class Simulation {
@@ -21,13 +20,7 @@ public class Simulation {
         private List<Action> turnActions = List.of(
                         new TurnGrass(),
                         new TurnHerbivores(),
-                        new TurnMove()
-        // здесь нужно дёргать рендерер и печатать поле
-        // вместе с цветом атаки и направлением движения
-        // затем нужно будет дернуть удаление старых локаций
-        // и внесение новых локаций в общий список
-        // new TurnRender()
-        );
+                        new TurnMove());
         private Renderable renderer;
 
         private int stepsCount = 0;
@@ -46,7 +39,6 @@ public class Simulation {
                         new FinalRenderer().render(gameMap);
                         ++stepsCount;
                         nextTurn();
-                        new IntermediateRenderer().render(gameMap);
                         gameMap.applyChanges();
                 }
         }
