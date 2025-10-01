@@ -16,8 +16,6 @@ public class StepFabric {
     private Map<Location, Entity> locations;
     private Map<Location, Location> toMove;
     private Set<Location> toRemove;
-    private Map<Location, Location> toDamage;
-    private Map<Location, Location> toEat;
     private Creature extractedCreature;
     private Location extractedCreatureLocation;
     private NeighborsDeque forCheck = new NeighborsDeque();
@@ -29,9 +27,9 @@ public class StepFabric {
             nextStep = findPathOrExpandNeighbors(extractedCreature,
                     forCheck.poll());
             if (nextStep != null) {
-                addEatActions(extractedCreatureLocation, nextStep);
-                addDamageActions(extractedCreatureLocation, nextStep);
-                addMoveActions(extractedCreatureLocation, nextStep);
+                eatingStep(extractedCreatureLocation, nextStep);
+                damagingStep(extractedCreatureLocation, nextStep);
+                addingMoveStep(extractedCreatureLocation, nextStep);
             }
         }
     }
@@ -45,35 +43,33 @@ public class StepFabric {
         extractedCreatureLocation = current;
         this.toMove = cs.getToMove();
         this.toRemove = cs.getToRemove();
-        this.toDamage = cs.getToDamage();
-        this.toEat = cs.getToEat();
         forCheck.addFirstNeighbors(getNeigborLocations(current));
 
         return this;
     }
 
-    private void addEatActions(Location prev, Location next) {
-        Entity activeEntity = locations.get(prev);
-        Entity passiveEntityCell = locations.get(next);
-
-        if (activeEntity instanceof Eater
-                && passiveEntityCell instanceof Eatable) {
-            toEat.put(prev, next);
-            if (activeEntity.getClass() == Herbivore.class
-                    && passiveEntityCell.getClass() == Grass.class) {
+    private void eatingStep(Location prev, Location next) {
+        if (locations.get(prev) instanceof Eater eater
+                && locations.get(next) instanceof Eatable eatable) {
+            eater.eat(eatable);
+            if (eater.getClass() == Herbivore.class
+                    && eatable.getClass() == Grass.class) {
                 toRemove.add(next);
             }
         }
     }
 
-    private void addDamageActions(Location prev, Location next) {
-        if (locations.get(prev) instanceof Damager
-                && locations.get(next) instanceof Damageble) {
-            toDamage.put(prev, next);
+    private void damagingStep(Location prev, Location next) {
+        if (locations.get(prev) instanceof Damager damager
+                && locations.get(next) instanceof Damageble damageble) {
+            damager.damage(damageble);
+            if (damageble.isDead()) {
+                toRemove.add(next);
+            }
         }
     }
 
-    private void addMoveActions(Location prev, Location next) {
+    private void addingMoveStep(Location prev, Location next) {
         if (locations.get(next) == null) {
             toMove.put(prev, next);
         }
