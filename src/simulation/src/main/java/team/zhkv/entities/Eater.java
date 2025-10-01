@@ -1,5 +1,5 @@
 package team.zhkv.entities;
 
 public interface Eater {
-    void eat(Eatable entity);
+    void eat(Eatable eatable);
 }
