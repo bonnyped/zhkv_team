@@ -2,11 +2,12 @@ package team.zhkv.render;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.diogonunes.jcdp.color.api.Ansi.BColor;
 
 import team.zhkv.App;
 import team.zhkv.entities.Creature;
@@ -95,11 +96,47 @@ public class GameMap {
         return creatures;
     }
 
+    public Map<Location, Entity> getStorageToCreate() {
+        return cs.getToCreate();
+    }
+
     public ChangeStorage getChangeStorage() {
         return cs;
     }
 
     public void applyChanges() {
-
+        createInitedEntities(cs.getToCreateEntrySet());
+        removeEntities(cs.getToRemove());
+        moveAllCreatures(cs.getToMove());
     }
+
+    private void createInitedEntities(Set<Entry<Location, Entity>> entrySet) {
+        Iterator<Entry<Location, Entity>> it = entrySet.iterator();
+        while (it.hasNext()) {
+            var entry = it.next();
+            maps.get(determIndexByCLass(entry.getValue().getClass()))
+                    .put(entry.getKey(), entry.getValue());
+            it.remove();
+        }
+    }
+
+    private void removeEntities(Set<Location> toRemove) {
+        for (var deletingLocation : toRemove) {
+            for (var map : maps) {
+                map.remove(deletingLocation);
+            }
+            toRemove.remove(deletingLocation);
+        }
+    }
+
+    private void moveAllCreatures(Map<Location, Location> toMove) {
+        for (var entry : toMove.entrySet()) {
+            for (var map : maps) {
+                if (map.containsKey(entry.getKey())) {
+                    map.put(entry.getValue(), map.remove(entry.getKey()));
+                }
+            }
+        }
+    }
+
 }
