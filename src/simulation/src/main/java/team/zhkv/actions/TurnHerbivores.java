@@ -23,7 +23,7 @@ public class TurnHerbivores extends Turn {
                     Herbivore.class); i++) {
                 tmp.put(gm.getNewLocation(), new Herbivore());
             }
-            gm.getChangeStorage().getToCreate().putAll(tmp);
+            gm.getStorageToCreate().putAll(tmp);
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумениты в

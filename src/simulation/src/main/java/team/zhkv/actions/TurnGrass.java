@@ -23,7 +23,7 @@ public class TurnGrass extends Turn {
                     Grass.class); i++) {
                 tmp.put(gm.getNewLocation(), new Grass());
             }
-            gm.getChangeStorage().getToCreate().putAll(tmp);
+            gm.getStorageToCreate().putAll(tmp);
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумента в
