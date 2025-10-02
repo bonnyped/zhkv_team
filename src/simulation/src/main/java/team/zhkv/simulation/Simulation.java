@@ -21,7 +21,7 @@ public class Simulation {
                         new TurnGrass(),
                         new TurnHerbivores(),
                         new TurnMove());
-        private Renderable renderer;
+        private Renderable renderer = new FinalRenderer();
 
         private int stepsCount = 0;
 
@@ -35,9 +35,9 @@ public class Simulation {
                 initActions.stream()
                                 .map(Init.class::cast)
                                 .forEach(init -> init.action(gameMap));
-                while (stepsCount != 21) {
-                        new FinalRenderer().render(gameMap);
+                while (stepsCount != 140) {
                         ++stepsCount;
+                        renderer.render(gameMap, stepsCount);
                         nextTurn();
                         gameMap.applyChanges();
                 }

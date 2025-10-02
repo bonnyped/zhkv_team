@@ -21,7 +21,11 @@ public class TurnHerbivores extends Turn {
             Map<Location, Entity> tmp = new HashMap<>();
             for (int i = 0; i < gm.differenceEntityCountMinFact(
                     Herbivore.class); i++) {
-                tmp.put(gm.getNewLocation(), new Herbivore());
+                Location location = gm.getNewLocation();
+                tmp.put(location, new Herbivore());
+                if (gm.checkDuplicate(location)) {
+                    System.out.println("Duplicate Hebivore in Location " + location.toString());
+                }
             }
             gm.getStorageToCreate().putAll(tmp);
         } else {

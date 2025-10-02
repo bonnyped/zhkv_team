@@ -1,9 +1,7 @@
 package team.zhkv.entities;
 
-import java.util.Map;
-
 import team.zhkv.move.Location;
-import team.zhkv.render.ChangeStorage;
+import team.zhkv.render.GameMap;
 
 public abstract class Creature extends Entity implements Moveble {
     protected Class<? extends Entity> food;
@@ -14,9 +12,8 @@ public abstract class Creature extends Entity implements Moveble {
     protected int speed = 1;
 
     @Override
-    public void makeMove(Map<Location, Entity> oldCreaturesLocations,
-            Location oldLocation, ChangeStorage cs) {
-        new StepFabric().build(oldCreaturesLocations, oldLocation, cs)
+    public void makeMove(GameMap gm, Location oldLocation) {
+        new StepFabric().build(gm, oldLocation)
                 .getNextStep();
     }
 

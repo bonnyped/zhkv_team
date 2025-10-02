@@ -68,4 +68,9 @@ public class Location {
         return new Location(this).setLocation(other);
     }
 
+    @Override
+    public String toString() {
+        return "x = " + dx + "y = " + dy;
+    }
+
 }

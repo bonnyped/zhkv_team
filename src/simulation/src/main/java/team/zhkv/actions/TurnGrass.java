@@ -21,7 +21,11 @@ public class TurnGrass extends Turn {
             Map<Location, Entity> tmp = new HashMap<>();
             for (int i = 0; i < gm.differenceEntityCountMinFact(
                     Grass.class); i++) {
-                tmp.put(gm.getNewLocation(), new Grass());
+                Location location = gm.getNewLocation();
+                tmp.put(location, new Grass());
+                if (gm.checkDuplicate(location)) {
+                    System.out.println("Duplicate Grass in Location " + location.toString());
+                }
             }
             gm.getStorageToCreate().putAll(tmp);
         } else {

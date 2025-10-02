@@ -4,19 +4,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import team.zhkv.App;
 import team.zhkv.entities.Entity;
+import team.zhkv.render.GameMap;
 
 public class LocationFabric {
-    private int boardX = App.FIELD_SIZE_MIN.getDx();
-    private int boardY = App.FIELD_SIZE_MIN.getDy();
+    private int boardX = GameMap.FIELD_SIZE_MID.getDx();
+    private int boardY = GameMap.FIELD_SIZE_MID.getDy();
     private List<Map<Location, Entity>> maps;
+    private Map<Location, Entity> toCreate;
+    private Random random = new Random(31);
 
-    public LocationFabric(List<Map<Location, Entity>> maps) {
+    public LocationFabric(List<Map<Location, Entity>> maps, Map<Location, Entity> toCreate) {
         this.maps = maps;
+        this.toCreate = toCreate;
     }
 
     private boolean locationsContainsNewLocation(Location l) {
+        if (toCreate.containsKey(l)) {
+            return true;
+        }
         for (int i = 0; i < maps.size(); i++) {
             if (maps.get(i).containsKey(l)) {
                 return true;
@@ -26,7 +32,6 @@ public class LocationFabric {
     }
 
     private Location getFreeRandomLocation() {
-        Random random = new Random(31);
         Location newLocation = new Location(random.nextInt(boardX),
                 random.nextInt(boardY));
 

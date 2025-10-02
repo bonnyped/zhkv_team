@@ -5,14 +5,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import team.zhkv.App;
 import team.zhkv.move.Direction;
 import team.zhkv.move.Location;
-import team.zhkv.render.ChangeStorage;
+import team.zhkv.render.GameMap;
 import team.zhkv.utils.Neighbor;
 import team.zhkv.utils.NeighborsDeque;
 
 public class StepFabric {
+    // к удалению
+    private GameMap gm;
+    // к удалению
     private Map<Location, Entity> locations;
     private Map<Location, Location> toMove;
     private Set<Location> toRemove;
@@ -22,27 +24,33 @@ public class StepFabric {
     private HashSet<Location> checked = new HashSet<>();
 
     public void getNextStep() {
-        Location nextStep;
+        Location nextStep = null;
         while (!forCheck.isEmpty()) {
             nextStep = findPathOrExpandNeighbors(extractedCreature,
                     forCheck.poll());
             if (nextStep != null) {
-                eatingStep(extractedCreatureLocation, nextStep);
-                damagingStep(extractedCreatureLocation, nextStep);
-                addingMoveStep(extractedCreatureLocation, nextStep);
+                forCheck.clear();
+                checked.clear();
+                if (locations.get(nextStep) != null) {
+                    eatingStep(extractedCreatureLocation, nextStep);
+                    damagingStep(extractedCreatureLocation, nextStep);
+                } else {
+                    toMove.put(extractedCreatureLocation, nextStep);
+                    if (gm.checkDuplicate(extractedCreatureLocation)) {
+                        System.out.println("Duplicate Grass in Location " + extractedCreatureLocation.toString());
+                    }
+                }
             }
         }
     }
 
-    public StepFabric build(Map<Location, Entity> locations,
-            Location current, ChangeStorage cs) {
-        forCheck.clear();
-        checked.clear();
-        this.locations = locations;
+    public StepFabric build(GameMap gm, Location current) {
+        this.gm = gm;
+        this.locations = gm.getWholeMapEntities();
+        this.toRemove = gm.getToRemoveStorage();
+        this.toMove = gm.getToMoveStorage();
         extractedCreature = (Creature) locations.get(current);
         extractedCreatureLocation = current;
-        this.toMove = cs.getToMove();
-        this.toRemove = cs.getToRemove();
         forCheck.addFirstNeighbors(getNeigborLocations(current));
 
         return this;
@@ -69,15 +77,9 @@ public class StepFabric {
         }
     }
 
-    private void addingMoveStep(Location prev, Location next) {
-        if (locations.get(next) == null) {
-            toMove.put(prev, next);
-        }
-    }
-
     private boolean isNeighborInField(Location neighbor) {
-        return neighbor.getDx() < App.FIELD_SIZE_MIN.getDx()
-                && neighbor.getDy() < App.FIELD_SIZE_MIN.getDx()
+        return neighbor.getDx() < GameMap.FIELD_SIZE_MID.getDx()
+                && neighbor.getDy() < GameMap.FIELD_SIZE_MID.getDx()
                 && neighbor.getDx() >= 0
                 && neighbor.getDy() >= 0;
     }
@@ -98,7 +100,7 @@ public class StepFabric {
         for (var direction : Direction.values()) {
             neighbor = startCell.getNeighbor(direction.getDelta());
             if (isNeighborInField(neighbor)) {
-                if (!checked.contains(neighbor)
+                if (!checked.contains(neighbor) && !toMove.containsKey(neighbor)
                         && (isEatable(neighbor) || isEmptyCell(neighbor))) {
                     correctNearestLocations.add(neighbor);
                 }
@@ -122,7 +124,8 @@ public class StepFabric {
         Entity cellClass = locations.get(cellToSearch);
 
         if (cellClass instanceof Eatable
-                && isFoodFound(cellClass, creature.getClass())) {
+                && isFoodFound(cellClass, creature.getClass())
+                && !toMove.values().contains(cellToSearch)) {
             return path;
         } else {
             forCheck.addAllNeighbors(path, getNeigborLocations(cellToSearch));

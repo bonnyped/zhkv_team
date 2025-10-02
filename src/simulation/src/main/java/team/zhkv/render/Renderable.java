@@ -18,7 +18,7 @@ public interface Renderable {
         } else if (entity.getClass() == Grass.class) {
             return "🥕";
         } else if (entity.getClass() == Rock.class) {
-            return "🪨";
+            return "🪨 ";
         } else if (entity.getClass() == Tree.class) {
             return "🌲";
         } else {
@@ -27,5 +27,5 @@ public interface Renderable {
         }
     }
 
-    Renderable render(GameMap gm);
+    Renderable render(GameMap gm, int iterateCount);
 }
