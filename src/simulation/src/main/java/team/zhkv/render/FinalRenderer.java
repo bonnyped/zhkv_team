@@ -2,7 +2,6 @@ package team.zhkv.render;
 
 import java.util.Map;
 
-import team.zhkv.App;
 import team.zhkv.entities.Entity;
 import team.zhkv.move.Location;
 

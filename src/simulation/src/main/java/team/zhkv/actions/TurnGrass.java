@@ -23,11 +23,8 @@ public class TurnGrass extends Turn {
                     Grass.class); i++) {
                 Location location = gm.getNewLocation();
                 tmp.put(location, new Grass());
-                if (gm.checkDuplicate(location)) {
-                    System.out.println("Duplicate Grass in Location " + location.toString());
-                }
             }
-            gm.getStorageToCreate().putAll(tmp);
+            gm.getMapByEntity(Grass.class).putAll(tmp);
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумента в

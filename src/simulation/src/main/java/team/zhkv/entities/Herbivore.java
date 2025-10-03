@@ -1,6 +1,10 @@
 package team.zhkv.entities;
 
-public class Herbivore extends Creature implements Eatable, Eater, Damageble {
+public class Herbivore extends Creature implements Eatable, Damageble {
+    public Herbivore() {
+        food = Grass.class;
+    }
+
     @Override
     public void eat(Eatable grass) {
         if (hp < 100) {
@@ -15,7 +19,7 @@ public class Herbivore extends Creature implements Eatable, Eater, Damageble {
     }
 
     @Override
-    public boolean isDead() {
+    public boolean isEated() {
         return hp <= 0;
     }
 }

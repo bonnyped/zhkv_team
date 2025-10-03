@@ -1,19 +1,21 @@
 package team.zhkv.entities;
 
+import java.util.List;
+
 import team.zhkv.move.Location;
 import team.zhkv.render.GameMap;
 
-public abstract class Creature extends Entity implements Moveble {
+public abstract class Creature extends Entity implements Moveble, Eater {
     protected Class<? extends Entity> food;
-    protected Location nextStep;
+    protected boolean isEated;
 
     protected int hp = 100;
 
     protected int speed = 1;
 
     @Override
-    public void makeMove(GameMap gm, Location oldLocation) {
-        new StepFabric().build(gm, oldLocation)
+    public List<Location> makeMove(GameMap gm, Location oldLocation) {
+        return new BFS().build(gm, oldLocation)
                 .getNextStep();
     }
 
@@ -31,9 +33,5 @@ public abstract class Creature extends Entity implements Moveble {
 
     public int getSpeed() {
         return speed;
-    }
-
-    public Location getNextStep() {
-        return nextStep;
     }
 }

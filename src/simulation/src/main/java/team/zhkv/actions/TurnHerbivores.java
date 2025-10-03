@@ -23,11 +23,8 @@ public class TurnHerbivores extends Turn {
                     Herbivore.class); i++) {
                 Location location = gm.getNewLocation();
                 tmp.put(location, new Herbivore());
-                if (gm.checkDuplicate(location)) {
-                    System.out.println("Duplicate Hebivore in Location " + location.toString());
-                }
             }
-            gm.getStorageToCreate().putAll(tmp);
+            gm.getMapByEntity(Herbivore.class).putAll(tmp);
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумениты в

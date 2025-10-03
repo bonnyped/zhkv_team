@@ -1,7 +1,11 @@
 package team.zhkv.entities;
 
-public class Predator extends Creature implements Damager, Eater {
+public class Predator extends Creature implements Damager {
     private int damage = 50;
+
+    public Predator() {
+        food = Herbivore.class;
+    }
 
     @Override
     public void damage(Damageble victim) {

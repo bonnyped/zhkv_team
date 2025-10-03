@@ -1,8 +1,10 @@
 package team.zhkv.entities;
 
+import java.util.List;
+
 import team.zhkv.move.Location;
 import team.zhkv.render.GameMap;
 
 public interface Moveble {
-    void makeMove(GameMap gm, Location oldLocation);
+    List<Location> makeMove(GameMap gm, Location oldLocation);
 }

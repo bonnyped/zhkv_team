@@ -18,9 +18,9 @@ public class Simulation {
         private List<Action> initActions = List.of(
                         new InitAllEntities());
         private List<Action> turnActions = List.of(
+                        new TurnMove(),
                         new TurnGrass(),
-                        new TurnHerbivores(),
-                        new TurnMove());
+                        new TurnHerbivores());
         private Renderable renderer = new FinalRenderer();
 
         private int stepsCount = 0;
@@ -35,11 +35,10 @@ public class Simulation {
                 initActions.stream()
                                 .map(Init.class::cast)
                                 .forEach(init -> init.action(gameMap));
-                while (stepsCount != 140) {
+                while (stepsCount != 30) {
                         ++stepsCount;
                         renderer.render(gameMap, stepsCount);
                         nextTurn();
-                        gameMap.applyChanges();
                 }
         }
 

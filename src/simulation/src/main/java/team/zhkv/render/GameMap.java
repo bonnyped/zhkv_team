@@ -2,11 +2,8 @@ package team.zhkv.render;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import team.zhkv.entities.Creature;
@@ -30,9 +27,9 @@ public class GameMap {
 
     private List<Map<Location, Entity>> maps = new ArrayList<>();
 
-    private ChangeStorage cs = new ChangeStorage();
+    private List<List<Location>> pathsStorage = new ArrayList<>();
 
-    private LocationFabric locationFabric = new LocationFabric(maps, cs.getToCreate());
+    private LocationFabric locationFabric = new LocationFabric(maps);
 
     private EntityFabric entityFabric = new EntityFabric();
 
@@ -42,13 +39,26 @@ public class GameMap {
             Herbivore.class,
             Predator.class);
 
-    public boolean checkDuplicate(Location location) {
+    public List<List<Location>> getPathsStorage() {
+        return pathsStorage;
+    }
+
+    public Entity getEntity(Location location) {
         for (int i = 0; i < maps.size(); i++) {
             if (maps.get(i).containsKey(location)) {
-                return true;
+                return maps.get(i).get(location);
             }
         }
-        return false;
+        return null;
+    }
+
+    public Entity removeEntity(Location location) {
+        for (int i = 0; i < maps.size(); i++) {
+            if (maps.get(i).containsKey(location)) {
+                return maps.get(i).remove(location);
+            }
+        }
+        return null;
     }
 
     public void setAll() {
@@ -59,11 +69,8 @@ public class GameMap {
                     Location location = locationFabric.buildLocation();
                     map.put(location,
                             entityFabric.buildEntity(entities.get(i)));
-                    if (checkDuplicate(location)) {
-                        System.out.println(
-                                "Duplicate " + entities.get(i).toString() + " in Location " + location.toString());
-                    }
                 }
+                locationFabric.clearBuildedLocations();
                 maps.add(map);
             }
         }
@@ -74,7 +81,9 @@ public class GameMap {
     }
 
     public Location getNewLocation() {
-        return locationFabric.buildLocation();
+        Location newLocation = locationFabric.buildLocation();
+        locationFabric.clearBuildedLocations();
+        return newLocation;
     }
 
     public int differenceEntityCountMinFact(Class<? extends Entity> clazz) {
@@ -104,35 +113,6 @@ public class GameMap {
         return creatures;
     }
 
-    public Map<Location, Entity> getStorageToCreate() {
-        return cs.getToCreate();
-    }
-
-    public Map<Location, Location> getToMoveStorage() {
-        return cs.getToMove();
-    }
-
-    public Set<Location> getToRemoveStorage() {
-        return cs.getToRemove();
-    }
-
-    public void applyChanges() {
-        createInitedEntities();
-        removeEntities();
-        moveCreatures();
-    }
-
-    public void applyMove(Location src, Location target) {
-        for (var map : maps) {
-            if (map.containsKey(src)) {
-                map.put(target, map.get(src));
-                if (checkDuplicate(target)) {
-                    System.out.println("Duplicate " + map.get(src).getClass() + " in Location " + target.toString());
-                }
-            }
-        }
-    }
-
     private int determIndexByCLass(Class<? extends Entity> clazz) {
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i) == clazz) {
@@ -141,44 +121,4 @@ public class GameMap {
         }
         return -1;
     }
-
-    private void createInitedEntities() {
-        Iterator<Entry<Location, Entity>> it = cs.getToCreate()
-                .entrySet()
-                .iterator();
-
-        while (it.hasNext()) {
-            var entry = it.next();
-            maps.get(determIndexByCLass(entry.getValue().getClass()))
-                    .put(entry.getKey(), entry.getValue());
-            it.remove();
-        }
-    }
-
-    private void removeEntities() {
-        for (var deletingLocation : cs.getToRemove()) {
-            for (var map : maps) {
-                map.remove(deletingLocation);
-            }
-        }
-        cs.getToRemove().clear();
-    }
-
-    public void moveCreatures() {
-        for (var stepFromTo : cs.getToMove().entrySet()) {
-            for (int i = 0; i < maps.size(); i++) {
-                var map = maps.get(i);
-                if (map.containsKey(stepFromTo.getKey())) {
-                    if (checkDuplicate(stepFromTo.getValue())) {
-                        System.out.println("Duplicate " + map.get(stepFromTo.getKey()) + " in Location "
-                                + stepFromTo.getValue().toString());
-                    }
-                    map.put(stepFromTo.getValue(),
-                            map.remove(stepFromTo.getKey()));
-                    break;
-                }
-            }
-        }
-    }
-
 }
