@@ -5,6 +5,7 @@ public class Predator extends Creature implements Damager {
 
     public Predator() {
         food = Herbivore.class;
+        speed = 1;
     }
 
     @Override
@@ -18,7 +19,7 @@ public class Predator extends Creature implements Damager {
     }
 
     @Override
-    public void eat(Eatable herbivore) {
+    public void eat(Edible herbivore) {
         if (hp < 50) {
             hp += hp;
         } else if (hp < 100) {

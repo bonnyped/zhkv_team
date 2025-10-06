@@ -1,5 +1,5 @@
 package team.zhkv.entities;
 
-public interface Eatable {
+public interface Edible {
     boolean isEated();
 }

@@ -1,6 +1,6 @@
 package team.zhkv.entities;
 
-public class Grass extends Entity implements Eatable {
+public class Grass extends Entity implements Edible {
     private boolean isEated = false;
 
     @Override
