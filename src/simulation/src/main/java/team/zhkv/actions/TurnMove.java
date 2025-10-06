@@ -60,8 +60,8 @@ public class TurnMove extends Turn {
             Entity passive = gm.getEntity(target);
 
             moveIfPossible(gm, start, target);
-            eatIfPossible(gm, active, passive, target);
             damageIfPossible(gm, active, passive, target);
+            eatIfPossible(gm, active, passive, target);
         }
     }
 
@@ -80,7 +80,7 @@ public class TurnMove extends Turn {
                 && passive instanceof Eatable eatable
                 && eater.getFood() == eatable.getClass()) {
             eater.eat(eatable);
-            if (eater.getFood() == Grass.class) {
+            if (eater.getFood() == Grass.class || eatable.isEated()) {
                 gm.removeEntity(target);
             }
         }
@@ -91,9 +91,6 @@ public class TurnMove extends Turn {
         if (active instanceof Damager damager
                 && passive instanceof Damageble damageble) {
             damager.damage(damageble);
-            if (damageble.isDead()) {
-                gm.removeEntity(target);
-            }
         }
     }
 

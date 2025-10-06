@@ -5,10 +5,11 @@ public class Grass extends Entity implements Eatable {
 
     @Override
     public boolean isEated() {
+        setEated();
         return isEated;
     }
 
-    public void setEated() {
+    private void setEated() {
         isEated = true;
     }
 
