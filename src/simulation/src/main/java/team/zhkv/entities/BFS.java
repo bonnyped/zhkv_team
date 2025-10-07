@@ -2,6 +2,7 @@ package team.zhkv.entities;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,23 +15,31 @@ import team.zhkv.render.GameMap;
 
 public class BFS {
     private GameMap gm;
+    private Class<? extends Entity> target;
+    private Location goal;
     private Creature creature;
-    private Map<Location, Location> path = new HashMap<>();
+    private Map<Location, Location> allPaths = new HashMap<>();
+    private List<Location> path = new ArrayList<>();
     private Deque<Location> forCheck = new ArrayDeque<>();
     private HashSet<Location> checked = new HashSet<>();
 
-    public BFS build(GameMap gm, Location current) {
+    public BFS build(GameMap gm,
+            Location current, Class<? extends Entity> target) {
         this.gm = gm;
+        this.target = target;
         creature = (Creature) gm.getEntity(current);
         checked.add(current);
         forCheck.addAll(addNearestNeighbors(current));
-        path.put(null, current);
-        buildPath();
+        allPaths.put(null, current);
+        goal = searchPath();
 
         return this;
     }
 
-    public Map<Location, Location> getPath() {
+    public List<Location> getPath() {
+        if (goal != null) {
+            buildPath();
+        }
         return path;
     }
 
@@ -41,7 +50,8 @@ public class BFS {
             if (isNotInChecked(neighbor)
                     && neighbor.isInBounds(GameMap.FIELD_SIZE_MID)
                     && (neighborIsFreeCell(neighbor)
-                            || isNeighborEdibleForCreature(current, neighbor))) {
+                            || isNeighborEdibleForCreature(creature, neighbor))) {
+                allPaths.put(neighbor, current);
                 neighbors.add(neighbor);
                 checked.add(neighbor);
             }
@@ -57,91 +67,42 @@ public class BFS {
         return gm.getEntity(neighbor) == null;
     }
 
-    private boolean isNeighborEdibleForCreature(Location current,
+    private boolean isNeighborEdibleForCreature(Eater eater,
             Location neighbor) {
-        if (gm.getEntity(current) instanceof Eater eater
-                && gm.getEntity(neighbor) instanceof Edible edible) {
-            // тут обязательно нужно проверить как отрабатывает хербиворе и трава и
-            // хербиворе и хищник
+        if (gm.getEntity(neighbor) instanceof Edible edible) {
             return eater.getFood() == edible.getClass();
         } else {
             return false;
         }
     }
 
-    private void buildPath() {
-        Class<? extends Entity> target = creature.getFood();
+    private Location searchPath() {
         while (!forCheck.isEmpty()) {
             Location neighbor = forCheck.pollFirst();
-            checked(neighbor);
-            // здесь нужно думать о том, как лучше поступить
-            if (isNeighborTarget(target, neighbor)) {
+            if (isNeighborEqualsTarget(neighbor)) {
                 forCheck.clear();
+                return neighbor;
+            } else {
+                forCheck.addAll(addNearestNeighbors(neighbor));
             }
         }
+        return null;
     }
 
-    // public List<Location> getPath() {
-    // List<Location> path = new ArrayList<>();
-    // while (!forCheck.isEmpty()) {
-    // path = forCheck.poll();
-    // if (!isTargetReachable(path)) {
-    // forCheck.addAll(getPathsWithNeighbors(path));
-    // } else {
-    // forCheck.clear();
-    // }
-    // }
+    private boolean isNeighborEqualsTarget(Location neighbor) {
+        return gm.getEntity(neighbor) instanceof Entity
+                && gm.getEntity(neighbor).getClass() == target;
+    }
 
-    // return path;
-    // }
+    private void buildPath() {
+        path.add(goal);
+        Location prev = allPaths.get(goal);
 
-    // private List<Location> getPathsWithNeighbors(List<Location> path) {
-    // List<List<Location>> neighbors = new ArrayList<>();
-    // List<Location> newPath = new ArrayList<>(path);
-    // Location current = path.get(path.size() - 1);
-    // Location next = null;
+        while (prev != allPaths.get(null)) {
+            path.add(prev);
+            prev = allPaths.get(prev);
+        }
 
-    // for (var neighbor : Direction.values()) {
-    // next = current.getNeighbor(neighbor.getDelta());
-    // if (isNeighborCorrectLocation(next)) {
-    // checked.add(next);
-    // newPath.add(next);
-    // neighbors.add(newPath);
-    // }
-    // }
-    // return neighbors;
-    // }
-
-    // private boolean isNeighborCorrectLocation(Location checking) {
-    // return checking.getDx() < GameMap.FIELD_SIZE_MID.getDx()
-    // && checking.getDy() < GameMap.FIELD_SIZE_MID.getDy()
-    // && !checked.contains(checking)
-    // && (isEatableLocation(checking) || isEmptyLocation(checking));
-    // }
-
-    // private boolean isEatableLocation(Location checking) {
-    // return gm.getEntity(checking) instanceof Edible;
-    // // нужна ли проверка хранилища с уже перемещенными сущностями?
-    // }
-
-    // private boolean isEmptyLocation(Location checking) {
-    // return gm.getEntity(checking) == null;
-    // // && checkStorage() проверка на совпадение с
-    // // уже обновленными ходями других сущностей
-    // }
-
-    // private boolean isTargetReachable(List<Location> path) {
-    // Location pathEndLocation = path.get(path.size() - 1);
-    // Entity pathTargetEntity = gm.getEntity(pathEndLocation);
-
-    // if (pathTargetEntity instanceof Edible) {
-    // return isEdibleTargetForCurrentCreature(pathTargetEntity);
-    // } else {
-    // return false;
-    // }
-    // }
-
-    // private boolean isEdibleTargetForCurrentCreature(Entity eatableEntity) {
-    // return currentCreature.getFood() == eatableEntity.getClass();
-    // }
+        Collections.reverse(path);
+    }
 }
