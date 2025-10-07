@@ -1,6 +1,5 @@
 package team.zhkv.entities;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import team.zhkv.move.Location;

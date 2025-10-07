@@ -27,7 +27,7 @@ public class GameMap {
 
     private List<Map<Location, Entity>> maps = new ArrayList<>();
 
-    private List<List<Location>> pathsStorage = new ArrayList<>();
+    private Map<Location, Location> moves = new HashMap<>();
 
     private LocationFabric locationFabric = new LocationFabric(maps);
 
@@ -39,8 +39,12 @@ public class GameMap {
             Herbivore.class,
             Predator.class);
 
-    public List<List<Location>> getPathsStorage() {
-        return pathsStorage;
+    public Map<Location, Location> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(Map<Location, Location> moves) {
+        this.moves = moves;
     }
 
     public Entity getEntity(Location location) {

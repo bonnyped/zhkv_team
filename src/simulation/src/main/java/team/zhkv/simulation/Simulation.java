@@ -35,7 +35,7 @@ public class Simulation {
                 initActions.stream()
                                 .map(Init.class::cast)
                                 .forEach(init -> init.action(gameMap));
-                while (stepsCount != 30) {
+                while (true) {
                         ++stepsCount;
                         renderer.render(gameMap, stepsCount);
                         nextTurn();
