@@ -16,6 +16,7 @@ import team.zhkv.entities.Edible;
 import team.zhkv.entities.Eater;
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Grass;
+import team.zhkv.entities.Predator;
 import team.zhkv.move.Location;
 import team.zhkv.render.GameMap;
 
