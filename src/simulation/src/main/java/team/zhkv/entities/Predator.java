@@ -1,5 +1,9 @@
 package team.zhkv.entities;
 
+import team.zhkv.service.impl.Damageble;
+import team.zhkv.service.impl.Damager;
+import team.zhkv.service.impl.Edible;
+
 public class Predator extends Creature implements Damager {
     private int damage = 50;
 

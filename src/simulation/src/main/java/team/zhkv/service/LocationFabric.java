@@ -1,4 +1,4 @@
-package team.zhkv.move;
+package team.zhkv.service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -7,17 +7,19 @@ import java.util.Random;
 import java.util.Set;
 
 import team.zhkv.entities.Entity;
-import team.zhkv.render.GameMap;
+import team.zhkv.move.Location;
 
 public class LocationFabric {
-    private int boardX = GameMap.FIELD_SIZE_MID.getDx();
-    private int boardY = GameMap.FIELD_SIZE_MID.getDy();
+    private int boardX;
+    private int boardY;
     private List<Map<Location, Entity>> maps;
     private Set<Location> buildedLocations = new HashSet<>();
     private Random random = new Random(31);
 
-    public LocationFabric(List<Map<Location, Entity>> maps) {
+    public LocationFabric(List<Map<Location, Entity>> maps, Location location) {
         this.maps = maps;
+        boardX = location.getDx();
+        boardY = location.getDy();
     }
 
     private boolean locationsContainsNewLocation(Location l) {

@@ -3,10 +3,10 @@ package team.zhkv.actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import team.zhkv.render.GameMap;
+import team.zhkv.GameMap;
 
 public class InitAllEntities extends Init {
-    private final Logger logger = LoggerFactory.getLogger(InitAllEntities.class);
+    private static final Logger logger = LoggerFactory.getLogger(InitAllEntities.class);
 
     @Override
     public void action(Object obj) {

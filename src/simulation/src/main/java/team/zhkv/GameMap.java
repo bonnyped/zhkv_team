@@ -1,4 +1,4 @@
-package team.zhkv.render;
+package team.zhkv;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,28 +8,35 @@ import java.util.stream.Collectors;
 
 import team.zhkv.entities.Creature;
 import team.zhkv.entities.Entity;
-import team.zhkv.entities.EntityFabric;
 import team.zhkv.entities.Grass;
 import team.zhkv.entities.Herbivore;
 import team.zhkv.entities.Predator;
 import team.zhkv.entities.Rock;
 import team.zhkv.entities.Tree;
 import team.zhkv.move.Location;
-import team.zhkv.move.LocationFabric;
+import team.zhkv.service.EntityFabric;
+import team.zhkv.service.LocationFabric;
 
 public class GameMap {
-    public static final Location FIELD_SIZE_MIN = new Location(5, 5);
-    public static final Location FIELD_SIZE_MID = new Location(10, 10);
-    public static final Location FIELD_SIZE_MAX = new Location(77, 77);
+    public static final Location DEFAULT_FIELD_SIZE = new Location(
+            10, 30);
+    private Location customFieldSize;
+    private final Location fieldSize = customFieldSize == null
+            ? DEFAULT_FIELD_SIZE
+            : customFieldSize;
 
-    private final int entitiesCount = FIELD_SIZE_MID.getDy()
-            * FIELD_SIZE_MID.getDy() / 2 / 10;
+    public Location getFieldSize() {
+        return fieldSize;
+    }
+
+    private final int entitiesCount = fieldSize.getDx()
+            * fieldSize.getDy() / 2 / 20;
 
     private List<Map<Location, Entity>> maps = new ArrayList<>();
 
     private Map<Location, Location> moves = new HashMap<>();
 
-    private LocationFabric locationFabric = new LocationFabric(maps);
+    private LocationFabric locationFabric = new LocationFabric(maps, fieldSize);
 
     private EntityFabric entityFabric = new EntityFabric();
 
@@ -38,6 +45,13 @@ public class GameMap {
             Grass.class,
             Herbivore.class,
             Predator.class);
+
+    public GameMap() {
+    }
+
+    public GameMap(int x, int y) {
+        customFieldSize = new Location(x, y);
+    }
 
     public Map<Location, Location> getMoves() {
         return moves;

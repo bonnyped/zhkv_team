@@ -1,5 +1,5 @@
 package team.zhkv.simulation;
 
-public class HPQuantityChecker {
+public class IAction {
 
 }

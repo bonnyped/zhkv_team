@@ -6,13 +6,13 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import team.zhkv.GameMap;
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Grass;
 import team.zhkv.move.Location;
-import team.zhkv.render.GameMap;
 
 public class TurnGrass extends Turn {
-    private final Logger logger = LoggerFactory.getLogger(TurnGrass.class);
+    private static final Logger logger = LoggerFactory.getLogger(TurnGrass.class);
 
     @Override
     public void action(Object obj) {

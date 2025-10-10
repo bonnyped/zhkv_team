@@ -1,11 +1,7 @@
-package team.zhkv.render;
+package team.zhkv.service.impl;
 
-import team.zhkv.entities.Entity;
-import team.zhkv.entities.Grass;
-import team.zhkv.entities.Herbivore;
-import team.zhkv.entities.Predator;
-import team.zhkv.entities.Rock;
-import team.zhkv.entities.Tree;
+import team.zhkv.GameMap;
+import team.zhkv.entities.*;
 
 public interface Renderable {
     default String entityForRender(Entity entity) {
@@ -27,5 +23,5 @@ public interface Renderable {
         }
     }
 
-    Renderable render(GameMap gm, int iterateCount);
+    void render(GameMap gm, int iterateCount);
 }

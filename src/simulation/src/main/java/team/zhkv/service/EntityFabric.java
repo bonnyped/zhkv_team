@@ -1,6 +1,8 @@
-package team.zhkv.entities;
+package team.zhkv.service;
 
 import java.lang.reflect.InvocationTargetException;
+
+import team.zhkv.entities.Entity;
 
 public class EntityFabric {
     public Entity buildEntity(Class<? extends Entity> entity) {

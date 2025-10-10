@@ -1,4 +1,4 @@
-package team.zhkv.entities;
+package team.zhkv.move;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -9,9 +9,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import team.zhkv.move.Direction;
-import team.zhkv.move.Location;
-import team.zhkv.render.GameMap;
+import team.zhkv.GameMap;
+import team.zhkv.entities.Creature;
+import team.zhkv.entities.Entity;
+import team.zhkv.service.impl.Eater;
+import team.zhkv.service.impl.Edible;
 
 public class BFS {
     private GameMap gm;
@@ -48,9 +50,10 @@ public class BFS {
         for (var direction : Direction.values()) {
             Location neighbor = current.getNeighbor(direction.getDelta());
             if (isNotInChecked(neighbor)
-                    && neighbor.isInBounds(GameMap.FIELD_SIZE_MID)
+                    && neighbor.isInBounds(gm.getFieldSize())
                     && (neighborIsFreeCell(neighbor)
-                            || isNeighborEdibleForCreature(creature, neighbor))) {
+                            || isNeighborEdibleForCreature(creature,
+                                    neighbor))) {
                 allPaths.put(neighbor, current);
                 neighbors.add(neighbor);
                 checked.add(neighbor);

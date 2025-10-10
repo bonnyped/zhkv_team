@@ -1,4 +1,6 @@
 package team.zhkv.actions;
 
-public abstract class Turn implements Action {
+import team.zhkv.service.impl.IAction;
+
+public abstract class Turn implements IAction {
 }

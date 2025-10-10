@@ -1,4 +1,4 @@
-package team.zhkv.entities;
+package team.zhkv.service.impl;
 
 public interface Damageble {
     int takeDamage(int damage);

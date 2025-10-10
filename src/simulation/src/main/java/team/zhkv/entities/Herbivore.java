@@ -1,5 +1,8 @@
 package team.zhkv.entities;
 
+import team.zhkv.service.impl.Damageble;
+import team.zhkv.service.impl.Edible;
+
 public class Herbivore extends Creature implements Edible, Damageble {
     public Herbivore() {
         food = Grass.class;

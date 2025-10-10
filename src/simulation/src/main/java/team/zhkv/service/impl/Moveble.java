@@ -1,7 +1,7 @@
-package team.zhkv.entities;
+package team.zhkv.service.impl;
 
+import team.zhkv.GameMap;
 import team.zhkv.move.Location;
-import team.zhkv.render.GameMap;
 
 public interface Moveble {
     Location makeMove(GameMap gm, Location oldLocation);

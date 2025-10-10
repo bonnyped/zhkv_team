@@ -2,8 +2,11 @@ package team.zhkv.entities;
 
 import java.util.List;
 
+import team.zhkv.GameMap;
+import team.zhkv.move.BFS;
 import team.zhkv.move.Location;
-import team.zhkv.render.GameMap;
+import team.zhkv.service.impl.Eater;
+import team.zhkv.service.impl.Moveble;
 
 public abstract class Creature extends Entity implements Moveble, Eater {
     protected Class<? extends Entity> food;

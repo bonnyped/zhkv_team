@@ -1,5 +1,7 @@
 package team.zhkv.entities;
 
+import team.zhkv.service.impl.Edible;
+
 public class Grass extends Entity implements Edible {
     private boolean isEated = false;
 

@@ -9,18 +9,18 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import team.zhkv.GameMap;
 import team.zhkv.entities.Creature;
-import team.zhkv.entities.Damageble;
-import team.zhkv.entities.Damager;
-import team.zhkv.entities.Edible;
-import team.zhkv.entities.Eater;
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Grass;
 import team.zhkv.move.Location;
-import team.zhkv.render.GameMap;
+import team.zhkv.service.impl.Damageble;
+import team.zhkv.service.impl.Damager;
+import team.zhkv.service.impl.Eater;
+import team.zhkv.service.impl.Edible;
 
 public class TurnMove extends Turn {
-    private final Logger logger = LoggerFactory.getLogger(
+    private static final Logger logger = LoggerFactory.getLogger(
             TurnMove.class);
 
     @Override
