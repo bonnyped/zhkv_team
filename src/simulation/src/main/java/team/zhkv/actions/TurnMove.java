@@ -13,11 +13,11 @@ import team.zhkv.GameMap;
 import team.zhkv.entities.Creature;
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Grass;
-import team.zhkv.move.Location;
-import team.zhkv.service.impl.Damageble;
-import team.zhkv.service.impl.Damager;
-import team.zhkv.service.impl.Eater;
-import team.zhkv.service.impl.Edible;
+import team.zhkv.move.Coordinate;
+import team.zhkv.service.impl.IDamageble;
+import team.zhkv.service.impl.IDamager;
+import team.zhkv.service.impl.IEater;
+import team.zhkv.service.impl.IEdible;
 
 public class TurnMove extends Turn {
     private static final Logger logger = LoggerFactory.getLogger(
@@ -27,16 +27,16 @@ public class TurnMove extends Turn {
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            List<Map<Location, Entity>> creaturesMaps = gm.getCreaturesMaps();
-            Map<Location, Location> paths = new HashMap<>();
+            List<Map<Coordinate, Entity>> creaturesMaps = gm.getCreaturesMap();
+            Map<Coordinate, Coordinate> paths = new HashMap<>();
             for (int i = 0; i < creaturesMaps.size(); ++i) {
-                Iterator<Entry<Location, Entity>> it = creaturesMaps.get(i)
+                Iterator<Entry<Coordinate, Entity>> it = creaturesMaps.get(i)
                         .entrySet()
                         .iterator();
                 while (it.hasNext()) {
                     var entry = it.next();
                     Creature creature = (Creature) entry.getValue();
-                    Location step = creature.makeMove(gm, entry.getKey());
+                    Coordinate step = creature.makeMove(gm, entry.getKey());
                     if (step != null) {
                         paths.put(entry.getKey(), step);
                     }
@@ -52,10 +52,10 @@ public class TurnMove extends Turn {
         }
     }
 
-    private void applyMoves(GameMap gm, Map<Location, Location> paths) {
+    private void applyMoves(GameMap gm, Map<Coordinate, Coordinate> paths) {
         for (var path : paths.entrySet()) {
-            Location start = path.getKey();
-            Location target = path.getValue();
+            Coordinate start = path.getKey();
+            Coordinate target = path.getValue();
             Entity active = gm.getEntity(start);
             Entity passive = gm.getEntity(target);
 
@@ -66,26 +66,26 @@ public class TurnMove extends Turn {
     }
 
     private void eatIfPossible(GameMap gm, Entity active, Entity passive,
-            Location target) {
-        if (active instanceof Eater eater
-                && passive instanceof Edible Edible
-                && eater.getFood() == Edible.getClass()) {
-            eater.eat(Edible);
-            if (eater.getFood() == Grass.class || Edible.isEated()) {
+            Coordinate target) {
+        if (active instanceof IEater IEater
+                && passive instanceof IEdible IEdible
+                && IEater.getFood() == IEdible.getClass()) {
+            IEater.eat(IEdible);
+            if (IEater.getFood() == Grass.class || IEdible.isEated()) {
                 gm.removeEntity(target);
             }
         }
     }
 
     private void damageIfPossible(GameMap gm, Entity active, Entity passive,
-            Location target) {
-        if (active instanceof Damager damager
-                && passive instanceof Damageble damageble) {
-            damager.damage(damageble);
+            Coordinate target) {
+        if (active instanceof IDamager IDamager
+                && passive instanceof IDamageble IDamageble) {
+            IDamager.damage(IDamageble);
         }
     }
 
-    private void moveIfPossible(GameMap gm, Location start, Location target) {
+    private void moveIfPossible(GameMap gm, Coordinate start, Coordinate target) {
         if (gm.getEntity(target) == null) {
             Entity entity = gm.getEntity(start);
             var map = gm.getMapByEntity(entity.getClass());

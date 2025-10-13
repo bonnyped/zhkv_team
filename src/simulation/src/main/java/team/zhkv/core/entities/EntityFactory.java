@@ -1,10 +1,8 @@
-package team.zhkv.service;
+package team.zhkv.core.entities;
 
 import java.lang.reflect.InvocationTargetException;
 
-import team.zhkv.entities.Entity;
-
-public class EntityFabric {
+public class EntityFactory {
     public Entity buildEntity(Class<? extends Entity> entity) {
         try {
             // конструктор без параметров

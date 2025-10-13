@@ -12,21 +12,21 @@ import java.util.Map;
 import team.zhkv.GameMap;
 import team.zhkv.entities.Creature;
 import team.zhkv.entities.Entity;
-import team.zhkv.service.impl.Eater;
-import team.zhkv.service.impl.Edible;
+import team.zhkv.service.impl.IEater;
+import team.zhkv.service.impl.IEdible;
 
 public class BFS {
     private GameMap gm;
     private Class<? extends Entity> target;
-    private Location goal;
+    private Coordinate goal;
     private Creature creature;
-    private Map<Location, Location> allPaths = new HashMap<>();
-    private List<Location> path = new ArrayList<>();
-    private Deque<Location> forCheck = new ArrayDeque<>();
-    private HashSet<Location> checked = new HashSet<>();
+    private Map<Coordinate, Coordinate> allPaths = new HashMap<>();
+    private List<Coordinate> path = new ArrayList<>();
+    private Deque<Coordinate> forCheck = new ArrayDeque<>();
+    private HashSet<Coordinate> checked = new HashSet<>();
 
     public BFS build(GameMap gm,
-            Location current, Class<? extends Entity> target) {
+            Coordinate current, Class<? extends Entity> target) {
         this.gm = gm;
         this.target = target;
         creature = (Creature) gm.getEntity(current);
@@ -38,17 +38,17 @@ public class BFS {
         return this;
     }
 
-    public List<Location> getPath() {
+    public List<Coordinate> getPath() {
         if (goal != null) {
             buildPath();
         }
         return path;
     }
 
-    private List<Location> addNearestNeighbors(Location current) {
-        List<Location> neighbors = new ArrayList<>();
+    private List<Coordinate> addNearestNeighbors(Coordinate current) {
+        List<Coordinate> neighbors = new ArrayList<>();
         for (var direction : Direction.values()) {
-            Location neighbor = current.getNeighbor(direction.getDelta());
+            Coordinate neighbor = current.getNeighbor(direction.getDelta());
             if (isNotInChecked(neighbor)
                     && neighbor.isInBounds(gm.getFieldSize())
                     && (neighborIsFreeCell(neighbor)
@@ -62,26 +62,26 @@ public class BFS {
         return neighbors;
     }
 
-    private boolean isNotInChecked(Location neighbor) {
+    private boolean isNotInChecked(Coordinate neighbor) {
         return !checked.contains(neighbor);
     }
 
-    private boolean neighborIsFreeCell(Location neighbor) {
+    private boolean neighborIsFreeCell(Coordinate neighbor) {
         return gm.getEntity(neighbor) == null;
     }
 
-    private boolean isNeighborEdibleForCreature(Eater eater,
-            Location neighbor) {
-        if (gm.getEntity(neighbor) instanceof Edible edible) {
-            return eater.getFood() == edible.getClass();
+    private boolean isNeighborEdibleForCreature(IEater IEater,
+            Coordinate neighbor) {
+        if (gm.getEntity(neighbor) instanceof IEdible IEdible) {
+            return IEater.getFood() == IEdible.getClass();
         } else {
             return false;
         }
     }
 
-    private Location searchPath() {
+    private Coordinate searchPath() {
         while (!forCheck.isEmpty()) {
-            Location neighbor = forCheck.pollFirst();
+            Coordinate neighbor = forCheck.pollFirst();
             if (isNeighborEqualsTarget(neighbor)) {
                 forCheck.clear();
                 return neighbor;
@@ -92,14 +92,14 @@ public class BFS {
         return null;
     }
 
-    private boolean isNeighborEqualsTarget(Location neighbor) {
+    private boolean isNeighborEqualsTarget(Coordinate neighbor) {
         return gm.getEntity(neighbor) instanceof Entity
                 && gm.getEntity(neighbor).getClass() == target;
     }
 
     private void buildPath() {
         path.add(goal);
-        Location prev = allPaths.get(goal);
+        Coordinate prev = allPaths.get(goal);
 
         while (prev != allPaths.get(null)) {
             path.add(prev);

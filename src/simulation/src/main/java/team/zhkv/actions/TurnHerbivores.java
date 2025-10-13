@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import team.zhkv.GameMap;
 import team.zhkv.entities.Entity;
 import team.zhkv.entities.Herbivore;
-import team.zhkv.move.Location;
+import team.zhkv.move.Coordinate;
 
 public class TurnHerbivores extends Turn {
     private static final Logger logger = LoggerFactory.getLogger(TurnHerbivores.class);
@@ -18,10 +18,10 @@ public class TurnHerbivores extends Turn {
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            Map<Location, Entity> tmp = new HashMap<>();
+            Map<Coordinate, Entity> tmp = new HashMap<>();
             for (int i = 0; i < gm.differenceEntityCountMinFact(
                     Herbivore.class); i++) {
-                Location location = gm.getNewLocation();
+                Coordinate location = gm.getNewLocation();
                 tmp.put(location, new Herbivore());
             }
             gm.getMapByEntity(Herbivore.class).putAll(tmp);

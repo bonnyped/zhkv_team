@@ -1,8 +1,8 @@
 package team.zhkv.entities;
 
-import team.zhkv.service.impl.Edible;
+import team.zhkv.service.impl.IEdible;
 
-public class Grass extends Entity implements Edible {
+public class Grass extends Entity implements IEdible {
     private boolean isEated = false;
 
     @Override

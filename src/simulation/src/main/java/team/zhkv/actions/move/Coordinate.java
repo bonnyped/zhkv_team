@@ -2,30 +2,30 @@ package team.zhkv.move;
 
 import java.util.Objects;
 
-public class Location {
+public class Coordinate {
     private int dx;
     private int dy;
 
-    public Location() {
+    public Coordinate() {
     }
 
-    public Location(Location other) {
+    public Coordinate(Coordinate other) {
         dx = other.dx;
         dy = other.dy;
     }
 
-    public Location(int dx, int dy) {
+    public Coordinate(int dx, int dy) {
         this.dx = dx;
         this.dy = dy;
     }
 
-    private Location setLocation(Location other) {
+    private Coordinate setLocation(Coordinate other) {
         this.dx += other.dx;
         this.dy += other.dy;
         return this;
     }
 
-    public boolean isInBounds(Location fieldSize) {
+    public boolean isInBounds(Coordinate fieldSize) {
         return dx >= 0
                 && dx < fieldSize.dx
                 && dy >= 0
@@ -37,10 +37,10 @@ public class Location {
         if (this == obj) {
             return true;
         }
-        if (obj == null || obj.getClass() != Location.class) {
+        if (obj == null || obj.getClass() != Coordinate.class) {
             return false;
         }
-        Location other = (Location) obj;
+        Coordinate other = (Coordinate) obj;
 
         return dx == other.dx && dy == other.dy;
     }
@@ -58,14 +58,14 @@ public class Location {
         return dy;
     }
 
-    public Location setLocation(int dx, int dy) {
+    public Coordinate setLocation(int dx, int dy) {
         this.dx = dx;
         this.dy = dy;
         return this;
     }
 
-    public Location getNeighbor(Location other) {
-        return new Location(this).setLocation(other);
+    public Coordinate getNeighbor(Coordinate other) {
+        return new Coordinate(this).setLocation(other);
     }
 
     @Override

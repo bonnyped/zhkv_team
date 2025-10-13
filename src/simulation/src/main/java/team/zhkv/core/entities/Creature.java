@@ -4,11 +4,11 @@ import java.util.List;
 
 import team.zhkv.GameMap;
 import team.zhkv.move.BFS;
-import team.zhkv.move.Location;
-import team.zhkv.service.impl.Eater;
-import team.zhkv.service.impl.Moveble;
+import team.zhkv.move.Coordinate;
+import team.zhkv.service.impl.IEater;
+import team.zhkv.service.impl.IMoveble;
 
-public abstract class Creature extends Entity implements Moveble, Eater {
+public abstract class Creature extends Entity implements IMoveble, IEater {
     protected Class<? extends Entity> food;
     protected boolean isEated;
 
@@ -17,8 +17,8 @@ public abstract class Creature extends Entity implements Moveble, Eater {
     protected int speed;
 
     @Override
-    public Location makeMove(GameMap gm, Location oldLocation) {
-        List<Location> path = new BFS().build(gm, oldLocation, food)
+    public Coordinate makeMove(GameMap gm, Coordinate oldLocation) {
+        List<Coordinate> path = new BFS().build(gm, oldLocation, food)
                 .getPath();
 
         return path.isEmpty() ? null : applySpeedToPath(gm, path);
@@ -40,7 +40,7 @@ public abstract class Creature extends Entity implements Moveble, Eater {
         return speed;
     }
 
-    private Location applySpeedToPath(GameMap gm, List<Location> path) {
+    private Coordinate applySpeedToPath(GameMap gm, List<Coordinate> path) {
         if (isSpeedOrPathSizeEqualsOneCell(path.size())) {
             return path.get(0);
         } else if (isSpeedGreaterThenOneCell()

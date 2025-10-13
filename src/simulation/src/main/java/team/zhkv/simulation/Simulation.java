@@ -6,32 +6,29 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import team.zhkv.GameMap;
+import team.zhkv.map.GameState;
+import team.zhkv.core.interfaces.*;
 import team.zhkv.actions.*;
-import team.zhkv.service.Renderer;
-import team.zhkv.service.impl.Renderable;
-import team.zhkv.service.impl.IAction;
+import team.zhkv.rendering.*;
 
 public class Simulation implements Runnable {
         private static final Logger logger = LoggerFactory.getLogger(
                         Simulation.class);
         protected volatile boolean running;
         protected volatile boolean paused;
-        private GameMap gameMap;
+        private GameState gs;
         private List<IAction> initActions = List.of(
                         new InitAllEntities());
         private List<IAction> turnActions = List.of(
                         new TurnMove(),
                         new TurnGrass(),
                         new TurnHerbivores());
-        private Renderable renderer = new Renderer();
+        private IRenderable renderer = new Renderer();
 
-        private int stepsCount = 0;
-
-        private void nextTurn() {
+        private void executeNextTurn() {
                 turnActions.stream()
                                 .map(Turn.class::cast)
-                                .forEach(turn -> turn.action(gameMap));
+                                .forEach(turn -> turn.action(gs));
         }
 
         @Override
@@ -41,18 +38,10 @@ public class Simulation implements Runnable {
                 startSimulation();
         }
 
-        public Simulation() {
-                gameMap = new GameMap();
-        }
-
-        public Simulation(int x, int y) {
-                gameMap = new GameMap(x, y);
-        }
-
         private void startSimulation() {
                 initActions.stream()
                                 .map(Init.class::cast)
-                                .forEach(init -> init.action(gameMap));
+                                .forEach(init -> init.action(gs.get));
                 while (true) {
                         if (!paused) {
                                 try {
@@ -64,7 +53,7 @@ public class Simulation implements Runnable {
                                 }
                                 ++stepsCount;
                                 renderer.render(gameMap, stepsCount);
-                                nextTurn();
+                                executeNextTurn();
                         }
                 }
         }

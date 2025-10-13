@@ -1,16 +1,16 @@
 package team.zhkv.entities;
 
-import team.zhkv.service.impl.Damageble;
-import team.zhkv.service.impl.Edible;
+import team.zhkv.service.impl.IDamageble;
+import team.zhkv.service.impl.IEdible;
 
-public class Herbivore extends Creature implements Edible, Damageble {
+public class Herbivore extends Creature implements IEdible, IDamageble {
     public Herbivore() {
         food = Grass.class;
         speed = 2;
     }
 
     @Override
-    public void eat(Edible grass) {
+    public void eat(IEdible grass) {
         if (hp < 100) {
             hp += hp;
         }

@@ -1,10 +1,10 @@
 package team.zhkv.entities;
 
-import team.zhkv.service.impl.Damageble;
-import team.zhkv.service.impl.Damager;
-import team.zhkv.service.impl.Edible;
+import team.zhkv.service.impl.IDamageble;
+import team.zhkv.service.impl.IDamager;
+import team.zhkv.service.impl.IEdible;
 
-public class Predator extends Creature implements Damager {
+public class Predator extends Creature implements IDamager {
     private int damage = 50;
 
     public Predator() {
@@ -13,7 +13,7 @@ public class Predator extends Creature implements Damager {
     }
 
     @Override
-    public void damage(Damageble victim) {
+    public void damage(IDamageble victim) {
         victim.takeDamage(damage);
     }
 
@@ -23,7 +23,7 @@ public class Predator extends Creature implements Damager {
     }
 
     @Override
-    public void eat(Edible herbivore) {
+    public void eat(IEdible herbivore) {
         if (hp < 50) {
             hp += hp;
         } else if (hp < 100) {

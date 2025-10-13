@@ -1,30 +1,28 @@
-package team.zhkv.service;
+
+package team.zhkv.rendering;
 
 import java.util.Map;
 
-import team.zhkv.GameMap;
-import team.zhkv.entities.Entity;
-import team.zhkv.move.Location;
-import team.zhkv.service.impl.Renderable;
+import team.zhkv.map.GameMap;
+import team.zhkv.map.GameState;
+import team.zhkv.core.entities.*;
+import team.zhkv.actions.move.Coordinate;
 
-public class Renderer implements Renderable {
+public class Renderer implements IRenderable {
     @Override
     public void render(GameMap gm, int iterateCount) {
-        Map<Location, Entity> locations = gm.getWholeMapEntities();
-        int height = gm.getFieldSize().getDx();
-        int width = gm.getFieldSize().getDy();
+        Map<Coordinate, Entity> locations = gm.getEntities();
         clearTerminal();
         printGameName();
-        printSeparator(width, iterateCount);
-        renderField(height, width, locations);
+        printSeparator(iterateCount);
+        renderField(locations);
         printMenu();
     }
 
-    private void renderField(int height, int width,
-            Map<Location, Entity> locations) {
-        Location currentLocation = new Location();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+    private void renderField(Map<Coordinate, Entity> locations) {
+        Coordinate currentLocation = new Coordinate();
+        for (int i = 0; i < GameState.FIELD_SIZE.getDy(); i++) {
+            for (int j = 0; j < GameState.FIELD_SIZE.getDx(); j++) {
                 currentLocation.setLocation(i, j);
                 System.out.print(entityForRender(
                         locations.get(currentLocation)));
@@ -33,9 +31,9 @@ public class Renderer implements Renderable {
         }
     }
 
-    private void printSeparator(int width, int iterateCount) {
+    private void printSeparator(int iterateCount) {
         StringBuilder sb = new StringBuilder();
-        width -= determNumberLength(iterateCount);
+        int width = GameState.FIELD_SIZE.getDx() - determNumberLength(iterateCount);
         for (int i = 0; i < width; i++) {
             sb.append("-");
         }
@@ -75,5 +73,24 @@ public class Renderer implements Renderable {
         System.out.println("                1. p — pause/resume");
         System.out.println("             2. cntrl + с — quit program");
         System.out.println();
+    }
+
+    private String entityForRender(Entity entity) {
+        if (entity == null) {
+            return "⬛️";
+        } else if (entity.getClass() == Predator.class) {
+            return "🐺";
+        } else if (entity.getClass() == Herbivore.class) {
+            return "🐰";
+        } else if (entity.getClass() == Grass.class) {
+            return "🥕";
+        } else if (entity.getClass() == Rock.class) {
+            return "🪨 ";
+        } else if (entity.getClass() == Tree.class) {
+            return "🌲";
+        } else {
+            throw new RuntimeException(
+                    "Class is not apllicable with renderer!");
+        }
     }
 }
