@@ -1,5 +1,5 @@
-package team.zhkv.service.impl;
+package team.zhkv.core.interfaces;
 
-public interface Edible {
+public interface IEdible {
     boolean isEated();
 }

@@ -1,31 +1,30 @@
 
 package team.zhkv.rendering;
 
+import team.zhkv.map.GameMap;
+import team.zhkv.core.entities.*;
+
 import java.util.Map;
 
-import team.zhkv.map.GameMap;
-import team.zhkv.map.GameState;
-import team.zhkv.core.entities.*;
 import team.zhkv.actions.move.Coordinate;
 
 public class Renderer implements IRenderable {
     @Override
-    public void render(GameMap gm, int iterateCount) {
-        Map<Coordinate, Entity> locations = gm.getEntities();
+    public void render(GameMap gm) {
         clearTerminal();
         printGameName();
-        printSeparator(iterateCount);
-        renderField(locations);
+        printSeparator(gm.getTurnCount());
+        renderField(gm.getEntities());
         printMenu();
     }
 
-    private void renderField(Map<Coordinate, Entity> locations) {
-        Coordinate currentLocation = new Coordinate();
-        for (int i = 0; i < GameState.FIELD_SIZE.getDy(); i++) {
-            for (int j = 0; j < GameState.FIELD_SIZE.getDx(); j++) {
-                currentLocation.setLocation(i, j);
+    private void renderField(Map<Coordinate, Entity> coordinates) {
+        Coordinate currentCoordinate = new Coordinate();
+        for (int i = 0; i < GameMap.DX; i++) {
+            for (int j = 0; j < GameMap.DY; j++) {
+                currentCoordinate.setLocation(i, j);
                 System.out.print(entityForRender(
-                        locations.get(currentLocation)));
+                        coordinates.get(currentCoordinate)));
             }
             System.out.println();
         }
@@ -33,7 +32,7 @@ public class Renderer implements IRenderable {
 
     private void printSeparator(int iterateCount) {
         StringBuilder sb = new StringBuilder();
-        int width = GameState.FIELD_SIZE.getDx() - determNumberLength(iterateCount);
+        int width = GameMap.DX - determNumberLength(iterateCount);
         for (int i = 0; i < width; i++) {
             sb.append("-");
         }

@@ -6,10 +6,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import team.zhkv.GameMap;
-import team.zhkv.entities.Entity;
-import team.zhkv.entities.Herbivore;
-import team.zhkv.move.Coordinate;
+import team.zhkv.map.GameMap;
+import team.zhkv.core.entities.Entity;
+import team.zhkv.core.entities.Herbivore;
+import team.zhkv.actions.move.Coordinate;
 
 public class TurnHerbivores extends Turn {
     private static final Logger logger = LoggerFactory.getLogger(TurnHerbivores.class);

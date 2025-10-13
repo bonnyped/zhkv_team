@@ -1,4 +1,4 @@
-package team.zhkv.move;
+package team.zhkv.actions.move;
 
 import java.util.Objects;
 

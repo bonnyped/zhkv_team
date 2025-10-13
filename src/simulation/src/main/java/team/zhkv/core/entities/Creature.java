@@ -1,12 +1,12 @@
-package team.zhkv.entities;
+package team.zhkv.core.entities;
 
 import java.util.List;
 
-import team.zhkv.GameMap;
-import team.zhkv.move.BFS;
-import team.zhkv.move.Coordinate;
-import team.zhkv.service.impl.IEater;
-import team.zhkv.service.impl.IMoveble;
+import team.zhkv.map.GameMap;
+import team.zhkv.actions.move.BFS;
+import team.zhkv.actions.move.Coordinate;
+import team.zhkv.core.interfaces.IEater;
+import team.zhkv.core.interfaces.IMoveble;
 
 public abstract class Creature extends Entity implements IMoveble, IEater {
     protected Class<? extends Entity> food;

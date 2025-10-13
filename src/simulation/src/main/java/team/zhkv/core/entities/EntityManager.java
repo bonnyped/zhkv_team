@@ -1,26 +1,20 @@
-package team.zhkv.map;
+package team.zhkv.core.entities;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import team.zhkv.actions.move.Coordinate;
-import team.zhkv.core.entities.*;
 
 public class EntityManager {
-    private final Map<Class<? extends Entity>, Integer> MAX_COUNTS = Map.of(Tree.class, 5,
+    private final Map<Class<? extends Entity>, Integer> maxCounts = Map.of(Tree.class, 5,
             Rock.class, 5,
             Grass.class, 5,
             Herbivore.class, 5,
             Predator.class, 5);
-    private final Map<Coordinate, Entity> entities;
+    private final Map<Coordinate, Entity> entities = new HashMap<>();
     private final EntityFactory ef = new EntityFactory();
-
-    public EntityManager(Map<Coordinate, Entity> entities) {
-        this.entities = entities;
-    }
 
     public Map<Coordinate, Entity> getEntities() {
         return entities;
@@ -46,9 +40,26 @@ public class EntityManager {
     }
 
     public List<Entity> getEntitiesAsList() {
-        return MAX_COUNTS.entrySet().stream()
-                .flatMap(entry -> IntStream.range(0, entry.getValue())
-                        .mapToObj(i -> ef.buildEntity(entry.getKey())))
-                .collect(Collectors.toList());
+        List<Entity> entitiesAsList = new ArrayList<>();
+
+        for (var entry : maxCounts.entrySet()) {
+            int count = entry.getValue();
+            while (count > 0) {
+                entitiesAsList.add(ef.buildEntity(entry.getKey()));
+                --count;
+            }
+        }
+
+        return entitiesAsList;
+    }
+
+    public Map<Coordinate, Entity> getCreaturesMap() {
+        Map<Coordinate, Entity> creatures = new HashMap<>();
+        for (var entry : entities.entrySet()) {
+            if (entry.getValue() instanceof Creature creature) {
+                creatures.put(entry.getKey(), creature);
+            }
+        }
+        return creatures;
     }
 }

@@ -1,4 +1,4 @@
-package team.zhkv.entities;
+package team.zhkv.core.entities;
 
 public abstract class Entity {
 }

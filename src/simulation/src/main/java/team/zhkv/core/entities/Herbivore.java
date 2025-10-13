@@ -1,7 +1,7 @@
-package team.zhkv.entities;
+package team.zhkv.core.entities;
 
-import team.zhkv.service.impl.IDamageble;
-import team.zhkv.service.impl.IEdible;
+import team.zhkv.core.interfaces.IDamageble;
+import team.zhkv.core.interfaces.IEdible;
 
 public class Herbivore extends Creature implements IEdible, IDamageble {
     public Herbivore() {

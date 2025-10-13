@@ -1,4 +1,4 @@
-package team.zhkv.move;
+package team.zhkv.actions.move;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -9,11 +9,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import team.zhkv.GameMap;
-import team.zhkv.entities.Creature;
-import team.zhkv.entities.Entity;
-import team.zhkv.service.impl.IEater;
-import team.zhkv.service.impl.IEdible;
+import team.zhkv.map.GameMap;
+import team.zhkv.core.entities.Creature;
+import team.zhkv.core.entities.Entity;
+import team.zhkv.core.interfaces.IEater;
+import team.zhkv.core.interfaces.IEdible;
 
 public class BFS {
     private GameMap gm;

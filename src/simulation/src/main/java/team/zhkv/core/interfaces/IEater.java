@@ -1,9 +1,9 @@
-package team.zhkv.service.impl;
+package team.zhkv.core.interfaces;
 
-import team.zhkv.entities.Entity;
+import team.zhkv.core.entities.Entity;
 
-public interface Eater {
-    void eat(Edible Edible);
+public interface IEater {
+    void eat(IEdible edible);
 
     Class<? extends Entity> getFood();
 }

@@ -9,15 +9,15 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import team.zhkv.GameMap;
-import team.zhkv.entities.Creature;
-import team.zhkv.entities.Entity;
-import team.zhkv.entities.Grass;
-import team.zhkv.move.Coordinate;
-import team.zhkv.service.impl.IDamageble;
-import team.zhkv.service.impl.IDamager;
-import team.zhkv.service.impl.IEater;
-import team.zhkv.service.impl.IEdible;
+import team.zhkv.map.GameMap;
+import team.zhkv.core.entities.Creature;
+import team.zhkv.core.entities.Entity;
+import team.zhkv.core.entities.Grass;
+import team.zhkv.actions.move.Coordinate;
+import team.zhkv.core.interfaces.IDamageble;
+import team.zhkv.core.interfaces.IDamager;
+import team.zhkv.core.interfaces.IEater;
+import team.zhkv.core.interfaces.IEdible;
 
 public class TurnMove extends Turn {
     private static final Logger logger = LoggerFactory.getLogger(
@@ -27,7 +27,7 @@ public class TurnMove extends Turn {
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            List<Map<Coordinate, Entity>> creaturesMaps = gm.getCreaturesMap();
+            Map<Coordinate, Entity> creaturesMaps = gm.getCreaturesMap();
             Map<Coordinate, Coordinate> paths = new HashMap<>();
             for (int i = 0; i < creaturesMaps.size(); ++i) {
                 Iterator<Entry<Coordinate, Entity>> it = creaturesMaps.get(i)

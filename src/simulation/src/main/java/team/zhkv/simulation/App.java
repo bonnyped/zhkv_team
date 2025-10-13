@@ -1,10 +1,7 @@
-package team.zhkv;
+package team.zhkv.simulation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import team.zhkv.simulation.Simulation;
-import team.zhkv.simulation.SimulationFactory;
 
 public class App {
     private static final Logger logger = LoggerFactory.getLogger(App.class);

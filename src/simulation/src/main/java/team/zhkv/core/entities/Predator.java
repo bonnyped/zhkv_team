@@ -1,8 +1,8 @@
-package team.zhkv.entities;
+package team.zhkv.core.entities;
 
-import team.zhkv.service.impl.IDamageble;
-import team.zhkv.service.impl.IDamager;
-import team.zhkv.service.impl.IEdible;
+import team.zhkv.core.interfaces.IDamageble;
+import team.zhkv.core.interfaces.IDamager;
+import team.zhkv.core.interfaces.IEdible;
 
 public class Predator extends Creature implements IDamager {
     private int damage = 50;

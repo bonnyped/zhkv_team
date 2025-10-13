@@ -1,6 +1,6 @@
-package team.zhkv.service.impl;
+package team.zhkv.core.interfaces;
 
-public interface Damager {
+public interface IDamager {
 
     void damage(IDamageble victim);
 

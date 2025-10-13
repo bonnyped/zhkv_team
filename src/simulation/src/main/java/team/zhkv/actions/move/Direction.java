@@ -1,4 +1,4 @@
-package team.zhkv.move;
+package team.zhkv.actions.move;
 
 public enum Direction {
     UP(new Coordinate(0, -1)),

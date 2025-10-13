@@ -6,7 +6,7 @@ import java.util.Scanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import team.zhkv.map.GameState;
+import team.zhkv.map.GameMap;
 import team.zhkv.core.interfaces.*;
 import team.zhkv.actions.*;
 import team.zhkv.rendering.*;
@@ -16,7 +16,7 @@ public class Simulation implements Runnable {
                         Simulation.class);
         protected volatile boolean running;
         protected volatile boolean paused;
-        private GameState gs;
+        private GameMap gm = new GameMap();
         private List<IAction> initActions = List.of(
                         new InitAllEntities());
         private List<IAction> turnActions = List.of(
@@ -28,7 +28,7 @@ public class Simulation implements Runnable {
         private void executeNextTurn() {
                 turnActions.stream()
                                 .map(Turn.class::cast)
-                                .forEach(turn -> turn.action(gs));
+                                .forEach(turn -> turn.action(gm));
         }
 
         @Override
@@ -41,7 +41,7 @@ public class Simulation implements Runnable {
         private void startSimulation() {
                 initActions.stream()
                                 .map(Init.class::cast)
-                                .forEach(init -> init.action(gs.get));
+                                .forEach(init -> init.action(gm));
                 while (true) {
                         if (!paused) {
                                 try {
@@ -51,8 +51,8 @@ public class Simulation implements Runnable {
                                         logger.warn("Thread: {} was interrupted",
                                                         Thread.currentThread().getName());
                                 }
-                                ++stepsCount;
-                                renderer.render(gameMap, stepsCount);
+                                gm.incrementTurn();
+                                renderer.render(gm);
                                 executeNextTurn();
                         }
                 }

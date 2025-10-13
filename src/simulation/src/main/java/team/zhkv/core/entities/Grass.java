@@ -1,6 +1,6 @@
-package team.zhkv.entities;
+package team.zhkv.core.entities;
 
-import team.zhkv.service.impl.IEdible;
+import team.zhkv.core.interfaces.IEdible;
 
 public class Grass extends Entity implements IEdible {
     private boolean isEated = false;
