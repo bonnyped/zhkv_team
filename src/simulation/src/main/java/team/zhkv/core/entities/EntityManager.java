@@ -8,11 +8,12 @@ import java.util.Map;
 import team.zhkv.actions.move.Coordinate;
 
 public class EntityManager {
-    private final Map<Class<? extends Entity>, Integer> maxCounts = Map.of(Tree.class, 5,
+    private final Map<Class<? extends Entity>, Integer> toSpawn = Map.of(Tree.class, 5,
             Rock.class, 5,
             Grass.class, 5,
             Herbivore.class, 5,
             Predator.class, 5);
+
     private final Map<Coordinate, Entity> entities = new HashMap<>();
     private final EntityFactory ef = new EntityFactory();
 
@@ -42,7 +43,7 @@ public class EntityManager {
     public List<Entity> getEntitiesAsList() {
         List<Entity> entitiesAsList = new ArrayList<>();
 
-        for (var entry : maxCounts.entrySet()) {
+        for (var entry : toSpawn.entrySet()) {
             int count = entry.getValue();
             while (count > 0) {
                 entitiesAsList.add(ef.buildEntity(entry.getKey()));
@@ -62,4 +63,13 @@ public class EntityManager {
         }
         return creatures;
     }
+
+    public Map<Class<? extends Entity>, Integer> getSpawnedEntities() {
+        return toSpawn;
+    }
+
+    public Entity getNewEntity(Class<? extends Entity> clazz) {
+        return ef.buildEntity(clazz);
+    }
+
 }

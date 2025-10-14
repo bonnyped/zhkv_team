@@ -2,8 +2,10 @@ package team.zhkv.core.entities;
 
 import team.zhkv.core.interfaces.IDamageble;
 import team.zhkv.core.interfaces.IEdible;
+import team.zhkv.core.interfaces.Respawnable;
 
-public class Herbivore extends Creature implements IEdible, IDamageble {
+public class Herbivore extends Creature implements IEdible, IDamageble,
+        Respawnable {
     public Herbivore() {
         food = Grass.class;
         speed = 2;
@@ -25,5 +27,10 @@ public class Herbivore extends Creature implements IEdible, IDamageble {
     @Override
     public boolean isEated() {
         return hp <= 0;
+    }
+
+    @Override
+    public void respawn() {
+
     }
 }

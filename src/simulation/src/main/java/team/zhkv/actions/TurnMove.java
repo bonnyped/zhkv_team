@@ -29,6 +29,7 @@ public class TurnMove extends Turn {
             GameMap gm = (GameMap) obj;
             Map<Coordinate, Entity> creaturesMaps = gm.getCreaturesMap();
             Map<Coordinate, Coordinate> paths = new HashMap<>();
+
             for (int i = 0; i < creaturesMaps.size(); ++i) {
                 Iterator<Entry<Coordinate, Entity>> it = creaturesMaps.get(i)
                         .entrySet()
@@ -67,11 +68,11 @@ public class TurnMove extends Turn {
 
     private void eatIfPossible(GameMap gm, Entity active, Entity passive,
             Coordinate target) {
-        if (active instanceof IEater IEater
-                && passive instanceof IEdible IEdible
-                && IEater.getFood() == IEdible.getClass()) {
-            IEater.eat(IEdible);
-            if (IEater.getFood() == Grass.class || IEdible.isEated()) {
+        if (active instanceof IEater eater
+                && passive instanceof IEdible edible
+                && eater.getFood() == edible.getClass()) {
+            eater.eat(edible);
+            if (eater.getFood() == Grass.class || edible.isEated()) {
                 gm.removeEntity(target);
             }
         }
@@ -79,9 +80,9 @@ public class TurnMove extends Turn {
 
     private void damageIfPossible(GameMap gm, Entity active, Entity passive,
             Coordinate target) {
-        if (active instanceof IDamager IDamager
-                && passive instanceof IDamageble IDamageble) {
-            IDamager.damage(IDamageble);
+        if (active instanceof IDamager iDamager
+                && passive instanceof IDamageble iDamageble) {
+            iDamager.damage(iDamageble);
         }
     }
 

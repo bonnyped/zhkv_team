@@ -19,7 +19,7 @@ public class Coordinate {
         this.dy = dy;
     }
 
-    private Coordinate setLocation(Coordinate other) {
+    private Coordinate setCoordinate(Coordinate other) {
         this.dx += other.dx;
         this.dy += other.dy;
         return this;
@@ -58,14 +58,14 @@ public class Coordinate {
         return dy;
     }
 
-    public Coordinate setLocation(int dx, int dy) {
+    public Coordinate setCoordinate(int dx, int dy) {
         this.dx = dx;
         this.dy = dy;
         return this;
     }
 
     public Coordinate getNeighbor(Coordinate other) {
-        return new Coordinate(this).setLocation(other);
+        return new Coordinate(this).setCoordinate(other);
     }
 
     @Override

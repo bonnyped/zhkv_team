@@ -11,19 +11,24 @@ import team.zhkv.core.entities.EntityManager;
 public class GameMap {
     public static final int DX = 20;
     public static final int DY = 50;
-    private final Map<Coordinate, Entity> entities = new HashMap<>();
-    private final EntityManager em = new EntityManager();
-    private final CoordinateManager cm = new CoordinateManager(em.getEntities()
-            .keySet());
 
+    private final Map<Coordinate, Entity> entities;
+    private final EntityManager em;
+    private final CoordinateManager cm;
+    private final Map<Coordinate, Coordinate> entitiesToMove;
     private int turnCount;
+
+    public GameMap() {
+        entities = new HashMap<>();
+        em = new EntityManager();
+        cm = new CoordinateManager(em.getEntities()
+                .keySet());
+        entitiesToMove = new HashMap<>();
+        turnCount = 0;
+    }
 
     public int getTurnCount() {
         return turnCount;
-    }
-
-    public EntityManager getEntityManager() {
-        return em;
     }
 
     public void incrementTurn() {
@@ -40,14 +45,44 @@ public class GameMap {
 
     public void spawnAllEntities() {
         for (Entity entity : em.getEntitiesAsList()) {
-            Coordinate location = cm.getFreeLocation();
-
-            entities.put(location, entity);
+            entities.put(getFreeCoordinate(), entity);
         }
+    }
+
+    public Coordinate getFreeCoordinate() {
+        return cm.getFreeCoordinate();
     }
 
     public Map<Coordinate, Entity> getCreaturesMap() {
         return em.getCreaturesMap();
+    }
+
+    public int differenceBetweenFactAndMinCounts(Class<? extends Entity> clazz, int requered) {
+        int fact = getEntityFactCount(clazz);
+        return isFactLesserHalfRequered(fact, requered) ? requered - fact : 0;
+    }
+
+    public Map<Class<? extends Entity>, Integer> getSpawnedEntities() {
+        return em.getSpawnedEntities();
+    }
+
+    public Entity getEntityToSpawn(Class<? extends Entity> clazz) {
+        return em.getNewEntity(clazz);
+    }
+
+    private boolean isFactLesserHalfRequered(int fact, int requered) {
+        return fact < requered / 2;
+    }
+
+    public Coordinate getBounds() {
+        return new Coordinate(DX, DY);
+    }
+
+    private int getEntityFactCount(Class<? extends Entity> clazz) {
+        return Math.toIntExact(entities.values()
+                .stream()
+                .filter(clazz::isInstance)
+                .count());
     }
 
 }

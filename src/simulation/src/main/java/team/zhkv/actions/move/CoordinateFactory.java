@@ -14,20 +14,20 @@ public class CoordinateFactory {
         this.occupiedCoordinates = occupiedCoordinates;
     }
 
-    public Coordinate buildLocation() {
+    public Coordinate buildCoordinate() {
         Set<Coordinate> buildedLocations = new HashSet<>();
         int boardX = GameMap.DX;
         int boardY = GameMap.DY;
-        Coordinate newLocation = new Coordinate(random.nextInt(boardX),
+        Coordinate newCoordinate = new Coordinate(random.nextInt(boardX),
                 random.nextInt(boardY));
 
-        while (occupiedCoordinates.contains(newLocation)
-                || buildedLocations.contains(newLocation)) {
-            buildedLocations.add(newLocation);
-            newLocation.setLocation(random.nextInt(boardX),
+        while (occupiedCoordinates.contains(newCoordinate)
+                || buildedLocations.contains(newCoordinate)) {
+            buildedLocations.add(newCoordinate);
+            newCoordinate.setCoordinate(random.nextInt(boardX),
                     random.nextInt(boardY));
         }
 
-        return newLocation;
+        return newCoordinate;
     }
 }

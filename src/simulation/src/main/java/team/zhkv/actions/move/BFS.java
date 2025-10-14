@@ -50,7 +50,7 @@ public class BFS {
         for (var direction : Direction.values()) {
             Coordinate neighbor = current.getNeighbor(direction.getDelta());
             if (isNotInChecked(neighbor)
-                    && neighbor.isInBounds(gm.getFieldSize())
+                    && neighbor.isInBounds(gm.getBounds())
                     && (neighborIsFreeCell(neighbor)
                             || isNeighborEdibleForCreature(creature,
                                     neighbor))) {
@@ -70,10 +70,10 @@ public class BFS {
         return gm.getEntity(neighbor) == null;
     }
 
-    private boolean isNeighborEdibleForCreature(IEater IEater,
+    private boolean isNeighborEdibleForCreature(IEater iEater,
             Coordinate neighbor) {
-        if (gm.getEntity(neighbor) instanceof IEdible IEdible) {
-            return IEater.getFood() == IEdible.getClass();
+        if (gm.getEntity(neighbor) instanceof IEdible iEdible) {
+            return iEater.getFood() == iEdible.getClass();
         } else {
             return false;
         }
