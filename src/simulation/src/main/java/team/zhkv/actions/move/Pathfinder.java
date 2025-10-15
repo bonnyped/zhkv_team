@@ -15,17 +15,24 @@ import team.zhkv.core.entities.Entity;
 import team.zhkv.core.interfaces.IEater;
 import team.zhkv.core.interfaces.IEdible;
 
-public class BFS {
+public class Pathfinder {
     private GameMap gm;
     private Class<? extends Entity> target;
     private Coordinate goal;
     private Creature creature;
-    private Map<Coordinate, Coordinate> allPaths = new HashMap<>();
-    private List<Coordinate> path = new ArrayList<>();
-    private Deque<Coordinate> forCheck = new ArrayDeque<>();
-    private HashSet<Coordinate> checked = new HashSet<>();
+    private Map<Coordinate, Coordinate> allPaths;
+    private List<Coordinate> path;
+    private Deque<Coordinate> forCheck;
+    private HashSet<Coordinate> checked;
 
-    public BFS build(GameMap gm,
+    public Pathfinder() {
+        allPaths = new HashMap<>();
+        path = new ArrayList<>();
+        forCheck = new ArrayDeque<>();
+        checked = new HashSet<>();
+    }
+
+    public Pathfinder build(GameMap gm,
             Coordinate current, Class<? extends Entity> target) {
         this.gm = gm;
         this.target = target;
@@ -105,7 +112,12 @@ public class BFS {
             path.add(prev);
             prev = allPaths.get(prev);
         }
-
-        Collections.reverse(path);
+        reversePathAndRemoveStartLocation();
     }
+
+    private void reversePathAndRemoveStartLocation() {
+        Collections.reverse(path);
+        path.remove(0);
+    }
+
 }

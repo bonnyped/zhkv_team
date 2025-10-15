@@ -19,31 +19,24 @@ import team.zhkv.core.interfaces.IDamager;
 import team.zhkv.core.interfaces.IEater;
 import team.zhkv.core.interfaces.IEdible;
 
-public class TurnMove extends Turn {
+public class TurnPathfinder extends Turn {
     private static final Logger logger = LoggerFactory.getLogger(
-            TurnMove.class);
+            TurnPathfinder.class);
 
     @Override
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            Map<Coordinate, Entity> creaturesMaps = gm.getCreaturesMap();
-            Map<Coordinate, Coordinate> paths = new HashMap<>();
+            Map<Coordinate, Entity> creaturesMap = gm.getCreaturesMap();
+            Map<Coordinate, List<Coordinate>> paths = gm.getEntitiesToMove();
+            paths.clear();
 
-            for (int i = 0; i < creaturesMaps.size(); ++i) {
-                Iterator<Entry<Coordinate, Entity>> it = creaturesMaps.get(i)
-                        .entrySet()
-                        .iterator();
-                while (it.hasNext()) {
-                    var entry = it.next();
-                    Creature creature = (Creature) entry.getValue();
-                    Coordinate step = creature.makeMove(gm, entry.getKey());
-                    if (step != null) {
-                        paths.put(entry.getKey(), step);
-                    }
+            for (var entry : creaturesMap.entrySet()) {
+                Creature creature = (Creature) entry.getValue();
+                List<Coordinate> path = creature.findPath(gm, entry.getKey());
+                if (path != null) {
+                    paths.put(entry.getKey(), path);
                 }
-                applyMoves(gm, paths);
-                paths.clear();
             }
         } else {
             logger.error("""
@@ -83,15 +76,6 @@ public class TurnMove extends Turn {
         if (active instanceof IDamager iDamager
                 && passive instanceof IDamageble iDamageble) {
             iDamager.damage(iDamageble);
-        }
-    }
-
-    private void moveIfPossible(GameMap gm, Coordinate start, Coordinate target) {
-        if (gm.getEntity(target) == null) {
-            Entity entity = gm.getEntity(start);
-            var map = gm.getMapByEntity(entity.getClass());
-            map.remove(start);
-            map.put(target, entity);
         }
     }
 
