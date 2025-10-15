@@ -8,8 +8,7 @@ public class Predator extends Creature implements IDamager {
     private int damage = 50;
 
     public Predator() {
-        food = Herbivore.class;
-        speed = 1;
+        super(100, Herbivore.class, 1);
     }
 
     @Override

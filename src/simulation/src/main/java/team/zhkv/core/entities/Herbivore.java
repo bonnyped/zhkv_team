@@ -7,8 +7,7 @@ import team.zhkv.core.interfaces.Respawnable;
 public class Herbivore extends Creature implements IEdible, IDamageble,
         Respawnable {
     public Herbivore() {
-        food = Grass.class;
-        speed = 2;
+        super(100, Grass.class, 2);
     }
 
     @Override

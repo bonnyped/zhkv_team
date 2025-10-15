@@ -35,7 +35,10 @@ public class Simulation implements Runnable {
                 initActions = List.of(
                                 new InitAllEntities());
                 turnActions = List.of(
+                                new TurnPathfinder(),
                                 new TurnMove(),
+                                new TurnDamage(),
+                                new TurnEat(),
                                 new TurnRespawn());
                 renderer = new Renderer();
         }

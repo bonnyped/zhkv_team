@@ -1,6 +1,8 @@
 package team.zhkv.map;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
@@ -15,7 +17,8 @@ public class GameMap {
     private final Map<Coordinate, Entity> entities;
     private final EntityManager em;
     private final CoordinateManager cm;
-    private final Map<Coordinate, Coordinate> entitiesToMove;
+    private final Map<Coordinate, List<Coordinate>> entitiesToMove;
+
     private int turnCount;
 
     public GameMap() {
@@ -25,6 +28,10 @@ public class GameMap {
                 .keySet());
         entitiesToMove = new HashMap<>();
         turnCount = 0;
+    }
+
+    public Map<Coordinate, List<Coordinate>> getEntitiesToMove() {
+        return entitiesToMove;
     }
 
     public int getTurnCount() {
