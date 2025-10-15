@@ -39,7 +39,8 @@ public class Simulation implements Runnable {
                                 new TurnMove(),
                                 new TurnDamage(),
                                 new TurnEat(),
-                                new TurnRespawn());
+                                new TurnRespawn(),
+                                new TurnRemove());
                 renderer = new Renderer();
         }
 
