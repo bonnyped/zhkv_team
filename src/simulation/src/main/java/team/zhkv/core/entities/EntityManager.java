@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
+import team.zhkv.core.interfaces.IEdible;
 
 public class EntityManager {
     private final Map<Class<? extends Entity>, Integer> toSpawn = Map.of(Tree.class, 5,
@@ -21,23 +22,23 @@ public class EntityManager {
         return entities;
     }
 
-    public void addEntity(Coordinate location, Entity entity) {
-        if (isOccupied(location)) {
+    public void addEntity(Coordinate coordinate, Entity entity) {
+        if (isOccupied(coordinate)) {
             throw new IllegalStateException("Coordinate is already occupied");
         }
-        entities.put(location, entity);
+        entities.put(coordinate, entity);
     }
 
-    public void removeEntity(Coordinate location) {
-        entities.remove(location);
+    public void removeEntity(Coordinate coordinate) {
+        entities.remove(coordinate);
     }
 
-    public Entity getEntity(Coordinate location) {
-        return entities.get(location);
+    public Entity getEntity(Coordinate coordinate) {
+        return entities.get(coordinate);
     }
 
-    public boolean isOccupied(Coordinate location) {
-        return entities.containsKey(location);
+    public boolean isOccupied(Coordinate coordinate) {
+        return entities.containsKey(coordinate);
     }
 
     public List<Entity> getEntitiesAsList() {
@@ -54,14 +55,26 @@ public class EntityManager {
         return entitiesAsList;
     }
 
-    public Map<Coordinate, Entity> getCreaturesMap() {
-        Map<Coordinate, Entity> creatures = new HashMap<>();
+    public Map<Coordinate, Creature> getCreaturesMap() {
+        Map<Coordinate, Creature> creatures = new HashMap<>();
         for (var entry : entities.entrySet()) {
             if (entry.getValue() instanceof Creature creature) {
                 creatures.put(entry.getKey(), creature);
             }
         }
         return creatures;
+    }
+
+    public Map<Coordinate, IEdible> getEdiblesMap() {
+        Map<Coordinate, IEdible> edibles = new HashMap<>();
+
+        for (var entry : entities.entrySet()) {
+            if (entry.getValue() instanceof IEdible edible) {
+                edibles.put(entry.getKey(), edible);
+            }
+        }
+
+        return edibles;
     }
 
     public Map<Class<? extends Entity>, Integer> getSpawnedEntities() {

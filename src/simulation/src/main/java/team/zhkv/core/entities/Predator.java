@@ -12,21 +12,14 @@ public class Predator extends Creature implements IDamager {
     }
 
     @Override
-    public void damage(IDamageble victim) {
-        victim.takeDamage(damage);
-    }
-
-    @Override
-    public int getDamagePower() {
-        return damage;
-    }
-
-    @Override
-    public void eat(IEdible herbivore) {
-        if (hp < 50) {
-            hp += hp;
-        } else if (hp < 100) {
-            hp += damage;
+    public void giveDamage(IDamageble victim) {
+        if (victim != null) {
+            setHp(getHp() + victim.takeDamage(damage));
         }
+    }
+
+    @Override
+    public void eat(IEdible edible) {
+        edible.setEated();
     }
 }

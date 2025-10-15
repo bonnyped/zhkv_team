@@ -32,8 +32,8 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
         return isEated;
     }
 
-    public void findPath(GameMap gm, Coordinate oldLocation) {
-        pathfinder.build(this, gm, oldLocation);
+    public void findPath(GameMap gm, Coordinate oldCoordinate) {
+        pathfinder.build(this, gm, oldCoordinate);
     }
 
     public Class<? extends Entity> getFood() {
@@ -45,7 +45,7 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
     }
 
     public void setHp(int hp) {
-        this.hp = hp;
+        this.hp = hp > 100 ? 100 : hp;
     }
 
     public int getSpeed() {
@@ -59,26 +59,7 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
                 .orElse(null);
     }
 
-    private Coordinate applySpeedToPath(GameMap gm, List<Coordinate> path) {
-        if (isSpeedOrPathSizeEqualsOneCell(path.size())) {
-            return path.get(0);
-        } else if (isSpeedGreaterThenOneCell()
-                && isTargetFood(gm.getEntity(path.get(speed - 1)))) {
-            return path.get(speed - 2);
-        } else {
-            return path.get(speed - 1);
-        }
-    }
-
-    private boolean isSpeedOrPathSizeEqualsOneCell(int size) {
-        return speed == 1 || size == 1;
-    }
-
-    private boolean isSpeedGreaterThenOneCell() {
-        return speed > 1;
-    }
-
-    private boolean isTargetFood(Entity target) {
-        return target != null && target.getClass() == food;
+    public Entity getGoal() {
+        return pathfinder.getCellToInteraction();
     }
 }
