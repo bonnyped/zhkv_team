@@ -5,8 +5,10 @@ import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.actions.move.CoordinateManager;
+import team.zhkv.core.entities.Creature;
 import team.zhkv.core.entities.Entity;
 import team.zhkv.core.entities.EntityManager;
+import team.zhkv.core.interfaces.IEdible;
 
 public class GameMap {
     public static final int DX = 20;
@@ -52,8 +54,12 @@ public class GameMap {
         return cm.getFreeCoordinate();
     }
 
-    public Map<Coordinate, Entity> getCreaturesMap() {
+    public Map<Coordinate, Creature> getCreaturesMap() {
         return em.getCreaturesMap();
+    }
+
+    public Map<Coordinate, IEdible> getEdiblesMap() {
+        return em.getEdiblesMap();
     }
 
     public int differenceBetweenFactAndMinCounts(Class<? extends Entity> clazz,
@@ -76,6 +82,10 @@ public class GameMap {
 
     public void updateCreatureCoordinate(Coordinate src, Coordinate target) {
         entities.put(target, entities.remove(src));
+    }
+
+    public void removeEatedEntity(Coordinate toRemove) {
+        em.removeEntity(toRemove);
     }
 
     private boolean isFactLesserHalfRequered(int fact, int requered) {
