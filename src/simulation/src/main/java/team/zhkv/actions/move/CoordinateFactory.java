@@ -15,15 +15,15 @@ public class CoordinateFactory {
     }
 
     public Coordinate buildCoordinate() {
-        Set<Coordinate> buildedLocations = new HashSet<>();
+        Set<Coordinate> buildedCoordinates = new HashSet<>();
         int boardX = GameMap.DX;
         int boardY = GameMap.DY;
         Coordinate newCoordinate = new Coordinate(random.nextInt(boardX),
                 random.nextInt(boardY));
 
         while (occupiedCoordinates.contains(newCoordinate)
-                || buildedLocations.contains(newCoordinate)) {
-            buildedLocations.add(newCoordinate);
+                || buildedCoordinates.contains(newCoordinate)) {
+            buildedCoordinates.add(newCoordinate);
             newCoordinate.setCoordinate(random.nextInt(boardX),
                     random.nextInt(boardY));
         }

@@ -61,6 +61,10 @@ public class Pathfinder {
         }
     }
 
+    public Entity getCellToInteraction() {
+        return path.size() == 1 ? gm.getEntity(path.get(0)) : null;
+    }
+
     private List<Coordinate> addNearestNeighbors(Coordinate current) {
         List<Coordinate> neighbors = new ArrayList<>();
         for (var direction : Direction.values()) {
@@ -121,10 +125,10 @@ public class Pathfinder {
             path.add(prev);
             prev = allPaths.get(prev);
         }
-        reversePathAndRemoveStartLocation();
+        reversePathAndRemoveStartCoordinate();
     }
 
-    private void reversePathAndRemoveStartLocation() {
+    private void reversePathAndRemoveStartCoordinate() {
         Collections.reverse(path);
         path.remove(0);
     }

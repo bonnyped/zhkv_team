@@ -19,18 +19,10 @@ public class TurnDamage extends Turn {
             for (var entry : creatures.entrySet()) {
                 if (entry.getValue() instanceof IDamager damager) {
                     Creature creature = (Creature) entry.getValue();
-
+                    IDamageble damagable = (IDamageble) creature.getGoal();
+                    damager.giveDamage(damagable);
                 }
-
             }
-        }
-    }
-
-    private void damageIfPossible(GameMap gm, Entity active, Entity passive,
-            Coordinate target) {
-        if (active instanceof IDamager iDamager
-                && passive instanceof IDamageble iDamageble) {
-            iDamager.damage(iDamageble);
         }
     }
 }
