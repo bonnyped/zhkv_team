@@ -8,5 +8,5 @@ import java.util.Map;
 import team.zhkv.actions.move.Coordinate;
 
 public interface IMoveble {
-    void makeMove(GameMap gm, Map.Entry<Coordinate, List<Coordinate>> entry);
+    void makeMove();
 }

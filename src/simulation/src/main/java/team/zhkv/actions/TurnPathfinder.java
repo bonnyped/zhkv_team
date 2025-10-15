@@ -28,15 +28,10 @@ public class TurnPathfinder extends Turn {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
             Map<Coordinate, Entity> creaturesMap = gm.getCreaturesMap();
-            Map<Coordinate, List<Coordinate>> paths = gm.getEntitiesToMove();
-            paths.clear();
 
             for (var entry : creaturesMap.entrySet()) {
                 Creature creature = (Creature) entry.getValue();
-                List<Coordinate> path = creature.findPath(gm, entry.getKey());
-                if (path != null) {
-                    paths.put(entry.getKey(), path);
-                }
+                creature.findPath(gm, entry.getKey());
             }
         } else {
             logger.error("""

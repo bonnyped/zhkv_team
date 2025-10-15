@@ -1,6 +1,5 @@
 package team.zhkv.actions;
 
-import java.util.List;
 import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
@@ -13,22 +12,12 @@ public class TurnMove extends Turn {
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            Map<Coordinate, Entity> entities = gm.getEntities();
-            Map<Coordinate, List<Coordinate>> paths = gm.getEntitiesToMove();
+            Map<Coordinate, Entity> creatures = gm.getCreaturesMap();
 
-            for (var entry : paths.entrySet()) {
-                Creature creature = (Creature) entities.get(entry.getKey());
-                creature.makeMove(gm, entry);
+            for (var entry : creatures.entrySet()) {
+                Creature creature = (Creature) entry.getValue();
+                creature.makeMove();
             }
-
-            /*
-             * if (gm.getEntity(target) == null) {
-             * Entity entity = gm.getEntity(start);
-             * var map = gm.getMapByEntity(entity.getClass());
-             * map.remove(start);
-             * map.put(target, entity);
-             * }
-             */
         }
     }
 }

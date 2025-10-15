@@ -1,8 +1,6 @@
 package team.zhkv.map;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
@@ -17,7 +15,6 @@ public class GameMap {
     private final Map<Coordinate, Entity> entities;
     private final EntityManager em;
     private final CoordinateManager cm;
-    private final Map<Coordinate, List<Coordinate>> entitiesToMove;
 
     private int turnCount;
 
@@ -26,12 +23,7 @@ public class GameMap {
         em = new EntityManager();
         cm = new CoordinateManager(em.getEntities()
                 .keySet());
-        entitiesToMove = new HashMap<>();
         turnCount = 0;
-    }
-
-    public Map<Coordinate, List<Coordinate>> getEntitiesToMove() {
-        return entitiesToMove;
     }
 
     public int getTurnCount() {
@@ -64,7 +56,8 @@ public class GameMap {
         return em.getCreaturesMap();
     }
 
-    public int differenceBetweenFactAndMinCounts(Class<? extends Entity> clazz, int requered) {
+    public int differenceBetweenFactAndMinCounts(Class<? extends Entity> clazz,
+            int requered) {
         int fact = getEntityFactCount(clazz);
         return isFactLesserHalfRequered(fact, requered) ? requered - fact : 0;
     }
@@ -77,12 +70,16 @@ public class GameMap {
         return em.getNewEntity(clazz);
     }
 
-    private boolean isFactLesserHalfRequered(int fact, int requered) {
-        return fact < requered / 2;
-    }
-
     public Coordinate getBounds() {
         return new Coordinate(DX, DY);
+    }
+
+    public void updateCreatureCoordinate(Coordinate src, Coordinate target) {
+        entities.put(target, entities.remove(src));
+    }
+
+    private boolean isFactLesserHalfRequered(int fact, int requered) {
+        return fact < requered / 2;
     }
 
     private int getEntityFactCount(Class<? extends Entity> clazz) {

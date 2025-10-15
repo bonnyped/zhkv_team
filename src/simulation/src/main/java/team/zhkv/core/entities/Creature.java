@@ -1,8 +1,6 @@
 package team.zhkv.core.entities;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import team.zhkv.map.GameMap;
 import team.zhkv.actions.move.Pathfinder;
@@ -15,6 +13,7 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
     private Class<? extends Entity> food;
     private int speed;
     private boolean isEated;
+
     private Pathfinder pathfinder;
 
     protected Creature(int hp, Class<? extends Entity> food, int speed) {
@@ -25,19 +24,16 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
     }
 
     @Override
-    public void makeMove(GameMap gm, Entry<Coordinate, List<Coordinate>> entry) {
-        var entities = gm.getEntities();
-        if(/* target == empty */) {
+    public void makeMove() {
+        pathfinder.bySpeedOrTargetCell(speed);
+    }
 
-        } else if(/* target == food && food == edable for creature && src ! nearest negbor target */) {
-        } else if(/*  */) {
-            
-        }
-        }
+    public boolean isEated() {
+        return isEated;
+    }
 
-    public List<Coordinate> findPath(GameMap gm, Coordinate oldLocation) {
-        pathfinder.build(gm, oldLocation, food);
-        return pathfinder.getPath();
+    public void findPath(GameMap gm, Coordinate oldLocation) {
+        pathfinder.build(this, gm, oldLocation);
     }
 
     public Class<? extends Entity> getFood() {

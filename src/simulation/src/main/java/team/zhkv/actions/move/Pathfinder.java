@@ -17,8 +17,8 @@ import team.zhkv.core.interfaces.IEdible;
 
 public class Pathfinder {
     private GameMap gm;
-    private Class<? extends Entity> target;
-    private Coordinate goal;
+    private Coordinate currentCoordinate;
+    private Coordinate targetCoordinate;
     private Creature creature;
     private Map<Coordinate, Coordinate> allPaths;
     private List<Coordinate> path;
@@ -32,24 +32,33 @@ public class Pathfinder {
         checked = new HashSet<>();
     }
 
-    public Pathfinder build(GameMap gm,
-            Coordinate current, Class<? extends Entity> target) {
+    public Pathfinder build(Creature creature, GameMap gm,
+            Coordinate currentCoordinate) {
         this.gm = gm;
-        this.target = target;
-        creature = (Creature) gm.getEntity(current);
-        checked.add(current);
-        forCheck.addAll(addNearestNeighbors(current));
-        allPaths.put(null, current);
-        goal = searchPath();
+        this.creature = creature;
+        this.currentCoordinate = currentCoordinate;
+        checked.add(currentCoordinate);
+        forCheck.addAll(addNearestNeighbors(currentCoordinate));
+        allPaths.put(null, currentCoordinate);
+        targetCoordinate = searchPath();
 
         return this;
     }
 
     public List<Coordinate> getPath() {
-        if (goal != null) {
+        if (targetCoordinate != null) {
             buildPath();
         }
         return path;
+    }
+
+    public void bySpeedOrTargetCell(int speed) {
+        if (!path.isEmpty() && path.size() > 1) {
+            targetCoordinate = speed < path.size()
+                    ? path.get(speed - 1)
+                    : path.get(path.size() - 2);
+            gm.updateCreatureCoordinate(currentCoordinate, targetCoordinate);
+        }
     }
 
     private List<Coordinate> addNearestNeighbors(Coordinate current) {
@@ -101,12 +110,12 @@ public class Pathfinder {
 
     private boolean isNeighborEqualsTarget(Coordinate neighbor) {
         return gm.getEntity(neighbor) instanceof Entity
-                && gm.getEntity(neighbor).getClass() == target;
+                && gm.getEntity(neighbor).getClass() == creature.getFood();
     }
 
     private void buildPath() {
-        path.add(goal);
-        Coordinate prev = allPaths.get(goal);
+        path.add(targetCoordinate);
+        Coordinate prev = allPaths.get(targetCoordinate);
 
         while (prev != allPaths.get(null)) {
             path.add(prev);
