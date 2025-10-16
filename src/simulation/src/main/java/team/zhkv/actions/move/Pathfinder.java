@@ -41,23 +41,20 @@ public class Pathfinder {
         forCheck.addAll(addNearestNeighbors(currentCoordinate));
         allPaths.put(null, currentCoordinate);
         targetCoordinate = searchPath();
+        if (targetCoordinate != null) {
+            buildPath();
+        }
 
         return this;
     }
 
-    public List<Coordinate> getPath() {
-        if (targetCoordinate != null) {
-            buildPath();
-        }
-        return path;
-    }
-
-    public void bySpeedOrTargetCell(int speed) {
-        if (!path.isEmpty() && path.size() > 1) {
+    public void moveBySpeedOrTargetCell(int speed) {
+        if (path.size() > 1) {
             targetCoordinate = speed < path.size()
                     ? path.get(speed - 1)
                     : path.get(path.size() - 2);
             gm.updateCreatureCoordinate(currentCoordinate, targetCoordinate);
+            path.clear();
         }
     }
 
@@ -103,6 +100,7 @@ public class Pathfinder {
         while (!forCheck.isEmpty()) {
             Coordinate neighbor = forCheck.pollFirst();
             if (isNeighborEqualsTarget(neighbor)) {
+                checked.clear();
                 forCheck.clear();
                 return neighbor;
             } else {
@@ -125,12 +123,7 @@ public class Pathfinder {
             path.add(prev);
             prev = allPaths.get(prev);
         }
-        reversePathAndRemoveStartCoordinate();
-    }
-
-    private void reversePathAndRemoveStartCoordinate() {
         Collections.reverse(path);
-        path.remove(0);
     }
 
 }

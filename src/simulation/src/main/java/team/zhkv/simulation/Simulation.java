@@ -15,7 +15,7 @@ import team.zhkv.actions.*;
 import team.zhkv.rendering.*;
 
 public class Simulation implements Runnable {
-        private static final long TURN_DELAY_MS = 2000;
+        private static final long TURN_DELAY_MS = 1500;
         private static final Logger logger = LoggerFactory.getLogger(
                         Simulation.class);
 
@@ -49,6 +49,9 @@ public class Simulation implements Runnable {
                 try {
                         initialize();
                         startSimulation();
+                        while (running) {
+                                Thread.sleep(200); // или более "тонкое" ожидание через wait()/notify()
+                        }
                 } catch (Exception e) {
                         logger.warn("Simulation error");
                 } finally {
@@ -63,7 +66,6 @@ public class Simulation implements Runnable {
                 initActions.stream()
                                 .map(Init.class::cast)
                                 .forEach(init -> init.action(gm));
-
                 startInputListner();
         }
 
@@ -108,7 +110,7 @@ public class Simulation implements Runnable {
 
         private void startSimulation() {
                 simulationExecutor = Executors.newSingleThreadScheduledExecutor(r -> {
-                        Thread thread = new Thread("Simulation-Thread");
+                        Thread thread = new Thread(r, "Simulation-Thread");
                         thread.setDaemon(false);
                         return thread;
                 });
@@ -119,14 +121,7 @@ public class Simulation implements Runnable {
                                 TURN_DELAY_MS,
                                 TimeUnit.MILLISECONDS);
 
-                try {
-                        while (running) {
-                                Thread.sleep(100);
-                        }
-                } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        logger.debug("Main Simulation thread was interrupted");
-                }
+                System.out.println("BUY!!");
         }
 
         private void executeTurn() {
@@ -136,7 +131,6 @@ public class Simulation implements Runnable {
                         turnActions.stream()
                                         .map(Turn.class::cast)
                                         .forEach(turn -> turn.action(gm));
-
                 }
         }
 

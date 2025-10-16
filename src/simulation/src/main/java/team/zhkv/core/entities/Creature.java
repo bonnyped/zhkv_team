@@ -25,7 +25,7 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
 
     @Override
     public void makeMove() {
-        pathfinder.bySpeedOrTargetCell(speed);
+        pathfinder.moveBySpeedOrTargetCell(speed);
     }
 
     public boolean isEated() {

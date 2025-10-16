@@ -20,9 +20,9 @@ public class Renderer implements IRenderable {
 
     private void renderField(Map<Coordinate, Entity> coordinates) {
         Coordinate currentCoordinate = new Coordinate();
-        for (int i = 0; i < GameMap.DX; i++) {
-            for (int j = 0; j < GameMap.DY; j++) {
-                currentCoordinate.setCoordinate(i, j);
+        for (int i = 0; i < GameMap.DY; i++) {
+            for (int j = 0; j < GameMap.DX; j++) {
+                currentCoordinate.setCoordinate(j, i);
                 System.out.print(entityForRender(
                         coordinates.get(currentCoordinate)));
             }

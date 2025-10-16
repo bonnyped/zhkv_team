@@ -11,8 +11,8 @@ import team.zhkv.core.entities.EntityManager;
 import team.zhkv.core.interfaces.IEdible;
 
 public class GameMap {
-    public static final int DX = 20;
-    public static final int DY = 50;
+    public static final int DX = 50;
+    public static final int DY = 20;
 
     private final Map<Coordinate, Entity> entities;
     private final EntityManager em;
@@ -22,7 +22,7 @@ public class GameMap {
 
     public GameMap() {
         entities = new HashMap<>();
-        em = new EntityManager();
+        em = new EntityManager(entities);
         cm = new CoordinateManager(em.getEntities()
                 .keySet());
         turnCount = 0;

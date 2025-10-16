@@ -13,10 +13,9 @@ public class TurnEat extends Turn {
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            Map<Coordinate, Entity> creatures = gm.getCreaturesMap();
+            Map<Coordinate, Creature> creatures = gm.getCreaturesMap();
 
-            for (var entry : creatures.entrySet()) {
-                Creature creature = (Creature) entry.getValue();
+            for (var creature : creatures.values()) {
                 Entity entity = creature.getGoal();
                 if (entity instanceof IEdible edible
                         && creature.getFood() == edible.getClass()) {

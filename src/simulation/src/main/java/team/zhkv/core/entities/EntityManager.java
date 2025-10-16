@@ -9,14 +9,19 @@ import team.zhkv.actions.move.Coordinate;
 import team.zhkv.core.interfaces.IEdible;
 
 public class EntityManager {
-    private final Map<Class<? extends Entity>, Integer> toSpawn = Map.of(Tree.class, 5,
-            Rock.class, 5,
-            Grass.class, 5,
-            Herbivore.class, 5,
-            Predator.class, 5);
+    private final Map<Class<? extends Entity>, Integer> toSpawn;
+    private final Map<Coordinate, Entity> entities;
+    private final EntityFactory ef;
 
-    private final Map<Coordinate, Entity> entities = new HashMap<>();
-    private final EntityFactory ef = new EntityFactory();
+    public EntityManager(Map<Coordinate, Entity> entities) {
+        toSpawn = Map.of(Tree.class, 5,
+                Rock.class, 5,
+                Grass.class, 5,
+                Herbivore.class, 5,
+                Predator.class, 5);
+        this.entities = entities;
+        ef = new EntityFactory();
+    }
 
     public Map<Coordinate, Entity> getEntities() {
         return entities;

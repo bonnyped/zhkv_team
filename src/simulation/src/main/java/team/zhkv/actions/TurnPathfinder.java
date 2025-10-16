@@ -22,7 +22,6 @@ public class TurnPathfinder extends Turn {
             for (var entry : creaturesMap.entrySet()) {
                 entry.getValue().findPath(gm, entry.getKey());
             }
-
         } else {
             logger.error("""
                     Непарвильный тип класса подается в качестве аргумента в
