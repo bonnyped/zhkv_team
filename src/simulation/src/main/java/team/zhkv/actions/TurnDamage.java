@@ -16,8 +16,8 @@ public class TurnDamage extends Turn {
             Map<Coordinate, Creature> creatures = gm.getCreaturesMap();
 
             for (var creature : creatures.values()) {
-                if (creature instanceof IDamager damager) {
-                    IDamageble damagable = (IDamageble) creature.getGoal();
+                if (creature instanceof IDamager damager
+                        && creature.getGoal() instanceof IDamageble damagable) {
                     damager.giveDamage(damagable);
                 }
             }

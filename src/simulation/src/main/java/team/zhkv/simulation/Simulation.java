@@ -15,7 +15,7 @@ import team.zhkv.actions.*;
 import team.zhkv.rendering.*;
 
 public class Simulation implements Runnable {
-        private static final long TURN_DELAY_MS = 1500;
+        private static final long TURN_DELAY_MS = 500;
         private static final Logger logger = LoggerFactory.getLogger(
                         Simulation.class);
 

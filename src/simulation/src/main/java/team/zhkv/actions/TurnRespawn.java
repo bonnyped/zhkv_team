@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import team.zhkv.map.GameMap;
 import team.zhkv.core.entities.Entity;
-import team.zhkv.core.interfaces.Respawnable;
 import team.zhkv.actions.move.Coordinate;
 
 public class TurnRespawn extends Turn {
@@ -19,14 +18,12 @@ public class TurnRespawn extends Turn {
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            for (var entry : gm.getSpawnedEntities().entrySet()) {
-                if (isRespawnable(entry.getKey())) {
-                    gm.getEntities().putAll(respawnEntities(gm, entry));
-                }
+            for (var entry : gm.getRespawnableEntities().entrySet()) {
+                gm.getEntities().putAll(respawnEntities(gm, entry));
             }
         } else {
             logger.error("""
-                    Непарвильный тип класса подается в качестве аргумениты в
+                    Непарвильный тип класса подается в качестве аргумента в
                     класс TurnRespawn.
                     """);
         }
@@ -43,9 +40,5 @@ public class TurnRespawn extends Turn {
         }
 
         return entitiesToRespawn;
-    }
-
-    private boolean isRespawnable(Class<? extends Entity> clazz) {
-        return clazz.isAssignableFrom(Respawnable.class);
     }
 }

@@ -68,8 +68,8 @@ public class GameMap {
         return isFactLesserHalfRequered(fact, requered) ? requered - fact : 0;
     }
 
-    public Map<Class<? extends Entity>, Integer> getSpawnedEntities() {
-        return em.getSpawnedEntities();
+    public Map<Class<? extends Entity>, Integer> getRespawnableEntities() {
+        return em.getRespawnableEntities();
     }
 
     public Entity getEntityToSpawn(Class<? extends Entity> clazz) {
@@ -80,8 +80,11 @@ public class GameMap {
         return new Coordinate(DX, DY);
     }
 
+    @SuppressWarnings("java:S3824")
     public void updateCreatureCoordinate(Coordinate src, Coordinate target) {
-        entities.put(target, entities.remove(src));
+        if (!entities.containsKey(target)) {
+            entities.put(target, entities.remove(src));
+        }
     }
 
     public void removeEatedEntity(Coordinate toRemove) {
@@ -89,7 +92,7 @@ public class GameMap {
     }
 
     private boolean isFactLesserHalfRequered(int fact, int requered) {
-        return fact < requered / 2;
+        return fact <= requered / 2;
     }
 
     private int getEntityFactCount(Class<? extends Entity> clazz) {

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.core.interfaces.IEdible;
+import team.zhkv.core.interfaces.Respawnable;
 
 public class EntityManager {
     private final Map<Class<? extends Entity>, Integer> toSpawn;
@@ -82,8 +83,14 @@ public class EntityManager {
         return edibles;
     }
 
-    public Map<Class<? extends Entity>, Integer> getSpawnedEntities() {
-        return toSpawn;
+    public Map<Class<? extends Entity>, Integer> getRespawnableEntities() {
+        Map<Class<? extends Entity>, Integer> respawnableEntities = new HashMap<>();
+        for (var entry : toSpawn.entrySet()) {
+            if (Respawnable.class.isAssignableFrom(entry.getKey())) {
+                respawnableEntities.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return respawnableEntities;
     }
 
     public Entity getNewEntity(Class<? extends Entity> clazz) {
