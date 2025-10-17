@@ -13,11 +13,11 @@ public class TurnDamage extends Turn {
     public void action(Object obj) {
         if (obj.getClass() == GameMap.class) {
             GameMap gm = (GameMap) obj;
-            Map<Coordinate, Creature> creatures = gm.getCreaturesMap();
+            Map<Coordinate, IDamager> creatures = gm.getDamagersMap();
 
-            for (var creature : creatures.values()) {
+            for (var damager : creatures.values()) {
                 if (creature instanceof IDamager damager
-                        && creature.getGoal() instanceof IDamageble damagable) {
+                        && gm.getEntity(creature.getGoalCoordinate()) instanceof IDamageble damagable) {
                     damager.giveDamage(damagable);
                 }
             }

@@ -10,13 +10,13 @@ public enum Direction {
     DOWN_LEFT(new Coordinate(-1, 1)),
     DOWN_RIGHT(new Coordinate(1, 1));
 
-    private final Coordinate delta;
+    private final Coordinate shift;
 
-    Direction(Coordinate delta) {
-        this.delta = delta;
+    Direction(Coordinate shift) {
+        this.shift = shift;
     }
 
-    public Coordinate getDelta() {
-        return delta;
+    public Coordinate getShift() {
+        return shift;
     }
 }

@@ -36,7 +36,8 @@ public class TurnRespawn extends Turn {
         int diff = gm.differenceBetweenFactAndMinCounts(clazz, entry.getValue());
 
         for (int i = 0; i < diff; i++) {
-            entitiesToRespawn.put(gm.getFreeCoordinate(), gm.getEntityToSpawn(clazz));
+            entitiesToRespawn.put(gm.getFreeCoordinate(),
+                    gm.getEntityToSpawn(clazz));
         }
 
         return entitiesToRespawn;

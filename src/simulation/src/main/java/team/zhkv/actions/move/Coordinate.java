@@ -2,6 +2,8 @@ package team.zhkv.actions.move;
 
 import java.util.Objects;
 
+import team.zhkv.map.GameMap;
+
 public class Coordinate {
     private int dx;
     private int dy;
@@ -25,11 +27,11 @@ public class Coordinate {
         return this;
     }
 
-    public boolean isInBounds(Coordinate fieldSize) {
+    public boolean isInBounds() {
         return dx >= 0
-                && dx < fieldSize.dx
+                && dx < GameMap.DX
                 && dy >= 0
-                && dy < fieldSize.dy;
+                && dy < GameMap.DY;
     }
 
     @Override

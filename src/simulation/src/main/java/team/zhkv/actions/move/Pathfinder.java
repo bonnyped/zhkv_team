@@ -17,9 +17,10 @@ import team.zhkv.core.interfaces.IEdible;
 
 public class Pathfinder {
     private GameMap gm;
+    private Creature creature;
     private Coordinate currentCoordinate;
     private Coordinate targetCoordinate;
-    private Creature creature;
+
     private Map<Coordinate, Coordinate> allPaths;
     private List<Coordinate> path;
     private Deque<Coordinate> forCheck;
@@ -49,25 +50,26 @@ public class Pathfinder {
     }
 
     public void moveBySpeedOrTargetCell(int speed) {
-        if (path.size() > 1) {
-            targetCoordinate = speed < path.size()
-                    ? path.get(speed - 1)
-                    : path.get(path.size() - 2);
+        targetCoordinate = path.stream()
+                .limit(speed)
+                .reduce((a, b) -> b)
+                .orElse(null);
+        if (targetCoordinate != null) {
             gm.updateCreatureCoordinate(currentCoordinate, targetCoordinate);
             path.clear();
         }
     }
 
-    public Entity getCellToInteraction() {
-        return path.size() == 1 ? gm.getEntity(path.get(0)) : null;
+    public Coordinate getGoalCoordinate() {
+        return path.size() == 1 ? path.get(0) : null;
     }
 
     private List<Coordinate> addNearestNeighbors(Coordinate current) {
         List<Coordinate> neighbors = new ArrayList<>();
         for (var direction : Direction.values()) {
-            Coordinate neighbor = current.getNeighbor(direction.getDelta());
+            Coordinate neighbor = current.getNeighbor(direction.getShift());
             if (isNotInChecked(neighbor)
-                    && neighbor.isInBounds(gm.getBounds())
+                    && neighbor.isInBounds()
                     && (neighborIsFreeCell(neighbor)
                             || isNeighborEdibleForCreature(creature,
                                     neighbor))) {
@@ -124,6 +126,7 @@ public class Pathfinder {
             prev = allPaths.get(prev);
         }
         Collections.reverse(path);
+        allPaths.clear();
     }
 
 }
