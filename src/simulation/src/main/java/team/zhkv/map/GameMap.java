@@ -8,21 +8,20 @@ import team.zhkv.actions.move.CoordinateManager;
 import team.zhkv.core.entities.Creature;
 import team.zhkv.core.entities.Entity;
 import team.zhkv.core.entities.EntityManager;
+import team.zhkv.core.interfaces.IDamager;
 import team.zhkv.core.interfaces.IEdible;
 
 public class GameMap {
     public static final int DX = 50;
     public static final int DY = 20;
 
-    private final Map<Coordinate, Entity> entities;
     private final EntityManager em;
     private final CoordinateManager cm;
 
     private int turnCount;
 
     public GameMap() {
-        entities = new HashMap<>();
-        em = new EntityManager(entities);
+        em = new EntityManager(new HashMap<>());
         cm = new CoordinateManager(em.getEntities()
                 .keySet());
         turnCount = 0;
@@ -37,7 +36,7 @@ public class GameMap {
     }
 
     public Entity getEntity(Coordinate coordinate) {
-        return entities.get(coordinate);
+        return em.getEntity(coordinate);
     }
 
     public Map<Coordinate, Entity> getEntities() {
@@ -46,7 +45,7 @@ public class GameMap {
 
     public void spawnAllEntities() {
         for (Entity entity : em.getEntitiesAsList()) {
-            entities.put(getFreeCoordinate(), entity);
+            em.putEntity(getFreeCoordinate(), entity);
         }
     }
 
@@ -60,6 +59,10 @@ public class GameMap {
 
     public Map<Coordinate, IEdible> getEdiblesMap() {
         return em.getEdiblesMap();
+    }
+
+    public Map<Coordinate, IDamager> getDamagersMap() {
+        return em.getDamagersMap();
     }
 
     public int differenceBetweenFactAndMinCounts(Class<? extends Entity> clazz,
@@ -76,14 +79,10 @@ public class GameMap {
         return em.getNewEntity(clazz);
     }
 
-    public Coordinate getBounds() {
-        return new Coordinate(DX, DY);
-    }
-
     @SuppressWarnings("java:S3824")
     public void updateCreatureCoordinate(Coordinate src, Coordinate target) {
-        if (!entities.containsKey(target)) {
-            entities.put(target, entities.remove(src));
+        if (!em.isOccupiedCoordinate(target)) {
+            em.putEntity(target, em.removeEntity(src));
         }
     }
 
@@ -96,7 +95,7 @@ public class GameMap {
     }
 
     private int getEntityFactCount(Class<? extends Entity> clazz) {
-        return Math.toIntExact(entities.values()
+        return Math.toIntExact(em.getEdiblesMap().values()
                 .stream()
                 .filter(clazz::isInstance)
                 .count());
