@@ -1,13 +1,13 @@
 package team.zhkv.core.entities;
 
 import team.zhkv.core.interfaces.IEdible;
-import team.zhkv.core.interfaces.Respawnable;
+import team.zhkv.core.interfaces.IRespawnable;
 
-public class Grass extends Entity implements IEdible, Respawnable {
+public class Grass extends Entity implements IEdible, IRespawnable {
     private boolean isEated;
 
     @Override
-    public boolean isEated() {
+    public boolean isEaten() {
         return isEated;
     }
 

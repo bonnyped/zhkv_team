@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
+import team.zhkv.core.interfaces.IDamager;
 import team.zhkv.core.interfaces.IEdible;
-import team.zhkv.core.interfaces.Respawnable;
+import team.zhkv.core.interfaces.IRespawnable;
 
 public class EntityManager {
     private final Map<Class<? extends Entity>, Integer> toSpawn;
@@ -28,22 +29,22 @@ public class EntityManager {
         return entities;
     }
 
-    public void addEntity(Coordinate coordinate, Entity entity) {
-        if (isOccupied(coordinate)) {
+    public void putEntity(Coordinate coordinate, Entity entity) {
+        if (isOccupiedCoordinate(coordinate)) {
             throw new IllegalStateException("Coordinate is already occupied");
         }
         entities.put(coordinate, entity);
     }
 
-    public void removeEntity(Coordinate coordinate) {
-        entities.remove(coordinate);
+    public Entity removeEntity(Coordinate coordinate) {
+        return entities.remove(coordinate);
     }
 
     public Entity getEntity(Coordinate coordinate) {
         return entities.get(coordinate);
     }
 
-    public boolean isOccupied(Coordinate coordinate) {
+    public boolean isOccupiedCoordinate(Coordinate coordinate) {
         return entities.containsKey(coordinate);
     }
 
@@ -83,10 +84,16 @@ public class EntityManager {
         return edibles;
     }
 
+    public Map<Coordinate, IDamager> getDamagersMap() {
+        Map<Coordinate, IDamager> damager = new HashMap<>();
+
+        return damager;
+    }
+
     public Map<Class<? extends Entity>, Integer> getRespawnableEntities() {
         Map<Class<? extends Entity>, Integer> respawnableEntities = new HashMap<>();
         for (var entry : toSpawn.entrySet()) {
-            if (Respawnable.class.isAssignableFrom(entry.getKey())) {
+            if (IRespawnable.class.isAssignableFrom(entry.getKey())) {
                 respawnableEntities.put(entry.getKey(), entry.getValue());
             }
         }
