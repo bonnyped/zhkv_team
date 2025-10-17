@@ -1,12 +1,10 @@
 
 package team.zhkv.rendering;
 
-import team.zhkv.map.GameMap;
-import team.zhkv.core.entities.*;
-
-// import java.util.HashMap;
 import java.util.Map;
 
+import team.zhkv.map.GameMap;
+import team.zhkv.core.entities.*;
 import team.zhkv.actions.move.Coordinate;
 
 public class Renderer implements IRenderable {
@@ -20,22 +18,15 @@ public class Renderer implements IRenderable {
     }
 
     private void renderField(Map<Coordinate, Entity> coordinates) {
-        // Map<Integer, Integer> herbivoresHP = new HashMap<>();
-        // int count = 1;
         Coordinate currentCoordinate = new Coordinate();
         for (int i = 0; i < GameMap.DY; i++) {
             for (int j = 0; j < GameMap.DX; j++) {
                 currentCoordinate.setCoordinate(j, i);
                 System.out.print(entityForRender(
                         coordinates.get(currentCoordinate)));
-                // if (coordinates.get(currentCoordinate) instanceof Herbivore) {
-                // Creature creature = (Creature) coordinates.get(currentCoordinate);
-                // herbivoresHP.put(count++, creature.getHp());
-                // }
             }
             System.out.println();
         }
-        // System.out.println(herbivoresHP);
     }
 
     private void printSeparator(int iterateCount) {
