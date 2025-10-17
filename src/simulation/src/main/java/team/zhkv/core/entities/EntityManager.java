@@ -7,6 +7,7 @@ import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.core.interfaces.IDamager;
+import team.zhkv.core.interfaces.IEater;
 import team.zhkv.core.interfaces.IEdible;
 import team.zhkv.core.interfaces.IRespawnable;
 
@@ -78,6 +79,18 @@ public class EntityManager {
         for (var entry : entities.entrySet()) {
             if (entry.getValue() instanceof IEdible edible) {
                 edibles.put(entry.getKey(), edible);
+            }
+        }
+
+        return edibles;
+    }
+
+    public Map<Coordinate, IEater> getEatersMap() {
+        Map<Coordinate, IEater> edibles = new HashMap<>();
+
+        for (var entry : entities.entrySet()) {
+            if (entry.getValue() instanceof IEater eater) {
+                edibles.put(entry.getKey(), eater);
             }
         }
 

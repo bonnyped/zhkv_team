@@ -56,7 +56,7 @@ public class Pathfinder {
                 .orElse(null);
         if (targetCoordinate != null) {
             gm.updateCreatureCoordinate(currentCoordinate, targetCoordinate);
-            path.clear();
+            // path.clear();
         }
     }
 
@@ -118,6 +118,7 @@ public class Pathfinder {
     }
 
     private void buildPath() {
+        path.clear();
         path.add(targetCoordinate);
         Coordinate prev = allPaths.get(targetCoordinate);
 

@@ -9,6 +9,7 @@ import team.zhkv.core.entities.Creature;
 import team.zhkv.core.entities.Entity;
 import team.zhkv.core.entities.EntityManager;
 import team.zhkv.core.interfaces.IDamager;
+import team.zhkv.core.interfaces.IEater;
 import team.zhkv.core.interfaces.IEdible;
 
 public class GameMap {
@@ -59,6 +60,10 @@ public class GameMap {
 
     public Map<Coordinate, IEdible> getEdiblesMap() {
         return em.getEdiblesMap();
+    }
+
+    public Map<Coordinate, IEater> getEatersMap() {
+        return em.getEatersMap();
     }
 
     public Map<Coordinate, IDamager> getDamagersMap() {

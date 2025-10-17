@@ -1,6 +1,9 @@
 package team.zhkv.core.interfaces;
 
-public interface IDamager {
+import team.zhkv.actions.move.Coordinate;
 
+public interface IDamager {
     void giveDamage(IDamageble victim);
+
+    Coordinate getGoalCoordinate();
 }
