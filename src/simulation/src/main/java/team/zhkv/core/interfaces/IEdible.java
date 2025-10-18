@@ -4,4 +4,6 @@ public interface IEdible {
     void setEated();
 
     boolean isEaten();
+
+    int getHp();
 }
