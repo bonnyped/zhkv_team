@@ -1,21 +1,23 @@
 package team.zhkv.actions;
 
-import java.util.Map;
+import java.util.List;
 
-import team.zhkv.actions.move.Coordinate;
+import team.zhkv.core.entities.Entity;
 import team.zhkv.core.interfaces.IDamageble;
 import team.zhkv.core.interfaces.IDamager;
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 
 public class TurnDamage extends Turn {
     @Override
     public void action(Object obj) {
-        if (obj.getClass() == GameMap.class) {
-            GameMap gm = (GameMap) obj;
-            Map<Coordinate, IDamager> damagers = gm.getDamagersMap();
+        if (obj.getClass() == GameManager.class) {
+            GameManager gm = (GameManager) obj;
+            List<IDamager> damagers = gm.getSpecificEntitiesByClass(IDamager.class);
 
-            for (var damager : damagers.values()) {
-                if (gm.getEntity(damager.getGoalCoordinate()) instanceof IDamageble damagable) {
+            for (var damager : damagers) {
+                Entity goalEntity = gm.getEntity(damager.getGoalCoordinate());
+                if (goalEntity != null
+                        && goalEntity instanceof IDamageble damagable) {
                     damager.giveDamage(damagable);
                 }
             }

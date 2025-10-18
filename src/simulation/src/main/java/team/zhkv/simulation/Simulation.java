@@ -4,18 +4,18 @@ import java.util.List;
 
 import team.zhkv.actions.*;
 import team.zhkv.core.interfaces.IAction;
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 import team.zhkv.rendering.IRenderable;
 import team.zhkv.rendering.Renderer;
 
 public class Simulation {
-        private final GameMap gm;
+        private final GameManager gm;
         private final List<IAction> initActions;
         private final List<IAction> turnActions;
         private final IRenderable renderer;
 
         public Simulation() {
-                gm = new GameMap();
+                gm = new GameManager();
                 initActions = List.of(
                                 new InitAllEntities());
                 turnActions = List.of(

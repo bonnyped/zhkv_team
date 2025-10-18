@@ -2,7 +2,7 @@ package team.zhkv.actions.move;
 
 import java.util.Objects;
 
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 
 public class Coordinate {
     private int dx;
@@ -29,9 +29,9 @@ public class Coordinate {
 
     public boolean isInBounds() {
         return dx >= 0
-                && dx < GameMap.DX
+                && dx < GameManager.DX
                 && dy >= 0
-                && dy < GameMap.DY;
+                && dy < GameManager.DY;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Coordinate {
 
     @Override
     public String toString() {
-        return "x = " + dx + "y = " + dy;
+        return "x = " + dx + " y = " + dy;
     }
 
 }

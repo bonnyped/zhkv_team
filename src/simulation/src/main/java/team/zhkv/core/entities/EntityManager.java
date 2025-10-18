@@ -1,15 +1,10 @@
 package team.zhkv.core.entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
-import team.zhkv.core.interfaces.IDamager;
-import team.zhkv.core.interfaces.IEater;
-import team.zhkv.core.interfaces.IEdible;
-import team.zhkv.core.interfaces.IRespawnable;
 
 public class EntityManager {
     private final Map<Class<? extends Entity>, Integer> toSpawn;
@@ -26,8 +21,8 @@ public class EntityManager {
         ef = new EntityFactory();
     }
 
-    public Map<Coordinate, Entity> getEntities() {
-        return entities;
+    public Entity getNewEntity(Class<? extends Entity> clazz) {
+        return ef.buildEntity(clazz);
     }
 
     public void putEntity(Coordinate coordinate, Entity entity) {
@@ -63,64 +58,20 @@ public class EntityManager {
         return entitiesAsList;
     }
 
-    public Map<Coordinate, Creature> getCreaturesMap() {
-        Map<Coordinate, Creature> creatures = new HashMap<>();
-        for (var entry : entities.entrySet()) {
-            if (entry.getValue() instanceof Creature creature) {
-                creatures.put(entry.getKey(), creature);
-            }
-        }
-        return creatures;
-    }
+    public <T> List<T> getSpecificEntitiesByClass(Class<T> clazz) {
+        List<T> specificEntities = new ArrayList<>();
 
-    public Map<Coordinate, IEdible> getEdiblesMap() {
-        Map<Coordinate, IEdible> edibles = new HashMap<>();
-
-        for (var entry : entities.entrySet()) {
-            if (entry.getValue() instanceof IEdible edible) {
-                edibles.put(entry.getKey(), edible);
+        for (var entity : entities.values()) {
+            if (clazz.isInstance(entity)) {
+                specificEntities.add(clazz.cast(entity));
             }
         }
 
-        return edibles;
+        return specificEntities;
     }
 
-    public Map<Coordinate, IEater> getEatersMap() {
-        Map<Coordinate, IEater> edibles = new HashMap<>();
-
-        for (var entry : entities.entrySet()) {
-            if (entry.getValue() instanceof IEater eater) {
-                edibles.put(entry.getKey(), eater);
-            }
-        }
-
-        return edibles;
+    // TODO заменить прямой доступ к сущностям
+    public Map<Coordinate, Entity> getEntities() {
+        return entities;
     }
-
-    public Map<Coordinate, IDamager> getDamagersMap() {
-        Map<Coordinate, IDamager> damagers = new HashMap<>();
-
-        for (var entry : entities.entrySet()) {
-            if (entry.getValue() instanceof IDamager damager) {
-                damagers.put(entry.getKey(), damager);
-            }
-        }
-
-        return damagers;
-    }
-
-    public Map<Class<? extends Entity>, Integer> getRespawnableEntities() {
-        Map<Class<? extends Entity>, Integer> respawnableEntities = new HashMap<>();
-        for (var entry : toSpawn.entrySet()) {
-            if (IRespawnable.class.isAssignableFrom(entry.getKey())) {
-                respawnableEntities.put(entry.getKey(), entry.getValue());
-            }
-        }
-        return respawnableEntities;
-    }
-
-    public Entity getNewEntity(Class<? extends Entity> clazz) {
-        return ef.buildEntity(clazz);
-    }
-
 }

@@ -1,6 +1,6 @@
 package team.zhkv.core.entities;
 
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 import team.zhkv.actions.move.Pathfinder;
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.core.interfaces.IEater;
@@ -45,7 +45,7 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
         return pathfinder.getGoalCoordinate();
     }
 
-    public void findPath(GameMap gm, Coordinate oldCoordinate) {
+    public void findPath(GameManager gm, Coordinate oldCoordinate) {
         pathfinder.build(this, gm, oldCoordinate);
     }
 }

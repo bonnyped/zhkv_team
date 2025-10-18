@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 
 public class CoordinateFactory {
     private final Set<Coordinate> occupiedCoordinates;
@@ -16,8 +16,8 @@ public class CoordinateFactory {
 
     public Coordinate buildCoordinate() {
         Set<Coordinate> buildedCoordinates = new HashSet<>();
-        int boardX = GameMap.DX;
-        int boardY = GameMap.DY;
+        int boardX = GameManager.DX;
+        int boardY = GameManager.DY;
         Coordinate newCoordinate = new Coordinate(random.nextInt(boardX),
                 random.nextInt(boardY));
 

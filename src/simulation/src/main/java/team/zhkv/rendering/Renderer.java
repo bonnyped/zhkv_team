@@ -3,13 +3,13 @@ package team.zhkv.rendering;
 
 import java.util.Map;
 
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 import team.zhkv.core.entities.*;
 import team.zhkv.actions.move.Coordinate;
 
 public class Renderer implements IRenderable {
     @Override
-    public void render(GameMap gm) {
+    public void render(GameManager gm) {
         clearTerminal();
         printGameName();
         printSeparator(gm.getTurnCount());
@@ -19,8 +19,8 @@ public class Renderer implements IRenderable {
 
     private void renderField(Map<Coordinate, Entity> coordinates) {
         Coordinate currentCoordinate = new Coordinate();
-        for (int i = 0; i < GameMap.DY; i++) {
-            for (int j = 0; j < GameMap.DX; j++) {
+        for (int i = 0; i < GameManager.DY; i++) {
+            for (int j = 0; j < GameManager.DX; j++) {
                 currentCoordinate.setCoordinate(j, i);
                 System.out.print(entityForRender(
                         coordinates.get(currentCoordinate)));
@@ -31,7 +31,7 @@ public class Renderer implements IRenderable {
 
     private void printSeparator(int iterateCount) {
         StringBuilder sb = new StringBuilder();
-        int width = GameMap.DX - determNumberLength(iterateCount);
+        int width = GameManager.DX - determNumberLength(iterateCount);
         for (int i = 0; i < width; i++) {
             sb.append("-");
         }

@@ -47,8 +47,8 @@ public class GameManager {
         return cm.getFreeCoordinate();
     }
 
-    public List<Object> getSpecificEntitiesByClass(Object obj) {
-        return em.getSpecificEntitiesByClass(obj);
+    public <T> List<T> getSpecificEntitiesByClass(Class<T> clazz) {
+        return em.getSpecificEntitiesByClass(clazz);
     }
 
     public int differenceBetweenFactAndMinCounts(Class<? extends Entity> clazz,

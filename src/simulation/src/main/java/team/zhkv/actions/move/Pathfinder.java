@@ -9,14 +9,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 import team.zhkv.core.entities.Creature;
 import team.zhkv.core.entities.Entity;
 import team.zhkv.core.interfaces.IEater;
 import team.zhkv.core.interfaces.IEdible;
 
 public class Pathfinder {
-    private GameMap gm;
+    private GameManager gm;
     private Creature creature;
     private Coordinate currentCoordinate;
     private Coordinate targetCoordinate;
@@ -33,7 +33,7 @@ public class Pathfinder {
         checked = new HashSet<>();
     }
 
-    public Pathfinder build(Creature creature, GameMap gm,
+    public Pathfinder build(Creature creature, GameManager gm,
             Coordinate currentCoordinate) {
         this.gm = gm;
         this.creature = creature;

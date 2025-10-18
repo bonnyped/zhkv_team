@@ -1,7 +1,7 @@
 package team.zhkv.rendering;
 
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 
 public interface IRenderable {
-    void render(GameMap gm);
+    void render(GameManager gm);
 }

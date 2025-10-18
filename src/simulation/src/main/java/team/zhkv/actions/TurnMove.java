@@ -1,20 +1,20 @@
 package team.zhkv.actions;
 
-import java.util.Map;
+import java.util.List;
 
-import team.zhkv.actions.move.Coordinate;
 import team.zhkv.core.entities.Creature;
-import team.zhkv.map.GameMap;
+import team.zhkv.map.GameManager;
 
 public class TurnMove extends Turn {
     @Override
     public void action(Object obj) {
-        if (obj.getClass() == GameMap.class) {
-            GameMap gm = (GameMap) obj;
-            Map<Coordinate, Creature> creatures = gm.getCreaturesMap();
+        if (obj.getClass() == GameManager.class) {
+            GameManager gm = (GameManager) obj;
+            List<Creature> creatures = gm.getSpecificEntitiesByClass(
+                    Creature.class);
 
-            for (var creature : creatures.entrySet()) {
-                creature.getValue().makeMove();
+            for (Creature creature : creatures) {
+                creature.makeMove();
             }
         }
     }
