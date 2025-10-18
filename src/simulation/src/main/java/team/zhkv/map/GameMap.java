@@ -84,9 +84,13 @@ public class GameMap {
         return em.getNewEntity(clazz);
     }
 
+    public boolean isOccupiedCoordinate(Coordinate coordinate) {
+        return em.isOccupiedCoordinate(coordinate);
+    }
+
     @SuppressWarnings("java:S3824")
     public void updateCreatureCoordinate(Coordinate src, Coordinate target) {
-        if (!em.isOccupiedCoordinate(target)) {
+        if (!isOccupiedCoordinate(target)) {
             em.putEntity(target, em.removeEntity(src));
         }
     }
