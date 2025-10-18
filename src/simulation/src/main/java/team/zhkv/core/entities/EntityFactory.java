@@ -13,6 +13,7 @@ public class EntityFactory {
             e.printStackTrace();
             throw new EntityInstantiationException(
                     "Error when creating an entity: " + entity.getName(), e);
+
         }
     }
 }

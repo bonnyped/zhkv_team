@@ -17,11 +17,11 @@ public class EntityManager {
     private final EntityFactory ef;
 
     public EntityManager(Map<Coordinate, Entity> entities) {
-        toSpawn = Map.of(Tree.class, 5,
-                Rock.class, 5,
-                Grass.class, 5,
-                Herbivore.class, 5,
-                Predator.class, 5);
+        toSpawn = Map.of(Tree.class, 10,
+                Rock.class, 6,
+                Grass.class, 6,
+                Herbivore.class, 6,
+                Predator.class, 6);
         this.entities = entities;
         ef = new EntityFactory();
     }
@@ -98,9 +98,15 @@ public class EntityManager {
     }
 
     public Map<Coordinate, IDamager> getDamagersMap() {
-        Map<Coordinate, IDamager> damager = new HashMap<>();
+        Map<Coordinate, IDamager> damagers = new HashMap<>();
 
-        return damager;
+        for (var entry : entities.entrySet()) {
+            if (entry.getValue() instanceof IDamager damager) {
+                damagers.put(entry.getKey(), damager);
+            }
+        }
+
+        return damagers;
     }
 
     public Map<Class<? extends Entity>, Integer> getRespawnableEntities() {

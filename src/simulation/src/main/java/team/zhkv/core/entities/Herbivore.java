@@ -19,7 +19,6 @@ public class Herbivore extends Creature implements IEdible, IDamageble,
 
     @Override
     public void eat(IEdible edible) {
-        setHp(getHp() + getHp());
         edible.setEated();
     }
 
@@ -31,7 +30,7 @@ public class Herbivore extends Creature implements IEdible, IDamageble,
 
     @Override
     public void setEated() {
-        isEated = getHp() <= 0;
+        isEated = true;
     }
 
     @Override
