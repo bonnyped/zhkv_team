@@ -16,8 +16,6 @@ public class TurnEat extends Turn {
             Map<Coordinate, IEater> eaters = gm.getEatersMap();
 
             for (var eater : eaters.entrySet()) {
-                Coordinate coordinate = eater.getKey();
-                // coordinate == new Coordinate()
                 Entity entity = gm.getEntity(eater.getValue().getGoalCoordinate());
                 if (entity != null
                         && eater.getValue().getFood() == entity.getClass()) {

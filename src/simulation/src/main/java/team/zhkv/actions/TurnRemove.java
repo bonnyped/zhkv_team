@@ -14,7 +14,6 @@ public class TurnRemove extends Turn {
             Map<Coordinate, IEdible> edibles = gm.getEdiblesMap();
 
             for (var entry : edibles.entrySet()) {
-                Coordinate coordinate = entry.getKey();
                 if (entry.getValue().isEaten()) {
                     gm.removeEatedEntity(entry.getKey());
                 }

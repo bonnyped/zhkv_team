@@ -50,18 +50,25 @@ public class Pathfinder {
     }
 
     public void moveBySpeedOrTargetCell(int speed) {
-        targetCoordinate = path.stream()
-                .limit(speed)
-                .reduce((a, b) -> b)
-                .orElse(null);
+        speed = speed > path.size() ? path.size() : speed;
+        if (speed > 0) {
+            targetCoordinate = speed > 1
+                    ? determNextStep(speed)
+                    : path.get(speed - 1);
+        }
         if (targetCoordinate != null) {
             gm.updateCreatureCoordinate(currentCoordinate, targetCoordinate);
-            // path.clear();
         }
     }
 
     public Coordinate getGoalCoordinate() {
         return path.size() == 1 ? path.get(0) : null;
+    }
+
+    private Coordinate determNextStep(int speed) {
+        return gm.isOccupiedCoordinate(path.get(speed - 1))
+                ? path.get(speed - 2)
+                : path.get(speed - 1);
     }
 
     private List<Coordinate> addNearestNeighbors(Coordinate current) {
