@@ -27,13 +27,6 @@ public class Coordinate {
         return this;
     }
 
-    public boolean isInBounds() {
-        return dx >= 0
-                && dx < GameManager.DX
-                && dy >= 0
-                && dy < GameManager.DY;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

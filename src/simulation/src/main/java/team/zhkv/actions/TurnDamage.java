@@ -9,17 +9,14 @@ import team.zhkv.map.GameManager;
 
 public class TurnDamage extends Turn {
     @Override
-    public void action(Object obj) {
-        if (obj.getClass() == GameManager.class) {
-            GameManager gm = (GameManager) obj;
-            List<IDamager> damagers = gm.getSpecificEntitiesByClass(IDamager.class);
+    public void action(GameManager gm) {
+        List<IDamager> damagers = gm.collectSpecificEntities(IDamager.class);
 
-            for (var damager : damagers) {
-                Entity goalEntity = gm.getEntity(damager.getGoalCoordinate());
-                if (goalEntity != null
-                        && goalEntity instanceof IDamageble damagable) {
-                    damager.giveDamage(damagable);
-                }
+        for (var damager : damagers) {
+            Entity goalEntity = gm.getEntity(damager.getGoalCoordinate());
+            if (goalEntity != null
+                    && goalEntity instanceof IDamageble damagable) {
+                damager.giveDamage(damagable);
             }
         }
     }

@@ -8,17 +8,13 @@ import team.zhkv.map.GameManager;
 
 public class TurnRemove extends Turn {
     @Override
-    public void action(Object obj) {
-        if (obj.getClass() == GameManager.class) {
-            GameManager gm = (GameManager) obj;
-            Map<Coordinate, IEdible> edibles = gm.getEdiblesMap();
+    public void action(GameManager gm) {
+        Map<Coordinate, IEdible> edibles = gm.collectSpecificEntities(IEdible.class);
 
-            for (var entry : edibles.entrySet()) {
-                if (entry.getValue().isEaten()) {
-                    gm.removeEatedEntity(entry.getKey());
-                }
+        for (var entry : edibles.entrySet()) {
+            if (entry.getValue().isEaten()) {
+                gm.removeEatedEntity(entry.getKey());
             }
         }
     }
-
 }

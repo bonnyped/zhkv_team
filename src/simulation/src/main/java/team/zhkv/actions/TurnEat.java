@@ -10,21 +10,20 @@ import team.zhkv.map.GameManager;
 
 public class TurnEat extends Turn {
     @Override
-    public void action(Object obj) {
-        if (obj.getClass() == GameManager.class) {
-            GameManager gm = (GameManager) obj;
-            List<IEater> eaters = gm.getSpecificEntitiesByClass(
-                    IEater.class);
+    public void action(GameManager gm) {
+        List<IEater> eaters = gm.collectSpecificEntities(
+                IEater.class);
 
-            for (var eater : eaters) {
-                IEdible goalEntity = getGoalEntity(gm,
-                        eater.getGoalCoordinate());
-                if (goalEntity != null
-                        && isFoodFound(eater.getFood(), goalEntity)) {
-                    eater.eat(goalEntity);
-                }
+        for (var eater : eaters) {
+            IEdible goalEntity = getGoalEntity(gm,
+                    eater.getGoalCoordinate());
+            if (goalEntity != null
+                    && isFoodFound(eater.getFood(), goalEntity)) {
+                eater.eat(goalEntity);
             }
         }
+    }
+
     }
 
     /*
