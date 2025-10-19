@@ -11,18 +11,15 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
     private Class<? extends Entity> food;
     private int speed;
 
-    private Pathfinder pathfinder;
-
     protected Creature(int hp, Class<? extends Entity> food, int speed) {
         this.hp = hp;
         this.food = food;
         this.speed = speed;
-        pathfinder = new Pathfinder();
     }
 
     @Override
     public void makeMove() {
-        pathfinder.moveBySpeedOrTargetCell(speed);
+        moveBySpeedOrTargetCell(speed);
     }
 
     public Class<? extends Entity> getFood() {

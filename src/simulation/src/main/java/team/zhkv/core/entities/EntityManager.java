@@ -1,24 +1,34 @@
 package team.zhkv.core.entities;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import team.zhkv.actions.move.Coordinate;
+import team.zhkv.core.interfaces.IEater;
+import team.zhkv.core.interfaces.IEdible;
 
 public class EntityManager {
-    private final Map<Class<? extends Entity>, Integer> toSpawn;
     private final Map<Coordinate, Entity> entities;
+
+    private final Map<Class<? extends Entity>, Integer> toSpawn;
     private final EntityFactory ef;
 
-    public EntityManager(Map<Coordinate, Entity> entities) {
+    public EntityManager() {
+        entities = new HashMap<>();
         toSpawn = Map.of(Tree.class, 10,
                 Rock.class, 6,
                 Grass.class, 6,
                 Herbivore.class, 6,
                 Predator.class, 6);
-        this.entities = entities;
         ef = new EntityFactory();
+    }
+
+    public Map<Coordinate, Entity> getEntities() {
+        return entities;
     }
 
     public Entity getNewEntity(Class<? extends Entity> clazz) {
@@ -26,25 +36,10 @@ public class EntityManager {
     }
 
     public void putEntity(Coordinate coordinate, Entity entity) {
-        if (isOccupiedCoordinate(coordinate)) {
-            throw new IllegalStateException("Coordinate is already occupied");
-        }
         entities.put(coordinate, entity);
     }
 
-    public Entity removeEntity(Coordinate coordinate) {
-        return entities.remove(coordinate);
-    }
-
-    public Entity getEntity(Coordinate coordinate) {
-        return entities.get(coordinate);
-    }
-
-    public boolean isOccupiedCoordinate(Coordinate coordinate) {
-        return entities.containsKey(coordinate);
-    }
-
-    public List<Entity> getEntitiesAsList() {
+    public List<Entity> createEntitiesToSpawn() {
         List<Entity> entitiesAsList = new ArrayList<>();
 
         for (var entry : toSpawn.entrySet()) {
@@ -58,20 +53,27 @@ public class EntityManager {
         return entitiesAsList;
     }
 
-    public <T> List<T> getSpecificEntitiesByClass(Class<T> clazz) {
-        List<T> specificEntities = new ArrayList<>();
-
-        for (var entity : entities.values()) {
-            if (clazz.isInstance(entity)) {
-                specificEntities.add(clazz.cast(entity));
-            }
-        }
-
-        return specificEntities;
+    public Entity getEntity(Coordinate coordinate) {
+        return entities.get(coordinate);
     }
 
-    // TODO заменить прямой доступ к сущностям
-    public Map<Coordinate, Entity> getEntities() {
-        return entities;
+    public Entity removeEntity(Coordinate coordinate) {
+        return entities.remove(coordinate);
+    }
+
+    public Collection<Entity> getValues() {
+        return entities.values();
+    }
+
+    public Set<Coordinate> collectOccupiedCoordinates() {
+        return entities.keySet();
+    }
+
+    public IEdible getCreaturesFood(Coordinate coordinate) {
+        if (entities.get(coordinate) instanceof IEater eater) {
+            return eater.getFood();
+        } else {
+            return null;
+        }
     }
 }
