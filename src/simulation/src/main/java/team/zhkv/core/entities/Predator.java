@@ -19,8 +19,9 @@ public class Predator extends Creature implements IDamager {
     }
 
     @Override
-    public void eat(IEdible edible) {
-        if (edible.getHp() <= 0) {
+    public void eat(Entity entity) {
+        if (entity instanceof IEdible edible
+                && entity instanceof Creature) {
             edible.setEated();
         }
     }

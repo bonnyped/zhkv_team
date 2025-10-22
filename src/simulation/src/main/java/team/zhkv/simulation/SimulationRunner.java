@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SimulationRunner implements Runnable {
-    private static final long TURN_DELAY_MS = 300;
+    private static final long TURN_DELAY_MS = 500;
     private static final Logger logger = LoggerFactory.getLogger(
             SimulationRunner.class);
 

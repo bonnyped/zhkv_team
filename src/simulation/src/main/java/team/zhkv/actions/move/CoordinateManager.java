@@ -38,6 +38,7 @@ public class CoordinateManager {
     }
 
     public List<Coordinate> buildPath(Coordinate current, Class<? extends IEdible> edible) {
+        toMoveMap.clear();
         return pathfinder.buildPath(current, edible);
     }
 
@@ -48,13 +49,16 @@ public class CoordinateManager {
     public void addActiveCoordinates(Coordinate src, List<Coordinate> path,
             int speed) {
         Coordinate target = getTargetCoordinate(path, speed);
-        if (occupiedCoordinates.contains(target)) {
-            toActionMap.put(src, target);
-        } else {
-            toMoveMap.put(src, target);
+        if (target != null) {
+            if (occupiedCoordinates.contains(target)) {
+                toActionMap.put(src, target);
+            } else {
+                toMoveMap.put(src, target);
+            }
         }
     }
 
+    // THIS башка уже не варит
     private Coordinate getTargetCoordinate(List<Coordinate> path, int speed) {
         Coordinate targetCoordinate = null;
         speed = speed > path.size() ? path.size() : speed;

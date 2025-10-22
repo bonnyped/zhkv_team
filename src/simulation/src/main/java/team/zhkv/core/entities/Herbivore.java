@@ -13,13 +13,10 @@ public class Herbivore extends Creature implements IEdible, IDamageble,
     }
 
     @Override
-    public int getSpeed() {
-        return getHp() < 100 ? 2 : 1;
-    }
-
-    @Override
-    public void eat(IEdible edible) {
-        edible.setEated();
+    public void eat(Entity entity) {
+        if (entity instanceof IEdible edible) {
+            edible.setEated();
+        }
     }
 
     @Override

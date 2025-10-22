@@ -2,16 +2,19 @@ package team.zhkv.map;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.actions.move.CoordinateManager;
 import team.zhkv.core.entities.Creature;
 import team.zhkv.core.entities.Entity;
 import team.zhkv.core.entities.EntityManager;
+import team.zhkv.core.interfaces.IDamager;
+import team.zhkv.core.interfaces.IEater;
 
 public class GameManager {
-    public static final int DX = 50;
-    public static final int DY = 20;
+    public static final int DX = 10;
+    public static final int DY = 10;
 
     private final EntityManager em;
     private final CoordinateManager cm;
@@ -31,14 +34,9 @@ public class GameManager {
         ++turnCount;
     }
 
-    public Entity getEntityToSpawn(Class<? extends Entity> clazz) {
-        return em.getNewEntity(clazz);
-    }
-
     public void spawnAllEntities() {
         for (Entity entity : em.createEntitiesToSpawn()) {
-            Coordinate newCoordinate = cm.getFreeCoordinate();
-            safetyPutEntity(newCoordinate, entity);
+            safetyPutEntity(cm.getFreeCoordinate(), entity);
         }
     }
 
@@ -69,12 +67,6 @@ public class GameManager {
         return cm.getFreeCoordinate();
     }
 
-    public int getDiffCountsMinFact(Class<? extends Entity> clazz,
-            int requered) {
-        int fact = getFactNumberOfEntity(clazz);
-        return isFactLesserHalfRequered(fact, requered) ? requered - fact : 0;
-    }
-
     public void removeEatedEntity(Coordinate toRemove) {
         em.removeEntity(toRemove);
     }
@@ -100,17 +92,50 @@ public class GameManager {
     }
 
     public void damageAllDamagebleEntities() {
-        em.damageAllEntities(cm.getActionEntitiesCoordinates());
+        for (var entry : em.collectEntitiesToActionByInterfaceClass(
+                cm.getActionEntitiesCoordinates(),
+                IDamager.class)) {
+            entry.getKey().giveDamage(entry.getValue());
+        }
     }
 
     public void eatAllEdibleEntities() {
-        em.eatAllEntities(cm.getActionEntitiesCoordinates());
+        for (var entry : em.collectEntitiesToActionByInterfaceClass(
+                cm.getActionEntitiesCoordinates(),
+                IEater.class)) {
+            entry.getKey().eat(entry.getValue());
+        }
+    }
+
+    public void respawnEntities() {
+        for (var entry : em.getRespawnableEntitiesAndCounts()) {
+            int countToSpawn = getDiffCountsMinFact(
+                    entry.getKey(), entry.getValue());
+            for (int i = 0; i < countToSpawn; i++) {
+                safetyPutEntity(cm.getFreeCoordinate(),
+                        em.getNewEntity(entry.getKey()));
+            }
+        }
+    }
+
+    public void removeAllRemovable() {
+        em.removeAllRemovable(cm.getActionEntitiesCoordinates());
+    }
+
+    public Map<Coordinate, Entity> getEntities() {
+        return em.getEntities();
     }
 
     private void safetyPutEntity(Coordinate target, Entity entity) {
         if (!isOccupiedCoordinate(target)) {
             em.putEntity(target, entity);
         }
+    }
+
+    private int getDiffCountsMinFact(Class<? extends Entity> clazz,
+            int requered) {
+        int fact = getFactNumberOfEntity(clazz);
+        return isFactLesserHalfRequered(fact, requered) ? requered - fact : 0;
     }
 
     private <T> int getFactNumberOfEntity(Class<T> clazz) {

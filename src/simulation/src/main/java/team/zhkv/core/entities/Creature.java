@@ -30,9 +30,4 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
     public int getSpeed() {
         return speed;
     }
-
-    // public Coordinate getGoalCoordinate() {
-    // return pathfinder.getGoalCoordinate();
-    // }
-
 }

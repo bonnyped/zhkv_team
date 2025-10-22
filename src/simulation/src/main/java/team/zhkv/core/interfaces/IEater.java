@@ -1,11 +1,9 @@
 package team.zhkv.core.interfaces;
 
-// import team.zhkv.actions.move.Coordinate;
+import team.zhkv.core.entities.Entity;
 
 public interface IEater {
-    void eat(IEdible edible);
+    void eat(Entity edible);
 
     Class<? extends IEdible> getFood();
-
-    // Coordinate getGoalCoordinate();
 }

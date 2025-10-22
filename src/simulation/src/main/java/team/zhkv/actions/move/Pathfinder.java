@@ -70,8 +70,7 @@ public class Pathfinder {
     }
 
     private boolean isEdible(Coordinate neighbor) {
-        return edible.getClass().isAssignableFrom(
-                gm.getEntity(neighbor).getClass());
+        return edible.isInstance(gm.getEntity(neighbor));
     }
 
     private Coordinate searchPath() {
@@ -88,12 +87,12 @@ public class Pathfinder {
     }
 
     private boolean isNeighborEqualsTarget(Coordinate neighbor) {
-        return gm.isOccupiedCoordinate(neighbor)
+        return gm.getEntity(neighbor) != null
                 && isFoodFound(neighbor);
     }
 
     private boolean isFoodFound(Coordinate neighbor) {
-        return gm.getEntity(neighbor).getClass() == edible;
+        return edible.isAssignableFrom(gm.getEntity(neighbor).getClass());
     }
 
     private void build(Coordinate current, Class<? extends IEdible> edible) {
