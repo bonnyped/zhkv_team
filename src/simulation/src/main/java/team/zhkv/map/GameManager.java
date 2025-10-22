@@ -1,27 +1,23 @@
 package team.zhkv.map;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.actions.move.CoordinateManager;
+import team.zhkv.core.entities.Creature;
 import team.zhkv.core.entities.Entity;
 import team.zhkv.core.entities.EntityManager;
-import team.zhkv.core.interfaces.IEdible;
 
 public class GameManager {
     public static final int DX = 50;
     public static final int DY = 20;
 
-    private final Map<Coordinate, Coordinate> toAction;
     private final EntityManager em;
     private final CoordinateManager cm;
     private int turnCount;
 
     public GameManager() {
-        this.toAction = new HashMap<>();
         this.em = new EntityManager();
         this.cm = new CoordinateManager(this, em.collectOccupiedCoordinates());
         this.turnCount = 0;
@@ -73,7 +69,6 @@ public class GameManager {
         return cm.getFreeCoordinate();
     }
 
-    // THIS getDiffCountsMinFact
     public int getDiffCountsMinFact(Class<? extends Entity> clazz,
             int requered) {
         int fact = getFactNumberOfEntity(clazz);
@@ -84,18 +79,6 @@ public class GameManager {
         em.removeEntity(toRemove);
     }
 
-    public void buildPath(Coordinate src) {
-        List<Coordinate> path;
-        Coordinate target;
-        IEdible edible = em.getCreaturesFood(src);
-        
-        if (edible != null) {
-            path = cm.buildPath(src, edible);
-            target = determTargetCoordinate();
-            toAction.put(src, );
-        }
-    }
-
     public boolean isInBounds(Coordinate coordinate) {
         return coordinate.getDx() >= 0
                 && coordinate.getDx() < DX
@@ -103,12 +86,25 @@ public class GameManager {
                 && coordinate.getDy() < DY;
     }
 
-    private boolean isFactLesserHalfRequered(int fact, int requered) {
-        return fact <= requered / 2;
+    public void buildPathToCreature(Coordinate src) {
+        Creature creature = em.getCreature(src);
+
+        if (creature != null) {
+            cm.addActiveCoordinates(src, cm.buildPath(src, creature.getFood()),
+                    creature.getSpeed());
+        }
     }
 
-    private <T> int getFactNumberOfEntity(Class<T> clazz) {
-        return collectSpecificEntities(clazz).size();
+    public void makeMoveForAllMovebleEntities() {
+        em.moveAllEntities(cm.getMovebleEntitiesCoordinates());
+    }
+
+    public void damageAllDamagebleEntities() {
+        em.damageAllEntities(cm.getActionEntitiesCoordinates());
+    }
+
+    public void eatAllEdibleEntities() {
+        em.eatAllEntities(cm.getActionEntitiesCoordinates());
     }
 
     private void safetyPutEntity(Coordinate target, Entity entity) {
@@ -116,4 +112,13 @@ public class GameManager {
             em.putEntity(target, entity);
         }
     }
+
+    private <T> int getFactNumberOfEntity(Class<T> clazz) {
+        return collectSpecificEntities(clazz).size();
+    }
+
+    private boolean isFactLesserHalfRequered(int fact, int requered) {
+        return fact <= requered / 2;
+    }
+
 }

@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import team.zhkv.actions.move.Coordinate;
-import team.zhkv.core.interfaces.IEater;
+import team.zhkv.core.interfaces.IDamageble;
+import team.zhkv.core.interfaces.IDamager;
 import team.zhkv.core.interfaces.IEdible;
 
 public class EntityManager {
@@ -69,11 +71,42 @@ public class EntityManager {
         return entities.keySet();
     }
 
-    public IEdible getCreaturesFood(Coordinate coordinate) {
-        if (entities.get(coordinate) instanceof IEater eater) {
-            return eater.getFood();
+    public Creature getCreature(Coordinate coordinate) {
+        if (entities.get(coordinate) instanceof Creature creature) {
+            return creature;
         } else {
             return null;
         }
+    }
+
+    public void moveAllEntities(Map<Coordinate, Coordinate> movebleEntities) {
+        for (var entry : movebleEntities.entrySet()) {
+            entities.put(entry.getValue(), entities.remove(entry.getKey()));
+        }
+    }
+
+    public <T, V> void makeActionAllEntities(
+            Map<Coordinate, Coordinate> entitiesToAction,
+            Class<T> active,
+            Class<V> passive) {
+        collectEntriesBySpecificInterfaces(entitiesToAction, passive)
+                .entrySet()
+                .stream()
+                .forEach(entry -> {
+                    if (entities.get(
+                            entry.getKey()) instanceof IDamager damager) {
+                        damager.giveDamage(entities.get(entry.getValue()));
+                    }
+                });
+    }
+
+    private <T> Map<Coordinate, Coordinate> collectEntriesBySpecificInterfaces(
+            Map<Coordinate, Coordinate> entitiesToAction, Class<T> clazz) {
+        return entitiesToAction.entrySet()
+                .stream()
+                .filter(entry -> clazz.isInstance(entities.get(entry.getValue())))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue));
     }
 }

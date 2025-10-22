@@ -1,29 +1,14 @@
 package team.zhkv.actions;
 
-import java.util.List;
-
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.core.entities.Entity;
-import team.zhkv.core.interfaces.IEater;
 import team.zhkv.core.interfaces.IEdible;
 import team.zhkv.map.GameManager;
 
 public class TurnEat extends Turn {
     @Override
     public void action(GameManager gm) {
-        List<IEater> eaters = gm.collectSpecificEntities(
-                IEater.class);
-
-        for (var eater : eaters) {
-            IEdible goalEntity = getGoalEntity(gm,
-                    eater.getGoalCoordinate());
-            if (goalEntity != null
-                    && isFoodFound(eater.getFood(), goalEntity)) {
-                eater.eat(goalEntity);
-            }
-        }
-    }
-
+        gm.eatAllEdibleEntities();
     }
 
     /*

@@ -8,6 +8,6 @@ public class TurnPathfinder extends Turn {
     public void action(GameManager gm) {
         gm.collectSpecificEntities(Creature.class)
                 .stream()
-                .forEach(c -> gm.buildPath(c));
+                .forEach(gm::buildPathToCreature);
     }
 }

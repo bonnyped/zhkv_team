@@ -14,7 +14,7 @@ import team.zhkv.core.interfaces.IEdible;
 
 public class Pathfinder {
     private GameManager gm;
-    private IEdible edible;
+    private Class<? extends IEdible> edible;
     private Coordinate targetCoordinate;
 
     private Deque<Coordinate> forCheck;
@@ -30,34 +30,12 @@ public class Pathfinder {
         checked = new HashSet<>();
     }
 
-    public List<Coordinate> buildPath(Coordinate current, IEdible edible) {
+    public List<Coordinate> buildPath(Coordinate current, Class<? extends IEdible> edible) {
         build(current, edible);
         targetCoordinate = searchPath();
         retracePath();
         return path;
     }
-
-    // public void moveBySpeedOrTargetCell(int speed) {
-    // speed = speed > path.size() ? path.size() : speed;
-    // if (speed > 0) {
-    // targetCoordinate = speed > 1
-    // ? determNextStep(speed)
-    // : path.get(speed - 1);
-    // }
-    // if (targetCoordinate != null) {
-    // GameState.updateCoordinate(currentCoordinate, targetCoordinate);
-    // }
-    // }
-
-    // public Coordinate getGoalCoordinate() {
-    // return path.size() == 1 ? path.get(0) : null;
-    // }
-
-    // private Coordinate determNextStep(int speed) {
-    // return em.isOccupiedCoordinate(path.get(speed - 1))
-    // ? path.get(speed - 2)
-    // : path.get(speed - 1);
-    // }
 
     private List<Coordinate> addNearestNeighbors(Coordinate current) {
         List<Coordinate> neighbors = new ArrayList<>();
@@ -115,10 +93,10 @@ public class Pathfinder {
     }
 
     private boolean isFoodFound(Coordinate neighbor) {
-        return gm.getEntity(neighbor).getClass() == edible.getClass();
+        return gm.getEntity(neighbor).getClass() == edible;
     }
 
-    private void build(Coordinate current, IEdible edible) {
+    private void build(Coordinate current, Class<? extends IEdible> edible) {
         clearPathfinder();
         this.edible = edible;
         forCheck.addAll(addNearestNeighbors(current));

@@ -12,9 +12,9 @@ public class Predator extends Creature implements IDamager {
     }
 
     @Override
-    public void giveDamage(IDamageble victim) {
-        if (victim != null) {
-            victim.takeDamage(damage);
+    public void giveDamage(Entity victim) {
+        if (victim instanceof IDamageble damageble) {
+            damageble.takeDamage(damage);
         }
     }
 
