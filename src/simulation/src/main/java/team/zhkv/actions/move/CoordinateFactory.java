@@ -7,8 +7,8 @@ import java.util.Set;
 import team.zhkv.map.GameManager;
 
 public class CoordinateFactory {
+    private static final Random RANDOM = new Random(31);
     private final Set<Coordinate> occupiedCoordinates;
-    private final Random random = new Random(31);
 
     public CoordinateFactory(Set<Coordinate> occupiedCoordinates) {
         this.occupiedCoordinates = occupiedCoordinates;
@@ -18,14 +18,14 @@ public class CoordinateFactory {
         Set<Coordinate> buildedCoordinates = new HashSet<>();
         int boardX = GameManager.DX;
         int boardY = GameManager.DY;
-        Coordinate newCoordinate = new Coordinate(random.nextInt(boardX),
-                random.nextInt(boardY));
+        Coordinate newCoordinate = new Coordinate(RANDOM.nextInt(boardX),
+                RANDOM.nextInt(boardY));
 
         while (occupiedCoordinates.contains(newCoordinate)
                 || buildedCoordinates.contains(newCoordinate)) {
             buildedCoordinates.add(newCoordinate);
-            newCoordinate.setCoordinate(random.nextInt(boardX),
-                    random.nextInt(boardY));
+            newCoordinate.setCoordinate(RANDOM.nextInt(boardX),
+                    RANDOM.nextInt(boardY));
         }
 
         return newCoordinate;

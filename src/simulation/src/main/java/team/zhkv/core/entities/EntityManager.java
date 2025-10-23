@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class EntityManager {
     private final EntityFactory ef;
 
     public EntityManager() {
-        entities = new HashMap<>();
+        entities = new LinkedHashMap<>();
         toSpawn = Map.of(Tree.class, 1,
                 Rock.class, 1,
                 Grass.class, 1,

@@ -3,6 +3,8 @@ package team.zhkv.map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import team.zhkv.actions.move.Coordinate;
 import team.zhkv.actions.move.CoordinateManager;
@@ -108,7 +110,8 @@ public class GameManager {
     }
 
     public void respawnEntities() {
-        for (var entry : em.getRespawnableEntitiesAndCounts()) {
+        Set<Entry<Class<? extends Entity>, Integer>> set = em.getRespawnableEntitiesAndCounts();
+        for (var entry : set) {
             int countToSpawn = getDiffCountsMinFact(
                     entry.getKey(), entry.getValue());
             for (int i = 0; i < countToSpawn; i++) {
