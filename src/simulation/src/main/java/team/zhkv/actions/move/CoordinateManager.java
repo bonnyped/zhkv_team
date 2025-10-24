@@ -29,6 +29,10 @@ public class CoordinateManager {
         return toMoveMap;
     }
 
+    public void clearToMoveMap() {
+        toMoveMap.clear();
+    }
+
     public Map<Coordinate, Coordinate> getActionEntitiesCoordinates() {
         return toActionMap;
     }
