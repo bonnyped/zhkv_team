@@ -15,8 +15,8 @@ import team.zhkv.core.interfaces.IDamager;
 import team.zhkv.core.interfaces.IEater;
 
 public class GameManager {
-    public static final int DX = 10;
-    public static final int DY = 10;
+    public static final int DX = 50;
+    public static final int DY = 20;
 
     private final EntityManager em;
     private final CoordinateManager cm;
@@ -91,6 +91,7 @@ public class GameManager {
 
     public void makeMoveForAllMovebleEntities() {
         em.moveAllEntities(cm.getMovebleEntitiesCoordinates());
+        cm.clearToMoveMap();
     }
 
     public void damageAllDamagebleEntities() {

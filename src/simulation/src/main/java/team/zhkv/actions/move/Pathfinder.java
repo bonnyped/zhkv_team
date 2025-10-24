@@ -98,6 +98,7 @@ public class Pathfinder {
     private void build(Coordinate current, Class<? extends IEdible> edible) {
         clearPathfinder();
         this.edible = edible;
+        checked.add(current);
         forCheck.addAll(addNearestNeighbors(current));
         breadthFirstSearch.put(null, current);
     }

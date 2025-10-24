@@ -65,7 +65,7 @@ public class CoordinateManager {
         Coordinate targetCoordinate = null;
         speed = determFactSpeed(path.size(), speed);
 
-        if (speed == path.size()) {
+        if (speed == path.size() && !path.isEmpty()) {
             targetCoordinate = speed == 1 ? path.get(speed - 1) : path.get(speed - 2);
         } else if (path.size() > speed) {
             targetCoordinate = path.get(speed - 1);

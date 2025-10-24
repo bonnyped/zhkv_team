@@ -2,6 +2,7 @@ package team.zhkv.core.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -16,17 +17,19 @@ import team.zhkv.core.interfaces.IRespawnable;
 public class EntityManager {
     private final Map<Coordinate, Entity> entities;
 
-    private final Map<Class<? extends Entity>, Integer> toSpawn;
     private final EntityFactory ef;
+    private final Map<Class<? extends Entity>, Integer> toSpawn;
 
     public EntityManager() {
-        entities = new LinkedHashMap<>();
-        toSpawn = Map.of(Tree.class, 1,
-                Rock.class, 1,
-                Grass.class, 1,
-                Herbivore.class, 1,
-                Predator.class, 1);
         ef = new EntityFactory();
+        entities = new HashMap<>();
+        Map<Class<? extends Entity>, Integer> spawn = new LinkedHashMap<>();
+        spawn.put(Tree.class, 10);
+        spawn.put(Rock.class, 9);
+        spawn.put(Grass.class, 7);
+        spawn.put(Herbivore.class, 7);
+        spawn.put(Predator.class, 5);
+        toSpawn = Collections.unmodifiableMap(spawn);
     }
 
     public Map<Coordinate, Entity> getEntities() {
@@ -81,7 +84,9 @@ public class EntityManager {
 
     public void moveAllEntities(Map<Coordinate, Coordinate> movebleEntities) {
         for (var entry : movebleEntities.entrySet()) {
-            putEntity(entry.getValue(), entities.remove(entry.getKey()));
+            if (!entities.containsKey(entry.getValue())) {
+                putEntity(entry.getValue(), entities.remove(entry.getKey()));
+            }
         }
     }
 
