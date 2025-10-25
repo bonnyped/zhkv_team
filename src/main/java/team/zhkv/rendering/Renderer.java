@@ -70,8 +70,8 @@ public class Renderer implements IRenderable {
     private void printMenu() {
         System.out.println("\n\n\n=========================== МЕНЮ ===========================");
         System.out.println();
-        System.out.println("                1. p — pause/resume");
-        System.out.println("             2. cntrl + с — quit program");
+        System.out.println(" 1. p — pause/resume");
+        System.out.println(" 2. q || exit — exit program");
         System.out.println();
     }
 

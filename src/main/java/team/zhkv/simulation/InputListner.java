@@ -8,16 +8,18 @@ import org.slf4j.LoggerFactory;
 public class InputListner implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(
             InputListner.class);
-    private SimulationRunner simulationRunner;
+    private final SimulationRunner simulationRunner;
+    private final SimulationState simulationState;
 
-    public InputListner(SimulationRunner simulationRunner) {
+    public InputListner(SimulationRunner simulationRunner, SimulationState simulationState) {
+        this.simulationState = simulationState;
         this.simulationRunner = simulationRunner;
     }
 
     @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
-        while (simulationRunner.isRunning()) {
+        while (simulationState.isRunning()) {
             if (scanner.hasNext()) {
                 String input = scanner.nextLine()
                         .trim()
@@ -31,13 +33,13 @@ public class InputListner implements Runnable {
     private void handleInput(String input) {
         switch (input) {
             case "p":
-                simulationRunner.setPaused(!simulationRunner.isPaused());
-                logger.info("Program {}", simulationRunner.isPaused()
+                simulationState.setPaused(!simulationState.isPaused());
+                logger.info("Program {}", simulationState.isPaused()
                         ? "paused"
                         : "resumed");
                 break;
             case "exit", "q":
-                simulationRunner.setRunning(false);
+                simulationState.setRunning(false);
                 simulationRunner.countDownShutDownLatch();
                 logger.info("Shutting down simulation...");
                 break;
