@@ -4,8 +4,8 @@ import team.zhkv.core.interfaces.IDamageble;
 import team.zhkv.core.interfaces.IDamager;
 import team.zhkv.core.interfaces.IEdible;
 
-public class Predator extends Creature implements IDamager {
-    private int damage = 50;
+public class Predator extends Creature<Predator> implements IDamager {
+    private int damagePower;
 
     public Predator() {
         super(100, Herbivore.class, 1);
@@ -14,7 +14,7 @@ public class Predator extends Creature implements IDamager {
     @Override
     public void giveDamage(Entity victim) {
         if (victim instanceof IDamageble damageble) {
-            damageble.takeDamage(damage);
+            damageble.takeDamage(damagePower);
         }
     }
 
@@ -24,5 +24,10 @@ public class Predator extends Creature implements IDamager {
                 && entity instanceof Creature) {
             edible.setEated();
         }
+    }
+
+    public Predator withDamage(int damagePower) {
+        this.damagePower = damagePower;
+        return this;
     }
 }

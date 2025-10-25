@@ -4,7 +4,7 @@ import team.zhkv.core.interfaces.IDamageble;
 import team.zhkv.core.interfaces.IEdible;
 import team.zhkv.core.interfaces.IRespawnable;
 
-public class Herbivore extends Creature implements IEdible, IDamageble,
+public class Herbivore extends Creature<Herbivore> implements IEdible, IDamageble,
         IRespawnable {
     private boolean isEated;
 

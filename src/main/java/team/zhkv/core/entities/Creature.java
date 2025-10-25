@@ -4,7 +4,8 @@ import team.zhkv.core.interfaces.IEater;
 import team.zhkv.core.interfaces.IEdible;
 import team.zhkv.core.interfaces.IMoveble;
 
-public abstract class Creature extends Entity implements IMoveble, IEater {
+@SuppressWarnings("unchecked")
+public abstract class Creature<T extends Creature<T>> extends Entity implements IMoveble, IEater {
     private int hp;
     private Class<? extends IEdible> food;
     private int speed;
@@ -29,5 +30,22 @@ public abstract class Creature extends Entity implements IMoveble, IEater {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public T withHP(int hp) {
+        this.hp = hp;
+
+        return (T) this;
+    }
+
+    public T withEdible(Class<? extends IEdible> food) {
+        this.food = food;
+
+        return (T) this;
+    }
+
+    public T withSpeed(int speed) {
+        this.speed = speed;
+        return (T) this;
     }
 }

@@ -17,11 +17,11 @@ import team.zhkv.core.interfaces.IRespawnable;
 public class EntityManager {
     private final Map<Coordinate, Entity> entities;
 
-    private final EntityFactory ef;
+    private final EntityBuilder eb;
     private final Map<Class<? extends Entity>, Integer> toSpawn;
 
     public EntityManager() {
-        ef = new EntityFactory();
+        eb = new EntityBuilder();
         entities = new HashMap<>();
         Map<Class<? extends Entity>, Integer> spawn = new LinkedHashMap<>();
         spawn.put(Tree.class, 10);
@@ -37,7 +37,7 @@ public class EntityManager {
     }
 
     public Entity getNewEntity(Class<? extends Entity> clazz) {
-        return ef.buildEntity(clazz);
+        return eb.buildEntity(clazz);
     }
 
     public void putEntity(Coordinate coordinate, Entity entity) {
@@ -50,7 +50,7 @@ public class EntityManager {
         for (var entry : toSpawn.entrySet()) {
             int count = entry.getValue();
             while (count > 0) {
-                entitiesAsList.add(ef.buildEntity(entry.getKey()));
+                entitiesAsList.add(eb.buildEntity(entry.getKey()));
                 --count;
             }
         }
