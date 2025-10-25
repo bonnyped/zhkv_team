@@ -17,7 +17,8 @@ public class CoordinateManager {
     private final CoordinateFactory cf;
     private final Pathfinder pathfinder;
 
-    public CoordinateManager(GameManager gm, Set<Coordinate> occupiedCoordinates) {
+    public CoordinateManager(GameManager gm,
+            Set<Coordinate> occupiedCoordinates) {
         this.toMoveMap = new HashMap<>();
         this.toActionMap = new HashMap<>();
         this.occupiedCoordinates = occupiedCoordinates;
@@ -41,7 +42,8 @@ public class CoordinateManager {
         return cf.buildCoordinate();
     }
 
-    public List<Coordinate> buildPath(Coordinate current, Class<? extends IEdible> edible) {
+    public List<Coordinate> buildPath(Coordinate current,
+            Class<? extends IEdible> edible) {
         return pathfinder.buildPath(current, edible);
     }
 
@@ -66,7 +68,9 @@ public class CoordinateManager {
         speed = determFactSpeed(path.size(), speed);
 
         if (speed == path.size() && !path.isEmpty()) {
-            targetCoordinate = speed == 1 ? path.get(speed - 1) : path.get(speed - 2);
+            targetCoordinate = speed == 1
+                    ? path.get(speed - 1)
+                    : path.get(speed - 2);
         } else if (path.size() > speed) {
             targetCoordinate = path.get(speed - 1);
         }

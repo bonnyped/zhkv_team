@@ -50,11 +50,6 @@ public class GameManager {
         return cm.isOccupiedCoordinate(coordinate);
     }
 
-    public void updateEntityCoordinate(Coordinate src, Coordinate target) {
-        Entity entity = em.getEntity(src);
-        safetyPutEntity(target, entity);
-    }
-
     public <T> List<Coordinate> collectSpecificEntities(Class<T> clazz) {
         List<Coordinate> specificEntities = new ArrayList<>();
         for (var entry : em.getEntities().entrySet()) {
@@ -63,14 +58,6 @@ public class GameManager {
             }
         }
         return specificEntities;
-    }
-
-    public Coordinate getFreeCoordinate() {
-        return cm.getFreeCoordinate();
-    }
-
-    public void removeEatedEntity(Coordinate toRemove) {
-        em.removeEntity(toRemove);
     }
 
     public boolean isInBounds(Coordinate coordinate) {

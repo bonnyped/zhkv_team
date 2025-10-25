@@ -30,7 +30,8 @@ public class Pathfinder {
         checked = new HashSet<>();
     }
 
-    public List<Coordinate> buildPath(Coordinate current, Class<? extends IEdible> edible) {
+    public List<Coordinate> buildPath(Coordinate current,
+            Class<? extends IEdible> edible) {
         build(current, edible);
         targetCoordinate = searchPath();
         retracePath();

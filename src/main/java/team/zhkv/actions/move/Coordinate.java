@@ -2,8 +2,6 @@ package team.zhkv.actions.move;
 
 import java.util.Objects;
 
-import team.zhkv.map.GameManager;
-
 public class Coordinate {
     private int dx;
     private int dy;

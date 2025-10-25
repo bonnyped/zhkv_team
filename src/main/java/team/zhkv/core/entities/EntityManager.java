@@ -66,10 +66,6 @@ public class EntityManager {
         return entities.remove(coordinate);
     }
 
-    public Collection<Entity> getValues() {
-        return entities.values();
-    }
-
     public Set<Coordinate> collectOccupiedCoordinates() {
         return entities.keySet();
     }

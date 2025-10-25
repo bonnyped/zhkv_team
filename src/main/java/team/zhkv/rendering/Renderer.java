@@ -7,6 +7,7 @@ import team.zhkv.map.GameManager;
 import team.zhkv.core.entities.*;
 import team.zhkv.actions.move.Coordinate;
 
+@SuppressWarnings({ "java:S106", "java:S6126" })
 public class Renderer implements IRenderable {
     @Override
     public void render(GameManager gm) {
@@ -54,6 +55,7 @@ public class Renderer implements IRenderable {
         System.out.println("\033[2J\033[H");
     }
 
+    @SuppressWarnings("java:S106")
     private void printGameName() {
         System.out.println("\n\n");
         System.out.println("     ▗▄▄▖▗▄▄▄▖▗▖  ▗▖▗▖ ▗▖▗▖    ▗▄▖ ▗▄▄▄▖▗▄▄▄▖ ▗▄▖ ▗▖  ▗▖\n" + //
