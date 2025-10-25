@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import team.zhkv.core.interfaces.ISimulation;
+
 public class SimulationRunner implements Runnable {
     private static final long TURN_DELAY_MS = 1000;
     private static final Logger logger = LoggerFactory.getLogger(
@@ -16,7 +18,7 @@ public class SimulationRunner implements Runnable {
     private volatile boolean running;
     private volatile boolean paused;
 
-    private final Simulation simulation;
+    private final ISimulation simulation;
     private final CountDownLatch shutDownLatch;
 
     private ScheduledExecutorService simulationExecutor;

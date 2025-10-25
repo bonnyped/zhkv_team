@@ -4,11 +4,12 @@ import java.util.List;
 
 import team.zhkv.actions.*;
 import team.zhkv.core.interfaces.IAction;
+import team.zhkv.core.interfaces.ISimulation;
 import team.zhkv.map.GameManager;
 import team.zhkv.rendering.IRenderable;
 import team.zhkv.rendering.Renderer;
 
-public class Simulation {
+public class Simulation implements ISimulation {
         private final GameManager gm;
         private final List<IAction> initActions;
         private final List<IAction> turnActions;
@@ -28,13 +29,15 @@ public class Simulation {
                 renderer = new Renderer();
         }
 
-        void executeInit() {
+        @Override
+        public void executeInit() {
                 initActions.stream()
                                 .map(Init.class::cast)
                                 .forEach(init -> init.action(gm));
         }
 
-        void executeTurn() {
+        @Override
+        public void executeTurn() {
                 gm.incrementTurn();
                 renderer.render(gm);
                 turnActions.stream()
