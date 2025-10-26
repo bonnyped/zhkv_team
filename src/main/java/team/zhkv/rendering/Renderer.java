@@ -1,4 +1,3 @@
-
 package team.zhkv.rendering;
 
 import java.util.Map;
@@ -7,8 +6,18 @@ import team.zhkv.map.GameManager;
 import team.zhkv.core.entities.*;
 import team.zhkv.actions.move.Coordinate;
 
+/**
+ * Renders the game field and user interface to the terminal.
+ *
+ * @author bonnyped
+ */
 @SuppressWarnings({ "java:S106", "java:S6126" })
 public class Renderer implements IRenderable {
+    /**
+     * Renders the current game state, including the field, menu, and turn info.
+     *
+     * @param gm the GameManager containing game state information
+     */
     @Override
     public void render(GameManager gm) {
         clearTerminal();
@@ -18,6 +27,11 @@ public class Renderer implements IRenderable {
         printMenu();
     }
 
+    /**
+     * Renders the game field with all entities.
+     *
+     * @param coordinates map of coordinates to entities
+     */
     private void renderField(Map<Coordinate, Entity> coordinates) {
         Coordinate currentCoordinate = new Coordinate();
         for (int i = 0; i < GameManager.DY; i++) {
@@ -30,6 +44,11 @@ public class Renderer implements IRenderable {
         }
     }
 
+    /**
+     * Prints a separator line with the current turn count.
+     *
+     * @param iterateCount the current turn number
+     */
     private void printSeparator(int iterateCount) {
         StringBuilder sb = new StringBuilder();
         int width = GameManager.DX - determNumberLength(iterateCount);
@@ -41,6 +60,12 @@ public class Renderer implements IRenderable {
                 + " " + sb.toString());
     }
 
+    /**
+     * Determines the length of a number.
+     *
+     * @param iterateCount the number
+     * @return the length of the number
+     */
     private int determNumberLength(int iterateCount) {
         int length = 0;
 
@@ -51,10 +76,16 @@ public class Renderer implements IRenderable {
         return length;
     }
 
+    /**
+     * Clears the terminal screen.
+     */
     private void clearTerminal() {
         System.out.println("\033[2J\033[H");
     }
 
+    /**
+     * Prints the game name in ASCII art.
+     */
     @SuppressWarnings("java:S106")
     private void printGameName() {
         System.out.println("\n\n");
@@ -67,6 +98,9 @@ public class Renderer implements IRenderable {
                 "                                                    ");
     }
 
+    /**
+     * Prints the user menu with available commands.
+     */
     private void printMenu() {
         System.out.println("\n\n\n=========================== МЕНЮ ===========================");
         System.out.println();
@@ -75,6 +109,12 @@ public class Renderer implements IRenderable {
         System.out.println();
     }
 
+    /**
+     * Returns a string representation (emoji) for the given entity.
+     *
+     * @param entity the entity to render
+     * @return the string representation for rendering
+     */
     private String entityForRender(Entity entity) {
         if (entity == null) {
             return "⬛️";

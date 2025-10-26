@@ -1,8 +1,19 @@
 package team.zhkv.core.entities;
 
+/**
+ * Factory class for creating game entities.
+ *
+ * @author bonnyped
+ */
 public class EntityBuilder {
     private static final int MAX_HEALTH = 100;
 
+    /**
+     * Builds an entity of the specified class.
+     *
+     * @param clazz the class of the entity to build
+     * @return the created entity, or null if the class is not supported
+     */
     public Entity buildEntity(Class<? extends Entity> clazz) {
         if (clazz == Predator.class) {
             return createPredator();
@@ -45,5 +56,4 @@ public class EntityBuilder {
     private Tree createTree() {
         return new Tree();
     }
-
 }

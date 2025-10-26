@@ -9,12 +9,21 @@ import team.zhkv.map.GameManager;
 import team.zhkv.rendering.IRenderable;
 import team.zhkv.rendering.Renderer;
 
+/**
+ * Implements the main simulation logic, including initialization and turn
+ * execution.
+ *
+ * @author bonnyped
+ */
 public class Simulation implements ISimulation {
         private final GameManager gm;
         private final List<IAction> initActions;
         private final List<IAction> turnActions;
         private final IRenderable renderer;
 
+        /**
+         * Constructs a Simulation instance with default actions and renderer.
+         */
         public Simulation() {
                 gm = new GameManager();
                 initActions = List.of(
@@ -29,6 +38,9 @@ public class Simulation implements ISimulation {
                 renderer = new Renderer();
         }
 
+        /**
+         * Executes all initialization actions for the simulation.
+         */
         @Override
         public void executeInit() {
                 initActions.stream()
@@ -36,6 +48,9 @@ public class Simulation implements ISimulation {
                                 .forEach(init -> init.action(gm));
         }
 
+        /**
+         * Executes a single simulation turn, including rendering and turn actions.
+         */
         @Override
         public void executeTurn() {
                 gm.incrementTurn();
@@ -43,7 +58,5 @@ public class Simulation implements ISimulation {
                 turnActions.stream()
                                 .map(Turn.class::cast)
                                 .forEach(turn -> turn.action(gm));
-
         }
-
 }

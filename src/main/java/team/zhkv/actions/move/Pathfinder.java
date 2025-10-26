@@ -12,16 +12,25 @@ import java.util.Map;
 import team.zhkv.map.GameManager;
 import team.zhkv.core.interfaces.IEdible;
 
+/**
+ * Implements pathfinding logic for entities to find the nearest edible target.
+ *
+ * @author bonnyped
+ */
 public class Pathfinder {
     private GameManager gm;
     private Class<? extends IEdible> edible;
     private Coordinate targetCoordinate;
-
     private Deque<Coordinate> forCheck;
     private HashSet<Coordinate> checked;
     private Map<Coordinate, Coordinate> breadthFirstSearch;
     private List<Coordinate> path;
 
+    /**
+     * Constructs a Pathfinder for the given GameManager.
+     *
+     * @param gm the GameManager instance
+     */
     public Pathfinder(GameManager gm) {
         this.gm = gm;
         breadthFirstSearch = new HashMap<>();
@@ -30,6 +39,13 @@ public class Pathfinder {
         checked = new HashSet<>();
     }
 
+    /**
+     * Builds a path from the current coordinate to the nearest edible entity.
+     *
+     * @param current the starting coordinate
+     * @param edible  the class of edible entities
+     * @return the path as a list of coordinates
+     */
     public List<Coordinate> buildPath(Coordinate current,
             Class<? extends IEdible> edible) {
         build(current, edible);
@@ -83,7 +99,6 @@ public class Pathfinder {
                 forCheck.addAll(addNearestNeighbors(neighbor));
             }
         }
-
         return null;
     }
 
@@ -124,5 +139,4 @@ public class Pathfinder {
             Collections.reverse(path);
         }
     }
-
 }

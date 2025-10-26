@@ -7,6 +7,11 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Schedules and manages the execution of simulation turns at fixed intervals.
+ *
+ * @author bonnyped
+ */
 public class SimulationScheduler {
     private static final Logger logger = LoggerFactory.getLogger(
             SimulationScheduler.class);
@@ -14,12 +19,21 @@ public class SimulationScheduler {
     private final Runnable turnTask;
     private final long delayMs;
 
+    /**
+     * Constructs a SimulationScheduler.
+     *
+     * @param turnTask the task to execute each turn
+     * @param delayMs  the delay between turns in milliseconds
+     */
     public SimulationScheduler(Runnable turnTask, long delayMs) {
         this.turnTask = turnTask;
         this.delayMs = delayMs;
         this.executor = Executors.newSingleThreadScheduledExecutor();
     }
 
+    /**
+     * Starts scheduling the turn task at fixed intervals.
+     */
     public void start() {
         executor.scheduleWithFixedDelay(turnTask,
                 delayMs,
@@ -27,6 +41,9 @@ public class SimulationScheduler {
                 TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * Shuts down the scheduler and waits for termination.
+     */
     public void shutdown() {
         if (executor.isShutdown()) {
             return;
@@ -48,5 +65,4 @@ public class SimulationScheduler {
 
         logger.info("Shutdown simulation complete!");
     }
-
 }

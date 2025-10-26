@@ -1,5 +1,10 @@
 package team.zhkv.actions.move;
 
+/**
+ * Enum representing possible movement directions on the board.
+ *
+ * @author bonnyped
+ */
 public enum Direction {
     UP(new Coordinate(0, -1)),
     DOWN(new Coordinate(0, 1)),
@@ -16,6 +21,11 @@ public enum Direction {
         this.shift = shift;
     }
 
+    /**
+     * Returns the coordinate shift for this direction.
+     *
+     * @return the coordinate shift
+     */
     public Coordinate getShift() {
         return shift;
     }
