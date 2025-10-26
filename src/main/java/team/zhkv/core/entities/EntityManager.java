@@ -14,7 +14,8 @@ import team.zhkv.core.interfaces.IEdible;
 import team.zhkv.core.interfaces.IRespawnable;
 
 /**
- * Manages all entities in the game, including creation, placement, movement, and removal.
+ * Manages all entities in the game, including creation, placement, movement,
+ * and removal.
  *
  * @author bonnyped
  */
@@ -61,7 +62,7 @@ public class EntityManager {
      * Places an entity at the specified coordinate.
      *
      * @param coordinate the coordinate
-     * @param entity the entity to place
+     * @param entity     the entity to place
      */
     public void putEntity(Coordinate coordinate, Entity entity) {
         entities.put(coordinate, entity);
@@ -145,8 +146,9 @@ public class EntityManager {
     /**
      * Collects entities for action based on interface class.
      *
+     * @param <T>         the type of the interface
      * @param toActionMap map of source to target coordinates
-     * @param clazzT the interface class
+     * @param clazzT      the interface class
      * @return set of entries mapping interface instances to entities
      */
     public <T> Set<Map.Entry<T, Entity>> collectEntitiesToActionByInterfaceClass(
@@ -166,9 +168,10 @@ public class EntityManager {
     }
 
     /**
-     * Returns a set of respawnable entity types and their counts.
+     * Returns a set of entity types that can respawn and their required counts.
      *
-     * @return set of respawnable entity entries
+     * @return a set of entries where the key is the respawnable entity class and
+     *         the value is the required count
      */
     public Set<Map.Entry<Class<? extends Entity>, Integer>> getRespawnableEntitiesAndCounts() {
         Set<Map.Entry<Class<? extends Entity>, Integer>> respawnable = new HashSet<>();

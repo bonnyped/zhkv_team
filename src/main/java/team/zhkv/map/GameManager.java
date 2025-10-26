@@ -19,10 +19,17 @@ import team.zhkv.core.interfaces.IEater;
  * including entity management, turn progression, spawning, movement,
  * damage, eating, and respawn mechanics.
  *
- * @author @bonnyped
+ * @author bonnyped
  */
 public class GameManager {
+    /**
+     * The width of the game board (number of columns).
+     */
     public static final int DX = 50;
+
+    /**
+     * The height of the game board (number of rows).
+     */
     public static final int DY = 20;
 
     private final EntityManager em;

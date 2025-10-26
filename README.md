@@ -123,3 +123,33 @@
 - Чеклист для самопроверки с типовыми ошибками (в конце страницы)
 
 Присылайте законченные проекты в чат — добавляю их в список, сообщество делает ревью проектов.
+
+---
+
+## Сборка и запуск
+
+### Требования
+- Java 17+
+- Maven 3.6+
+
+### Компиляция
+```bash
+mvn clean compile
+```
+
+### Запуск
+```bash
+mvn exec:java -Dexec.mainClass="team.zhkv.simulation.App"
+```
+
+### Генерация Javadoc
+```bash
+mvn javadoc:javadoc
+```
+Документация будет создана в `target/reports/apidocs/index.html`
+
+### Сборка JAR
+```bash
+mvn clean package
+java -jar target/simulation-1.0.jar
+```
